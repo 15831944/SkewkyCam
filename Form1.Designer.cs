@@ -83,9 +83,9 @@
             this.panel2.Controls.Add(this.txSound);
             this.panel2.Controls.Add(this.trackBar1);
             this.panel2.Controls.Add(this.tbVideoTime);
-            this.panel2.Location = new System.Drawing.Point(250, 589);
+            this.panel2.Location = new System.Drawing.Point(250, 583);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(707, 56);
+            this.panel2.Size = new System.Drawing.Size(722, 56);
             this.panel2.TabIndex = 1;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
@@ -106,7 +106,7 @@
             this.trackBar1.AutoSize = false;
             this.trackBar1.Location = new System.Drawing.Point(33, 1);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(556, 18);
+            this.trackBar1.Size = new System.Drawing.Size(571, 18);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -115,7 +115,7 @@
             // 
             this.tbVideoTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbVideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbVideoTime.Location = new System.Drawing.Point(595, 3);
+            this.tbVideoTime.Location = new System.Drawing.Point(610, 3);
             this.tbVideoTime.Name = "tbVideoTime";
             this.tbVideoTime.ReadOnly = true;
             this.tbVideoTime.Size = new System.Drawing.Size(109, 14);
@@ -127,7 +127,7 @@
             // 
             this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.AutoSize = false;
-            this.trackBar2.Location = new System.Drawing.Point(12, 636);
+            this.trackBar2.Location = new System.Drawing.Point(36, 585);
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(170, 9);
             this.trackBar2.TabIndex = 4;
@@ -160,9 +160,9 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 645);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 639);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(969, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -185,12 +185,12 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Coral;
+            this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.txSpeed);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Location = new System.Drawing.Point(250, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(707, 559);
+            this.panel1.Size = new System.Drawing.Size(722, 553);
             this.panel1.TabIndex = 0;
             // 
             // pictureBox1
@@ -198,10 +198,10 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Location = new System.Drawing.Point(2, -2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(707, 562);
+            this.pictureBox1.Size = new System.Drawing.Size(722, 556);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
@@ -215,7 +215,7 @@
             this.txSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txSpeed.AutoSize = true;
             this.txSpeed.BackColor = System.Drawing.Color.Crimson;
-            this.txSpeed.Location = new System.Drawing.Point(8, 547);
+            this.txSpeed.Location = new System.Drawing.Point(8, 541);
             this.txSpeed.Name = "txSpeed";
             this.txSpeed.Size = new System.Drawing.Size(89, 12);
             this.txSpeed.TabIndex = 1;
@@ -318,7 +318,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(17, 12);
             this.label7.TabIndex = 6;
-            this.label7.Text = "04";
+            this.label7.Text = "07";
             // 
             // label8
             // 
@@ -484,8 +484,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(986, 660);
+            this.ClientSize = new System.Drawing.Size(984, 661);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label19);
@@ -519,6 +518,7 @@
             this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel2);
+            this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
             this.Text = "SkewkyCam";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

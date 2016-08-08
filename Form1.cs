@@ -76,7 +76,7 @@ namespace Com.Skewky.Cam
                     int curVal = trackBar1.Value + 1 * vlc_Speed/10;;
                     curVal = Math.Max(trackBar1.Minimum, curVal);
                     curVal = Math.Min(trackBar1.Maximum, curVal);
-                    trackBar1.Value = curVal;
+                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
                     tbVideoTime.Text = string.Format("{0}/{1}", 
                         GetTimeString(trackBar1.Value), 
                         GetTimeString(trackBar1.Maximum));
