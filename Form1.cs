@@ -246,5 +246,25 @@ namespace Com.Skewky.Cam
                 txSpeed.Text = string.Format("播放速度：{0}x", (double)vlc_Speed/10);
             }
         }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
+
+        private void monthCalendar2_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            DateTime curDate = monthCalendar2.SelectionStart;
+            DateTime prvDate = curDate.AddMonths(-1);
+            monthCalendar1.SetSelectionRange(prvDate, prvDate);
+            DateTime postDate = curDate.AddMonths(1);
+            monthCalendar3.SetSelectionRange(postDate, postDate);
+
+        }
+
+        private void label0_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
