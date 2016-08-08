@@ -41,7 +41,7 @@ namespace Com.Skewky.Cam
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 vlc_player_.PlayFile(ofd.FileName);
-                vlc_player_.SetRate(1);
+                vlc_player_.SetRate(vlc_Speed/10);
                 vlc_player_.SetVolume(vlc_Valume);
            
                 trackBar1.SetRange(0, (int)vlc_player_.Duration());
@@ -73,7 +73,10 @@ namespace Com.Skewky.Cam
                 }
                 else
                 {
-                    trackBar1.Value = trackBar1.Value + 1 * vlc_Speed/10;
+                    int curVal = trackBar1.Value + 1 * vlc_Speed/10;;
+                    curVal = Math.Max(trackBar1.Minimum, curVal);
+                    curVal = Math.Min(trackBar1.Maximum, curVal);
+                    trackBar1.Value = curVal;
                     tbVideoTime.Text = string.Format("{0}/{1}", 
                         GetTimeString(trackBar1.Value), 
                         GetTimeString(trackBar1.Maximum));

@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MyMonthCalender">
-      <HintPath>..\..\..\..\Desktop\MyDateTimePicker\MyMonthCalendar\MyMonthCalendar\bin\Debug\MyMonthCalender.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />

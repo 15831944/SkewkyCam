@@ -42,9 +42,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.myMonthCalendar1 = new Escape.Controls.MyMonthCalendar();
-            this.myMonthCalendar2 = new Escape.Controls.MyMonthCalendar();
-            this.myMonthCalendar3 = new Escape.Controls.MyMonthCalendar();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.txSpeed = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -193,63 +190,6 @@
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // myMonthCalendar1
-            // 
-            this.myMonthCalendar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.myMonthCalendar1.BackColor = System.Drawing.Color.White;
-            this.myMonthCalendar1.DayForeColor = System.Drawing.Color.Black;
-            this.myMonthCalendar1.Location = new System.Drawing.Point(764, 27);
-            this.myMonthCalendar1.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
-            this.myMonthCalendar1.MinDate = new System.DateTime(1901, 3, 1, 0, 0, 0, 0);
-            this.myMonthCalendar1.Name = "myMonthCalendar1";
-            this.myMonthCalendar1.SelectedSolarDate = new System.DateTime(2016, 8, 3, 0, 0, 0, 0);
-            this.myMonthCalendar1.Size = new System.Drawing.Size(307, 170);
-            this.myMonthCalendar1.SplitLinesColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar1.SplitLinesStyle = Escape.Controls.MyMonthCalendar.SplitLStyle.None;
-            this.myMonthCalendar1.TabIndex = 5;
-            this.myMonthCalendar1.TitleColor = System.Drawing.Color.Black;
-            this.myMonthCalendar1.TrailingForeColor = System.Drawing.Color.LightGray;
-            this.myMonthCalendar1.WeekBackColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar1.WeekForeColor = System.Drawing.Color.White;
-            // 
-            // myMonthCalendar2
-            // 
-            this.myMonthCalendar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.myMonthCalendar2.BackColor = System.Drawing.Color.White;
-            this.myMonthCalendar2.DayForeColor = System.Drawing.Color.Black;
-            this.myMonthCalendar2.Location = new System.Drawing.Point(764, 203);
-            this.myMonthCalendar2.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
-            this.myMonthCalendar2.MinDate = new System.DateTime(1901, 3, 1, 0, 0, 0, 0);
-            this.myMonthCalendar2.Name = "myMonthCalendar2";
-            this.myMonthCalendar2.SelectedSolarDate = new System.DateTime(2016, 8, 3, 0, 0, 0, 0);
-            this.myMonthCalendar2.Size = new System.Drawing.Size(307, 170);
-            this.myMonthCalendar2.SplitLinesColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar2.SplitLinesStyle = Escape.Controls.MyMonthCalendar.SplitLStyle.None;
-            this.myMonthCalendar2.TabIndex = 5;
-            this.myMonthCalendar2.TitleColor = System.Drawing.Color.Black;
-            this.myMonthCalendar2.TrailingForeColor = System.Drawing.Color.LightGray;
-            this.myMonthCalendar2.WeekBackColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar2.WeekForeColor = System.Drawing.Color.White;
-            // 
-            // myMonthCalendar3
-            // 
-            this.myMonthCalendar3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.myMonthCalendar3.BackColor = System.Drawing.Color.White;
-            this.myMonthCalendar3.DayForeColor = System.Drawing.Color.Black;
-            this.myMonthCalendar3.Location = new System.Drawing.Point(764, 379);
-            this.myMonthCalendar3.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
-            this.myMonthCalendar3.MinDate = new System.DateTime(1901, 3, 1, 0, 0, 0, 0);
-            this.myMonthCalendar3.Name = "myMonthCalendar3";
-            this.myMonthCalendar3.SelectedSolarDate = new System.DateTime(2016, 8, 3, 0, 0, 0, 0);
-            this.myMonthCalendar3.Size = new System.Drawing.Size(307, 170);
-            this.myMonthCalendar3.SplitLinesColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar3.SplitLinesStyle = Escape.Controls.MyMonthCalendar.SplitLStyle.None;
-            this.myMonthCalendar3.TabIndex = 5;
-            this.myMonthCalendar3.TitleColor = System.Drawing.Color.Black;
-            this.myMonthCalendar3.TrailingForeColor = System.Drawing.Color.LightGray;
-            this.myMonthCalendar3.WeekBackColor = System.Drawing.Color.OliveDrab;
-            this.myMonthCalendar3.WeekForeColor = System.Drawing.Color.White;
-            // 
             // toolTip1
             // 
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
@@ -273,9 +213,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1083, 682);
-            this.Controls.Add(this.myMonthCalendar3);
-            this.Controls.Add(this.myMonthCalendar2);
-            this.Controls.Add(this.myMonthCalendar1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.trackBar2);
@@ -314,9 +251,6 @@
         private System.Windows.Forms.TextBox tbVideoTime;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private Escape.Controls.MyMonthCalendar myMonthCalendar1;
-        private Escape.Controls.MyMonthCalendar myMonthCalendar2;
-        private Escape.Controls.MyMonthCalendar myMonthCalendar3;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pictureBox1;
