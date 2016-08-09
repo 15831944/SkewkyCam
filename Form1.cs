@@ -22,25 +22,28 @@ namespace Com.Skewky.Cam
         private DateTime curDt;
         public Form1()
         {
-            InitializeComponent();
-
-            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
+             string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
             vlc_player_ = new VlcPlayer(pluginPath);
-            IntPtr render_wnd = this.panel1.Handle;
-            vlc_player_.SetRenderWindow((int)render_wnd);
             vlc_Speed = 10;
             vlc_Valume = 50;
 
-            txSound.Text = string.Format("{0}", vlc_Valume);
-            tbVideoTime.Text = "00:00:00/00:00:00";
             
             is_playing_ = false;
             is_fullScreen_ = false;
-            this.KeyPreview = true;
             recType = 0;
             rootDir = @"E:\Meida\XM";
 
-            InitFileParseTool();
+            InitFileParseTool();    
+            
+            InitializeComponent();
+
+            this.KeyPreview = true;
+            IntPtr render_wnd = this.panel1.Handle;
+            vlc_player_.SetRenderWindow((int)render_wnd);
+            txSound.Text = string.Format("{0}", vlc_Valume);
+            tbVideoTime.Text = "00:00:00/00:00:00";
+           
+
         }
         private void InitFileParseTool()
         {
@@ -66,12 +69,17 @@ namespace Com.Skewky.Cam
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            if (is_playing_)
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            folderBrowserDialog.SelectedPath = rootDir;
+            folderBrowserDialog.ShowNewFolderButton = false;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                vlc_player_.Stop();
-                trackBar1.Value = 0;
-                timer1.Stop();
-                is_playing_ = false;
+                if (rootDir!= folderBrowserDialog.SelectedPath)
+                {
+                    rootDir = folderBrowserDialog.SelectedPath;
+                    InitFileParseTool();
+                    UpdateCalender(true);
+                }
             }
         }
 
@@ -267,29 +275,42 @@ namespace Com.Skewky.Cam
 
         private void monthCalendar2_DateChanged(object sender, DateRangeEventArgs e)
         {
+            UpdateCalender();
+        }
+        private void UpdateCalender(bool bForceRefresh = false)
+        {
+
             DateTime curDate = monthCalendar2.SelectionStart;
+            monthCalendar2.SetSelectionRange(curDate, curDate);
             DateTime prvDate = curDate.AddMonths(-1);
             monthCalendar1.SetSelectionRange(prvDate, prvDate);
             DateTime postDate = curDate.AddMonths(1);
             monthCalendar3.SetSelectionRange(postDate, postDate);
-            reMarkCalendar(monthCalendar1);
-            reMarkCalendar(monthCalendar2);
-            reMarkCalendar(monthCalendar3);
+            if (bForceRefresh||
+                curDate.Year != curDt.Year ||
+                curDate.Month != curDt.Month)
+             {
+                reMarkCalendar(monthCalendar1);
+                reMarkCalendar(monthCalendar2);
+                reMarkCalendar(monthCalendar3);
+         
+             }
             curDt = curDate;
             UpdateHours();
+            UpdateMinute();
         }
         private void reMarkCalendar(System.Windows.Forms.MonthCalendar mc)
         {
             mc.RemoveAllBoldedDates();
 
-            SelectionRange disRange = mc.GetDisplayRange(false);
+            SelectionRange disRange = mc.GetDisplayRange(true);
             DateTime dt = disRange.Start;
-            if (fileParseTool.isDayBlod(dt))
+            if (fileParseTool.DayBlod(dt))
                 mc.AddBoldedDate(dt);
             while(dt != disRange.End)
             {
                 dt = dt.AddDays(1);
-                if (fileParseTool.isDayBlod(dt))
+                if (fileParseTool.DayBlod(dt))
                     mc.AddBoldedDate(dt);
              }
             mc.UpdateBoldedDates();
@@ -307,7 +328,7 @@ namespace Com.Skewky.Cam
             for (int i = 0; i < 24; i++)
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, i, 0, 0);
-                bool bNowBlod = fileParseTool.isHourBlod(nowdt);
+                bool bNowBlod = fileParseTool.HourBlod(nowdt);
                 System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.Color.Yellow;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
@@ -333,10 +354,13 @@ namespace Com.Skewky.Cam
             for (int i = 0; i < 60; i++)
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, curDt.Hour, i, 0);
-                bool bNowBlod = fileParseTool.isMinuteBlod(nowdt);
+                bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
                 System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.Color.Yellow;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
-                g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
+                if (i==0||i==30||i==59)
+                {
+                    g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
+                }
                 if (i == curDt.Minute)
                 {
                     g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2, drawPt.Y, drawWidth, height);
@@ -381,7 +405,8 @@ namespace Com.Skewky.Cam
             int drawWidth = width / 24;
             Point clkPt = new Point(e.Location.X, e.Location.Y);
             int clkHour = clkPt.X / drawWidth;
-
+            clkHour = Math.Min(clkHour, 23);
+            
             if (curDt.Hour != clkHour)
             {
                 curDt = new DateTime(curDt.Year,curDt.Month, curDt.Day,
@@ -394,8 +419,7 @@ namespace Com.Skewky.Cam
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            UpdateHours();
-            UpdateMinute();
+           
         }
 
         private void pBmin_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -405,6 +429,7 @@ namespace Com.Skewky.Cam
             int drawWidth = width / 60;
             Point clkPt = new Point(e.Location.X, e.Location.Y);
             int clkMinute= clkPt.X / drawWidth;
+            clkMinute = Math.Min(clkMinute, 59);
             if(curDt.Minute != clkMinute)
             {
                 curDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
@@ -415,9 +440,9 @@ namespace Com.Skewky.Cam
         }
         private bool Autoplay()
         {
-            if(fileParseTool.isMinuteBlod(curDt))
+            if(fileParseTool.MinuteBlod(curDt))
             {
-                vlc_player_.PlayFile(fileParseTool.getMinutePath(curDt));
+                vlc_player_.PlayFile(fileParseTool.MinutePath(curDt));
                 vlc_player_.SetRate(vlc_Speed / 10);
                 vlc_player_.SetVolume(vlc_Valume);
 
@@ -429,5 +454,48 @@ namespace Com.Skewky.Cam
             }
             return false;
          }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Maximized)
+            {
+                UpdateHours();
+                UpdateMinute();
+            }
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            UpdateHours();
+            UpdateMinute();
+        
+        }
+
+        private void pBmin_MouseMove(object sender, MouseEventArgs e)
+        {
+            int height = pBmin.Height;
+            int width = pBmin.Width;
+            int drawWidth = width / 60;
+            Point clkPt = new Point(e.Location.X, e.Location.Y);
+            clkPt.Y += height;
+            int clkMinute = clkPt.X / drawWidth;
+            clkMinute = Math.Min(clkMinute, 59);
+            if (curDt.Minute != clkMinute)
+            {
+                DateTime dispDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
+                                        curDt.Hour, clkMinute, curDt.Second);
+                string msg = string.Format("{0}/{1:D2}/{2:D2} {3:D2}:{4:D2}",
+                                                curDt.Year, curDt.Month, curDt.Day,
+                                        curDt.Hour, clkMinute);
+                toolTip1.Show(msg, pBmin, clkPt,3);
+            }
+        }
+
+        private void pBmin_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+
     }
 }

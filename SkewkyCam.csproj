@@ -8,7 +8,7 @@
     <ProjectGuid>{8CD8039C-AA33-4C8D-8F77-4E0297BAE990}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Skewky.Cam</RootNamespace>
+    <RootNamespace>Com.Skewky.Cam</RootNamespace>
     <AssemblyName>SkewkyCam</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckedBuffer.cs" />
+    <Compile Include="CheckedDt.cs" />
     <Compile Include="FileParseBase.cs" />
     <Compile Include="FileParseXiaoMi.cs" />
     <Compile Include="Form1.cs">
@@ -63,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
