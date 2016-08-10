@@ -58,9 +58,12 @@ namespace Com.Skewky.Cam
         /// <param name="bExist">the statu of this new date</param>
         public void addCheckedDt(DateTime dt, bool bExist,string dtPath)
         {
-            CheckedDts.Add(dt);
-            dtExists.Add(dt, bExist);
-            dtPaths.Add(dt, dtPath);
+            if (!CheckedDts.Contains(dt))
+                CheckedDts.Add(dt);
+            if(!dtExists.ContainsKey(dt))
+                dtExists.Add(dt, bExist);
+            if (!dtPaths.ContainsKey(dt))
+                dtPaths.Add(dt, dtPath);
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Com.Skewky.Cam
     {
         private IntPtr libvlc_instance_;
         private IntPtr libvlc_media_player_;
-
         private double duration_;
 
         public VlcPlayer(string pluginPath)
@@ -21,6 +20,13 @@ namespace Com.Skewky.Cam
             libvlc_instance_ = LibVlcAPI.libvlc_new(arguments);
 
             libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);
+        }
+        public void Copy(VlcPlayer vlcPlayer)
+        {
+            libvlc_instance_ = vlcPlayer.libvlc_instance_;
+            libvlc_media_player_ = vlcPlayer.libvlc_media_player_;
+            duration_ = vlcPlayer.duration_;
+
         }
 
         public void SetRenderWindow(int wndHandle)
@@ -37,7 +43,7 @@ namespace Com.Skewky.Cam
             if (libvlc_media != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_parse(libvlc_media);
-                duration_ = LibVlcAPI.libvlc_media_get_duration(libvlc_media) / 1000.0;
+                duration_ = LibVlcAPI.libvlc_media_get_duration(libvlc_media);
 
                 LibVlcAPI.libvlc_media_player_set_media(libvlc_media_player_, libvlc_media);
                 LibVlcAPI.libvlc_media_release(libvlc_media);
@@ -45,7 +51,20 @@ namespace Com.Skewky.Cam
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
             }
         }
+        public void PrepareFile(string filePath)
+        {
+            IntPtr libvlc_media = LibVlcAPI.libvlc_media_new_path(libvlc_instance_, filePath);
+            if (libvlc_media != IntPtr.Zero)
+            {
+                LibVlcAPI.libvlc_media_parse(libvlc_media);
+                duration_ = LibVlcAPI.libvlc_media_get_duration(libvlc_media);
 
+                LibVlcAPI.libvlc_media_player_set_media(libvlc_media_player_, libvlc_media);
+                LibVlcAPI.libvlc_media_release(libvlc_media);
+                
+                //LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
+            }
+        }
         public void Pause()
         {
             if (libvlc_media_player_ != IntPtr.Zero)
@@ -61,7 +80,7 @@ namespace Com.Skewky.Cam
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
             }
         }
-     public void Stop()
+        public void Stop()
         {
             if (libvlc_media_player_ != IntPtr.Zero)
             {

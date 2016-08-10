@@ -121,5 +121,8 @@ namespace Com.Skewky.Cam
 
 
 
+
+        internal abstract string getRootDirByPath(string path);
+        internal abstract DateTime getDtMinByPath(string path);
     }
 }
