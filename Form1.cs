@@ -56,17 +56,31 @@ namespace Com.Skewky.Cam
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                vlc_player_.PlayFile(ofd.FileName);
-                vlc_player_.SetRate(vlc_Speed/10);
+                PlayRecord(ofd.FileName);
+            }
+        }
+        private void PlayRecord(string path)
+        {
+            if (System.IO.File.Exists(path))
+            {
+                vlc_player_.PlayFile(path);
+                vlc_player_.SetRate(vlc_Speed / 10);
                 vlc_player_.SetVolume(vlc_Valume);
-           
-                trackBar1.SetRange(0, (int)vlc_player_.Duration());
+
+                double dDuration = vlc_player_.Duration()*1000;
+                trackBar1.SetRange(0, (int)dDuration);
                 trackBar1.Value = 0;
                 timer1.Start();
                 is_playing_ = true;
+                UpdateHours();
+                UpdateMinute();
             }
         }
-
+        private void PlayRecord(DateTime dt)
+        {
+            string path = fileParseTool.MinutePath(dt);
+            PlayRecord(path);
+        }
         private void btnReset_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -87,17 +101,33 @@ namespace Com.Skewky.Cam
         {
             if (is_playing_)
             {
-                if (trackBar1.Value >= trackBar1.Maximum)
+                double playTime = vlc_player_.GetPlayTime();
+                double duraTime = vlc_player_.Duration();
+                bool bIsPlayEnded = vlc_player_.isPlayEnded();
+                if (bIsPlayEnded)
                 {
                     vlc_player_.Stop();
                     timer1.Stop();
+                    DateTime nextDt = curDt;
+                    if(fileParseTool.findNextDt(curDt,ref nextDt))
+                    {
+                        string nextfilePath = fileParseTool.MinutePath(nextDt);
+                        curDt = nextDt;
+                        PlayRecord(curDt);
+                    }
+                    else
+                    {
+                        string msg = string.Format("没有找到下一个要播放文件");
+                        toolTip1.Show(msg,pBmin, 15,15, 3);
+                    }
                 }
                 else
                 {
-                    int curVal = trackBar1.Value + 1 * vlc_Speed/10;;
+                    int curVal = trackBar1.Value + 1000 * vlc_Speed/10;;
                     curVal = Math.Max(trackBar1.Minimum, curVal);
                     curVal = Math.Min(trackBar1.Maximum, curVal);
-                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                    double curPlayTime = vlc_player_.GetPlayTime()*1000;
+                    trackBar1.Value = (int)curPlayTime;
                     tbVideoTime.Text = string.Format("{0}/{1}", 
                         GetTimeString(trackBar1.Value), 
                         GetTimeString(trackBar1.Maximum));
@@ -219,53 +249,65 @@ namespace Com.Skewky.Cam
             {
                 togglePlay();
             }
-            //前进
-            if (Keys.Left == e.KeyCode)
+            if (Keys.Left == e.KeyCode ||
+                Keys.Right == e.KeyCode)
             {
-                int newPlayTime = trackBar1.Value - 5 * vlc_Speed/10;
-                newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
-                vlc_player_.SetPlayTime(newPlayTime);
-                trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                //前进
+                if (Keys.Left == e.KeyCode)
+                {
+                    int newPlayTime = trackBar1.Value - 5 * vlc_Speed / 10;
+                    newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
+                    vlc_player_.SetPlayTime(newPlayTime);
+                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                }
+                //后退
+                if (Keys.Right == e.KeyCode)
+                {
+                    int newPlayTime = trackBar1.Value + 5 * vlc_Speed / 10;
+                    newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
+                    vlc_player_.SetPlayTime(newPlayTime);
+                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                }
             }
-            //后退
-            if (Keys.Right == e.KeyCode)
+            if(Keys.Up == e.KeyCode||
+                Keys.Down == e.KeyCode)
             {
-                int newPlayTime = trackBar1.Value + 5 * vlc_Speed/10;
-                newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
-                vlc_player_.SetPlayTime(newPlayTime);
-                trackBar1.Value = (int)vlc_player_.GetPlayTime();
-            }
-            //加速
-            if (Keys.Up == e.KeyCode)
-            {
-                if (vlc_Speed < 10)
-                    vlc_Speed += 1;
+                double dRate = (double)(vlc_Speed / 10);
+                //加速
+                if (Keys.Up == e.KeyCode)
+                {
+                    if (vlc_Speed < 10)
+                        vlc_Speed += 1;
+                    else
+                        vlc_Speed += 5;
+                    if (vlc_Speed > 160)
+                        vlc_Speed = 160;
+                    dRate = (double)vlc_Speed / 10.0;
+                    vlc_player_.SetRate(dRate);
+                }
+                //减速
+                if (Keys.Down == e.KeyCode)
+                {
+                    if (vlc_Speed <= 10)
+                        vlc_Speed -= 1;
+                    else
+                        vlc_Speed -= 5;
+                    if (vlc_Speed < 1)
+                        vlc_Speed = 1;
+                    dRate = (double)vlc_Speed / 10.0;
+                    vlc_player_.SetRate(dRate);
+                }
+                if(vlc_Speed==10)
+                {
+                    txSpeed.Visible = false;
+                }
                 else
-                    vlc_Speed += 5;
-                if (vlc_Speed > 160)
-                    vlc_Speed = 160;
-                vlc_player_.SetRate(vlc_Speed/10);
+                {
+                    txSpeed.Visible = true;
+                    txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
+                }
             }
-            //减速
-            if (Keys.Down == e.KeyCode)
-            {
-                if (vlc_Speed <= 10)
-                    vlc_Speed -= 1;
-                else
-                    vlc_Speed -= 5;
-                if (vlc_Speed < 1)
-                    vlc_Speed = 1;
-                vlc_player_.SetRate(vlc_Speed/10);
-            }
-            if(vlc_Speed==10)
-            {
-                txSpeed.Visible = false;
-            }
-            else
-            {
-                txSpeed.Visible = true;
-                txSpeed.Text = string.Format("播放速度：{0}x", (double)vlc_Speed/10);
-            }
+
         }
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
@@ -442,14 +484,7 @@ namespace Com.Skewky.Cam
         {
             if(fileParseTool.MinuteBlod(curDt))
             {
-                vlc_player_.PlayFile(fileParseTool.MinutePath(curDt));
-                vlc_player_.SetRate(vlc_Speed / 10);
-                vlc_player_.SetVolume(vlc_Valume);
-
-                trackBar1.SetRange(0, (int)vlc_player_.Duration());
-                trackBar1.Value = 0;
-                timer1.Start();
-                is_playing_ = true;
+                PlayRecord(curDt);
                 return true;
             }
             return false;

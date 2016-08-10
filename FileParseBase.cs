@@ -109,6 +109,8 @@ namespace Com.Skewky.Cam
                 return bExist;
             }
         }
+        public abstract bool findNextDt(DateTime dt, ref DateTime nextDt);
+
         protected abstract string getDayPath(DateTime dt);
         protected abstract string getHourPath(DateTime dt);
         protected abstract string getMinutePath(DateTime dt);
@@ -117,7 +119,6 @@ namespace Com.Skewky.Cam
         protected abstract bool isHourBlod(DateTime dt);
         protected abstract bool isMinuteBlod(DateTime dt);
 
-        protected abstract DateTime findNextDt(DateTime dt);
 
 
     }

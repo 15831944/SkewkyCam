@@ -109,6 +109,11 @@ namespace Com.Skewky.Cam
         {
             return LibVlcAPI.libvlc_get_version();
         }
+        public bool isPlayEnded()
+        {
+            libvlc_state_t sta = (libvlc_state_t)LibVlcAPI.libvlc_media_player_get_state(libvlc_media_player_);
+            return libvlc_state_t.libvlc_Ended == sta;
+        }
     }
 
     internal static class LibVlcAPI
@@ -297,5 +302,11 @@ namespace Com.Skewky.Cam
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern void libvlc_media_player_set_rate(IntPtr libvlc_media_player, float rate);
+
+        //获取播放状态
+        [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [SuppressUnmanagedCodeSecurity]
+        public static extern int libvlc_media_player_get_state(IntPtr libvlc_media_player);
+    
     }
 }
