@@ -263,6 +263,7 @@ namespace Com.Skewky.Cam
 
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
+            updateHourAndMinView_Force();
         }
         private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -455,19 +456,12 @@ namespace Com.Skewky.Cam
                 monthCalendar2.SetSelectionRange(curDt, curDt);
             DateTime curDate = monthCalendar2.SelectionStart;
             monthCalendar2.SetSelectionRange(curDate, curDate);
-            DateTime prvDate = curDate.AddMonths(-1);
-            monthCalendar1.SetSelectionRange(prvDate, prvDate);
-            DateTime postDate = curDate.AddMonths(1);
-            monthCalendar3.SetSelectionRange(postDate, postDate);
             if (bForceRefresh||
                 curDate.Year != curDt.Year ||
                 curDate.Month != curDt.Month)
-             {
-                reMarkCalendar(monthCalendar1);
+            {
                 reMarkCalendar(monthCalendar2);
-                reMarkCalendar(monthCalendar3);
-         
-             }
+            }
             curDt = curDate;
             UpdateHours(bForceRefresh);
             UpdateMinute(bForceRefresh);
@@ -476,7 +470,7 @@ namespace Com.Skewky.Cam
         {
             mc.RemoveAllBoldedDates();
 
-            SelectionRange disRange = mc.GetDisplayRange(true);
+            SelectionRange disRange = mc.GetDisplayRange(false);
             DateTime dt = disRange.Start;
             if (fileParseTool.DayBlod(dt))
                 mc.AddBoldedDate(dt);
@@ -554,7 +548,10 @@ namespace Com.Skewky.Cam
             UpdateHours(bForceRefresh);
             UpdateMinute(bForceRefresh);
         }
-
+        private void updateHourAndMinView_Force()
+        {
+            updateHourAndMinView(true);
+        }
         private void pBmin_Click(object sender, EventArgs e)
         {
            
@@ -628,7 +625,8 @@ namespace Com.Skewky.Cam
         {
             if (WindowState == FormWindowState.Maximized)
             {
-                updateHourAndMinView();
+                this.updateHourAndMinView_Force();
+                
             }
         }
 
@@ -662,6 +660,16 @@ namespace Com.Skewky.Cam
 
         }
 
+        private void checkBox1_MouseHover(object sender, EventArgs e)
+        {
+            
+            string msg = string.Format("持续标注\n直到取消勾选\n或碰到下一个有标注的视频");
+            Point pt = ck_ContinuMark.Location;
+            pt.X -= 220;
+            pt.Y += 20;
+            toolTip1.Show(msg, ck_ContinuMark, pt, 3000);
+        }
 
+       
     }
 }
