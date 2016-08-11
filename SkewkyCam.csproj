@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SkewkyCam.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -43,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CheckedBuffer.cs" />
     <Compile Include="CheckedDt.cs" />
+    <Compile Include="ConfigSettings.cs" />
     <Compile Include="FileParseBase.cs" />
     <Compile Include="FileParseXiaoMi.cs" />
     <Compile Include="MainForm.cs">
@@ -77,6 +81,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SkewkyCam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

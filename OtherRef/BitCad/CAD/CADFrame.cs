@@ -282,7 +282,6 @@ namespace CAD
                         int r = (int)Math.Pow(Math.Pow(((BaseShape)currentShapes[i]).getP2().X - ((BaseShape)currentShapes[i]).getP1().X, 2) + Math.Pow(((BaseShape)currentShapes[i]).getP2().Y - ((BaseShape)currentShapes[i]).getP1().Y, 2), 0.5);
                         g.DrawEllipse(new Pen(((BaseShape)currentShapes[i]).penColor, ((BaseShape)currentShapes[i]).penwidth), ((BaseShape)currentShapes[i]).getP1().X-r, ((BaseShape)currentShapes[i]).getP1().Y-r, 2*r,2*r);
                         break;
-                        g.
                 }
                 ((BaseShape)currentShapes[i]).superDraw(g);
             }

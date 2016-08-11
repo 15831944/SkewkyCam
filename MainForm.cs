@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Com.Skewky.Cam
 {
@@ -17,52 +19,107 @@ namespace Com.Skewky.Cam
         private bool bFindNext;
         private bool is_playing_;
         private bool is_fullScreen_;
-        private int vlc_Speed;
-        private int vlc_Valume;
+
         private FileParseBase fileParseTool;
-        private int recType;
-        private string rootDir;
         private DateTime curDt;
+        private ConfigSettings cfsettings;
         public MainForm()
         {
-             string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
-             vlc_player_ = new VlcPlayer(pluginPath);
-             vlc_player_Next = new VlcPlayer(pluginPath);
-             vlc_Speed = 10;
-             vlc_Valume = 50;
-
+             
             
             is_playing_ = false;
             is_fullScreen_ = false;
             bFindNext = false;
-            recType = 0;
-            rootDir = @"E:\Meida\XM";
+            
+            loadConfig();
 
             InitFileParseTool();    
             
             InitializeComponent();
 
             this.KeyPreview = true;
-            IntPtr render_wnd = this.panel1.Handle;
-            vlc_player_.SetRenderWindow((int)render_wnd);
-            vlc_player_Next.SetRenderWindow((int)render_wnd);
-            txSound.Text = string.Format("{0}", vlc_Valume);
+            
+            vlc_player_ = newVlcPlayer();
+            vlc_player_Next =newVlcPlayer();
+            txSound.Text = string.Format("{0}", cfsettings.iValume);
             tbVideoTime.Text = "00:00:00/00:00:00";
             resetTimerInterval();
 
         }
+        private VlcPlayer newVlcPlayer()
+        {
+            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
+            VlcPlayer vlcPlayer = new VlcPlayer(pluginPath);
+            IntPtr render_wnd = this.panel1.Handle;
+            vlcPlayer.SetRenderWindow((int)render_wnd);
+            return vlcPlayer;
+        }
+        private string configFile()
+        {
+            return System.Environment.CurrentDirectory + "\\config.ske";
+        }
+        public void saveConfig()
+        {
+            string filePath = configFile();
+            try
+            {
+                cfsettings.iValume = 50;
+                cfsettings.iRecType = 15;
+                Stream s = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite);
+                BinaryFormatter b = new BinaryFormatter();
+                b.Serialize(s, cfsettings);
+                s.Close();
+            }
+            catch(Exception e)
+            {
+
+            }
+
+        }
+
+        public void loadConfig()
+        {
+            cfsettings = new ConfigSettings();
+            string filePath = configFile();
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    Stream s = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                    BinaryFormatter c = new BinaryFormatter();
+                    cfsettings = (ConfigSettings)c.Deserialize(s);
+                    s.Close();
+                }      
+            }
+            catch (Exception e)
+            {
+                File.Delete(filePath);
+            }
+            if (cfsettings.rootDirArr == null)
+                cfsettings.rootDirArr = new List<string>();
+            if(cfsettings.rootDirArr.Count==0)
+                cfsettings.rootDirArr.Add(@"E:\Meida\XM");
+           
+        }
         private void InitFileParseTool()
         {
-            if (recType == 0)
-                fileParseTool = new FileParseXiaoMi();
-            fileParseTool.setRootDir(rootDir);
+            switch(cfsettings.iRecType)
+            {
+                case 0: //XiaoMi
+                    fileParseTool = new FileParseXiaoMi();
+                    break;
+                default:
+                    fileParseTool = new FileParseXiaoMi();
+                    break;        
+            }
+            fileParseTool.setRootDir(cfsettings.rootDirArr[0]);
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                rootDir = fileParseTool.getRootDirByPath(ofd.FileName);
+                cfsettings.rootDirArr[0] = fileParseTool.getRootDirByPath(ofd.FileName);
                 InitFileParseTool();
                 PlayRecord(ofd.FileName);
                 UpdateCalender(true);
@@ -76,46 +133,46 @@ namespace Com.Skewky.Cam
             {
                 vlc_player_.Copy(vlc_player_Next);
                 vlc_player_.Pause();
-                vlc_player_.Play();
-                vlc_player_.SetRate(vlc_Speed / 10);
-                vlc_player_.SetVolume(vlc_Valume);
-                
-                double dDuration = vlc_player_.Duration();
-                trackBar1.SetRange(0, (int)dDuration);
-                trackBar1.Value = 0;
-                resetTimerInterval();
-                timer1.Start();
-                is_playing_ = true;
+
+                updatePlayStatus_Start();
                 updateHourAndMinView();
-                
-                string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
-                vlc_player_Next = new VlcPlayer(pluginPath);
-                IntPtr render_wnd = this.panel1.Handle;
-                vlc_player_Next.SetRenderWindow((int)render_wnd);
-                Thread trd = new Thread(this.PrepearNextFile);
-                trd.Start();
+                UpdateSpeed();
+                threadFindNextFile();
                 
             }
             if (System.IO.File.Exists(path))
             {
                 vlc_player_.PlayFile(path);
-                vlc_player_.SetRate(vlc_Speed / 10);
-                vlc_player_.SetVolume(vlc_Valume);
-
-                double dDuration = vlc_player_.Duration();
-                trackBar1.SetRange(0, (int)dDuration);
-                trackBar1.Value = 0;
-                resetTimerInterval();
-                timer1.Start();
-                is_playing_ = true;
+                updatePlayStatus_Start();
                 updateHourAndMinView();
-                string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
-                vlc_player_Next = new VlcPlayer(pluginPath);
-                IntPtr render_wnd = this.panel1.Handle;
-                vlc_player_Next.SetRenderWindow((int)render_wnd);
-                Thread trd = new Thread(this.PrepearNextFile);
-                trd.Start();
+                UpdateSpeed();
+                threadFindNextFile();
             }
+        }
+        private void updatePlayStatus_Start()
+        {
+            vlc_player_.Play();
+            vlc_player_.SetRate(cfsettings.iPlaySpeed / 10);
+            vlc_player_.SetVolume(cfsettings.iValume);
+
+            double dDuration = vlc_player_.Duration();
+            trackBar1.SetRange(0, (int)dDuration);
+            trackBar1.Value = 0;
+            timer1.Start();
+            is_playing_ = true;
+        }
+        private void updatePlayStatus_Stop()
+        {
+            vlc_player_.Stop();
+            trackBar1.Value = trackBar1.Maximum;
+            timer1.Stop();
+            is_playing_ = false;
+        }
+        private void threadFindNextFile()
+        {
+            vlc_player_Next = newVlcPlayer();
+            Thread trd = new Thread(this.PrepearNextFile);
+            trd.Start();
         }
         private void PlayRecord(DateTime dt, bool AutoPlayNext = false)
         {
@@ -136,13 +193,13 @@ namespace Com.Skewky.Cam
         private void btnReset_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            folderBrowserDialog.SelectedPath = rootDir;
+            folderBrowserDialog.SelectedPath = cfsettings.rootDirArr[0];
             folderBrowserDialog.ShowNewFolderButton = false;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                if (rootDir!= folderBrowserDialog.SelectedPath)
+                if (cfsettings.rootDirArr[0] != folderBrowserDialog.SelectedPath)
                 {
-                    rootDir = folderBrowserDialog.SelectedPath;
+                    cfsettings.rootDirArr[0] = folderBrowserDialog.SelectedPath;
                     InitFileParseTool();
                     UpdateCalender(true);
                 }
@@ -158,8 +215,7 @@ namespace Com.Skewky.Cam
                 bool bIsPlayEnded = vlc_player_.isPlayEnded();
                 if (bIsPlayEnded)
                 {
-                    vlc_player_.Stop();
-                    timer1.Stop();
+                    updatePlayStatus_Stop();
                     DateTime nextDt = curDt;
                     if(fileParseTool.findNextDt(curDt,ref nextDt))
                     {
@@ -173,7 +229,7 @@ namespace Com.Skewky.Cam
                 }
                 else
                 {
-                    int curVal = trackBar1.Value + 1000 * vlc_Speed/10;;
+                    int curVal = trackBar1.Value + 1000 * cfsettings.iPlaySpeed/10;;
                     curVal = Math.Max(trackBar1.Minimum, curVal);
                     curVal = Math.Min(trackBar1.Maximum, curVal);
                     double curPlayTime = vlc_player_.GetPlayTime()*1000;
@@ -211,18 +267,18 @@ namespace Com.Skewky.Cam
         private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
             //设置声音
-            vlc_Valume = vlc_player_.GetVolume();
+            cfsettings.iValume = vlc_player_.GetVolume();
            
             if (e.Delta == 120)
-                vlc_Valume += 5;
+                cfsettings.iValume += 5;
             else if (e.Delta == -120)
-                vlc_Valume -=5;
+                cfsettings.iValume -=5;
             
-            if (vlc_Valume < 0)
-                vlc_Valume = 0;
-            vlc_player_.SetVolume(vlc_Valume);
-            txSound.Text = string.Format("{0}", vlc_Valume);
-            if (vlc_Valume > 100)
+            if (cfsettings.iValume < 0)
+                cfsettings.iValume = 0;
+            vlc_player_.SetVolume(cfsettings.iValume);
+            txSound.Text = string.Format("{0}", cfsettings.iValume);
+            if (cfsettings.iValume > 100)
                 txSound.ForeColor = Color.Red;
             else
                 txSound.ForeColor = Color.Black;
@@ -287,6 +343,7 @@ namespace Com.Skewky.Cam
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             vlc_player_.Stop();
+            saveConfig();
         }
 
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -307,7 +364,7 @@ namespace Com.Skewky.Cam
                 //前进
                 if (Keys.Left == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value - 5 * vlc_Speed / 10;
+                    int newPlayTime = trackBar1.Value - 5 * cfsettings.iPlaySpeed / 10;
                     newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
                     vlc_player_.SetPlayTime(newPlayTime);
                     trackBar1.Value = (int)vlc_player_.GetPlayTime();
@@ -315,57 +372,58 @@ namespace Com.Skewky.Cam
                 //后退
                 if (Keys.Right == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value + 5 * vlc_Speed / 10;
+                    int newPlayTime = trackBar1.Value + 5 * cfsettings.iPlaySpeed / 10;
                     newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
                     vlc_player_.SetPlayTime(newPlayTime);
                     trackBar1.Value = (int)vlc_player_.GetPlayTime();
                 }
             }
-            if(Keys.Up == e.KeyCode||
+            if (Keys.Up == e.KeyCode ||
                 Keys.Down == e.KeyCode)
             {
-                double dRate = (double)(vlc_Speed / 10);
                 //加速
                 if (Keys.Up == e.KeyCode)
                 {
-                    if (vlc_Speed < 10)
-                        vlc_Speed += 1;
+                    if (cfsettings.iPlaySpeed < 10)
+                        cfsettings.iPlaySpeed += 1;
                     else
-                        vlc_Speed += 5;
-                    if (vlc_Speed > 160)
-                        vlc_Speed = 160;
-                    dRate = (double)vlc_Speed / 10.0;
-                    vlc_player_.SetRate(dRate);
+                        cfsettings.iPlaySpeed += 5;
+                    if (cfsettings.iPlaySpeed > 160)
+                        cfsettings.iPlaySpeed = 160;
                 }
                 //减速
                 if (Keys.Down == e.KeyCode)
                 {
-                    if (vlc_Speed <= 10)
-                        vlc_Speed -= 1;
+                    if (cfsettings.iPlaySpeed <= 10)
+                        cfsettings.iPlaySpeed -= 1;
                     else
-                        vlc_Speed -= 5;
-                    if (vlc_Speed < 1)
-                        vlc_Speed = 1;
-                    dRate = (double)vlc_Speed / 10.0;
-                    vlc_player_.SetRate(dRate);
+                        cfsettings.iPlaySpeed -= 5;
+                    if (cfsettings.iPlaySpeed < 1)
+                        cfsettings.iPlaySpeed = 1;
                 }
-                if(vlc_Speed==10)
-                {
-                    txSpeed.Visible = false;
-                }
-                else
-                {
-                    txSpeed.Visible = true;
-                    txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
-                }
-
-                resetTimerInterval();
+                UpdateSpeed();
             }
-
         }
+        private void UpdateSpeed()
+        {
+            double dRate = (double)cfsettings.iPlaySpeed / 10.0;
+            vlc_player_.SetRate(dRate);
+            if (cfsettings.iPlaySpeed == 10)
+            {
+                txSpeed.Visible = false;
+            }
+            else
+            {
+                txSpeed.Visible = true;
+                txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
+            }
+            resetTimerInterval();
+        }
+        
+
         private void resetTimerInterval()
         {
-            double dInv = 10.0 / (double)vlc_Speed;
+            double dInv = 10.0 / (double)cfsettings.iPlaySpeed;
             timer1.Interval = (int)(dInv * 1000);
         }
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
