@@ -670,6 +670,18 @@ namespace Com.Skewky.Cam
             toolTip1.Show(msg, ck_ContinuMark, pt, 3000);
         }
 
+        private void FileMgr_MenuItem_Click(object sender, EventArgs e)
+        {
+            FileMgrForm fmf = new FileMgrForm();
+            fmf.ShowDialog();
+        }
+
+        private void About_MenuItem1_Click(object sender, EventArgs e)
+        {
+            AboutBox1 ab = new AboutBox1();
+            ab.ShowDialog(this);
+        }
+
        
     }
 }
