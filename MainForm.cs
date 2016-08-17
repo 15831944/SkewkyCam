@@ -294,19 +294,19 @@ namespace Com.Skewky.Cam
 
         }
 
-        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        private void pBplayEnv_MouseEnter(object sender, EventArgs e)
         {
             this.pBplayEnv.Focus();
       
         }
 
-        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        private void pBplayEnv_MouseHover(object sender, EventArgs e)
         {
             this.pBplayEnv.Focus();
       
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void pBplayEnv_MouseClick(object sender, MouseEventArgs e)
         {
             MouseButtons clk = e.Button;
             if (clk == MouseButtons.Left)
@@ -320,6 +320,11 @@ namespace Com.Skewky.Cam
 
         }
 
+        private void pBplayEnv_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+                togglePlay();
+        }
         private void toggleFullScreen()
         {
             is_fullScreen_ = !is_fullScreen_;
@@ -347,11 +352,6 @@ namespace Com.Skewky.Cam
             saveConfig();
         }
 
-        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if(e.Button == MouseButtons.Left)
-                togglePlay();
-        }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
@@ -496,7 +496,7 @@ namespace Com.Skewky.Cam
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, i, 0, 0);
                 bool bNowBlod = fileParseTool.HourBlod(nowdt);
-                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.Control;
+                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
                 if(i==curDt.Hour)
@@ -522,7 +522,7 @@ namespace Com.Skewky.Cam
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, curDt.Hour, i, 0);
                 bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
-                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.Control;
+                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 if (i==0||i==30||i==59)
                 {
@@ -608,10 +608,10 @@ namespace Com.Skewky.Cam
                 curDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute, curDt.Second);
                 UpdateMinute();
-                Autoplay();
+                playCurrentDt();
             }
         }
-        private bool Autoplay()
+        private bool playCurrentDt()
         {
             if(fileParseTool.MinuteBlod(curDt))
             {
@@ -660,7 +660,7 @@ namespace Com.Skewky.Cam
 
         }
 
-        private void checkBox1_MouseHover(object sender, EventArgs e)
+        private void ck_ContinuMark_MouseHover(object sender, EventArgs e)
         {
             
             string msg = string.Format("持续标注\n直到取消勾选\n或碰到下一个有标注的视频");
@@ -668,6 +668,26 @@ namespace Com.Skewky.Cam
             pt.X -= 220;
             pt.Y += 20;
             toolTip1.Show(msg, ck_ContinuMark, pt, 3000);
+        }
+
+        private void pBplayEnv_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ck_ContinuMark_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void lbMinute_Click(object sender, EventArgs e)
+        {
+
         }
 
        
