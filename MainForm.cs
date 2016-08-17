@@ -690,6 +690,29 @@ namespace Com.Skewky.Cam
 
         }
 
+        private void FileMgr_MenuItem_Click(object sender, EventArgs e)
+        {
+            FileMgrForm fmf = new FileMgrForm();
+            fmf.ShowDialog();
+        }
+
+        private void About_MenuItem1_Click(object sender, EventArgs e)
+        {
+            AboutBox1 ab = new AboutBox1();
+            ab.ShowDialog();
+        }
+
+        private void ReadMe_MenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Settings_MenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm sf = new SettingsForm();
+            sf.ShowDialog();
+        }
+
        
     }
 }
