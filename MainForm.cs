@@ -703,8 +703,22 @@ namespace Com.Skewky.Cam
         }
 
         private void ReadMe_MenuItem_Click(object sender, EventArgs e)
-        {
-
+        {/*
+            Shell32.Shell shell = new Shell32.ShellClass();
+            //文件路径
+            Shell32.Folder folder = shell.NameSpace(path.Substring(0, path.LastIndexOf("\\")));
+            //文件名称
+            Shell32.FolderItem folderitem = folder.ParseName(path.Substring(path.LastIndexOf("\\") + 1));
+            if (Environment.OSVersion.Version.Major >= 6)
+            {
+                return folder.GetDetailsOf(folderitem, 27);
+            }
+            else
+            {
+                return folder.GetDetailsOf(folderitem, 21);
+            }
+           */    
+ 
         }
 
         private void Settings_MenuItem_Click(object sender, EventArgs e)

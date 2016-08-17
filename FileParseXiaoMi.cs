@@ -28,7 +28,9 @@ namespace Com.Skewky.Cam
         internal override string getRootDirByPath(string path)
         {
             //path = "Z:\\小蚁智能摄像机_B0D59D482E5A\\2016年08月10日\\00时\\01分00秒.mp4"
+            
             int iPos = path.Length - 27;
+            iPos = Math.Max(iPos,0);
             string rootDir = path.Substring(0, iPos);
             return  rootDir;
         }
@@ -38,6 +40,9 @@ namespace Com.Skewky.Cam
             //path = "Z:\\小蚁智能摄像机_B0D59D482E5A\\2016年08月10日\\00时\\01分00秒.mp4"
             int iPos = path.Length - 26;
             int iSubLen = 22;
+            iPos = Math.Max(iPos, 0);
+            iSubLen = Math.Min(path.Length - iPos, iSubLen);
+            
             string dtString = path.Substring(iPos, iSubLen);
             //"2005-11-6 16:11:04"
             dtString = dtString.Replace("\\", "");
@@ -47,7 +52,8 @@ namespace Com.Skewky.Cam
             dtString = dtString.Replace("时", ":");
             dtString = dtString.Replace("分", ":");
             dtString = dtString.Replace("秒", " ");
-            DateTime dt = DateTime.Parse(dtString);
+            DateTime dt = DateTime.Now;
+            DateTime.TryParse(dtString,out dt);
             return  dt;
         }
         protected override bool isDayBlod(DateTime dt)
