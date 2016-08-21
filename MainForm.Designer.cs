@@ -37,22 +37,15 @@
             this.txSound = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.tbVideoTime = new System.Windows.Forms.TextBox();
-            this.pBmin = new System.Windows.Forms.PictureBox();
-            this.pBhour = new System.Windows.Forms.PictureBox();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.txSpeed = new System.Windows.Forms.Label();
-            this.pBplayEnv = new System.Windows.Forms.PictureBox();
             this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,15 +57,28 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.ck_ContinuMark = new System.Windows.Forms.CheckBox();
+            this.picLove = new System.Windows.Forms.PictureBox();
+            this.picPriv = new System.Windows.Forms.PictureBox();
+            this.picBin = new System.Windows.Forms.PictureBox();
+            this.pBplayEnv = new System.Windows.Forms.PictureBox();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pBmin = new System.Windows.Forms.PictureBox();
+            this.pBhour = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBmin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBhour)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pBplayEnv)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLove)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPriv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBplayEnv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBmin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBhour)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
@@ -157,40 +163,6 @@
             this.tbVideoTime.Text = "00:00:00/00:00:00";
             this.tbVideoTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pBmin
-            // 
-            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBmin.BackColor = System.Drawing.SystemColors.Control;
-            this.pBmin.Location = new System.Drawing.Point(24, 20);
-            this.pBmin.MaximumSize = new System.Drawing.Size(720, 14);
-            this.pBmin.MinimumSize = new System.Drawing.Size(720, 14);
-            this.pBmin.Name = "pBmin";
-            this.pBmin.Size = new System.Drawing.Size(720, 14);
-            this.pBmin.TabIndex = 8;
-            this.pBmin.TabStop = false;
-            this.pBmin.Click += new System.EventHandler(this.pBmin_Click);
-            this.pBmin.Paint += new System.Windows.Forms.PaintEventHandler(this.pBmin_Paint);
-            this.pBmin.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseClick);
-            this.pBmin.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseDoubleClick);
-            this.pBmin.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseMove);
-            // 
-            // pBhour
-            // 
-            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBhour.BackColor = System.Drawing.SystemColors.Control;
-            this.pBhour.Location = new System.Drawing.Point(24, 39);
-            this.pBhour.MaximumSize = new System.Drawing.Size(720, 14);
-            this.pBhour.MinimumSize = new System.Drawing.Size(720, 14);
-            this.pBhour.Name = "pBhour";
-            this.pBhour.Size = new System.Drawing.Size(720, 14);
-            this.pBhour.TabIndex = 8;
-            this.pBhour.TabStop = false;
-            this.pBhour.Click += new System.EventHandler(this.pBhour_Click);
-            this.pBhour.Paint += new System.Windows.Forms.PaintEventHandler(this.pBhour_Paint);
-            this.pBhour.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBhour_MouseDoubleClick);
-            // 
             // btnReset
             // 
             this.btnReset.Location = new System.Drawing.Point(352, 1);
@@ -241,6 +213,196 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
+            // toolTip1
+            // 
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.Controls.Add(this.txSpeed);
+            this.panel1.Controls.Add(this.pBplayEnv);
+            this.panel1.Location = new System.Drawing.Point(12, 30);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(749, 453);
+            this.panel1.TabIndex = 0;
+            // 
+            // txSpeed
+            // 
+            this.txSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txSpeed.AutoSize = true;
+            this.txSpeed.BackColor = System.Drawing.Color.Crimson;
+            this.txSpeed.Location = new System.Drawing.Point(8, 441);
+            this.txSpeed.Name = "txSpeed";
+            this.txSpeed.Size = new System.Drawing.Size(89, 12);
+            this.txSpeed.TabIndex = 1;
+            this.txSpeed.Text = "播放速度：8.0x";
+            this.txSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.txSpeed.Visible = false;
+            // 
+            // monthCalendar2
+            // 
+            this.monthCalendar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.monthCalendar2.Location = new System.Drawing.Point(773, 34);
+            this.monthCalendar2.Name = "monthCalendar2";
+            this.monthCalendar2.TabIndex = 5;
+            this.monthCalendar2.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar2_DateChanged);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.File_MenuItem,
+            this.Help_MenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1011, 25);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // File_MenuItem
+            // 
+            this.File_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMgr_MenuItem,
+            this.Settings_MenuItem});
+            this.File_MenuItem.Name = "File_MenuItem";
+            this.File_MenuItem.Size = new System.Drawing.Size(44, 21);
+            this.File_MenuItem.Text = "文件";
+            // 
+            // FileMgr_MenuItem
+            // 
+            this.FileMgr_MenuItem.Name = "FileMgr_MenuItem";
+            this.FileMgr_MenuItem.Size = new System.Drawing.Size(124, 22);
+            this.FileMgr_MenuItem.Text = "管理中心";
+            this.FileMgr_MenuItem.Click += new System.EventHandler(this.FileMgr_MenuItem_Click);
+            // 
+            // Settings_MenuItem
+            // 
+            this.Settings_MenuItem.Name = "Settings_MenuItem";
+            this.Settings_MenuItem.Size = new System.Drawing.Size(124, 22);
+            this.Settings_MenuItem.Text = "设置";
+            this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
+            // 
+            // Help_MenuItem
+            // 
+            this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ReadMe_MenuItem,
+            this.About_MenuItem1});
+            this.Help_MenuItem.Name = "Help_MenuItem";
+            this.Help_MenuItem.Size = new System.Drawing.Size(44, 21);
+            this.Help_MenuItem.Text = "帮助";
+            // 
+            // ReadMe_MenuItem
+            // 
+            this.ReadMe_MenuItem.Name = "ReadMe_MenuItem";
+            this.ReadMe_MenuItem.Size = new System.Drawing.Size(124, 22);
+            this.ReadMe_MenuItem.Text = "使用说明";
+            this.ReadMe_MenuItem.Click += new System.EventHandler(this.ReadMe_MenuItem_Click);
+            // 
+            // About_MenuItem1
+            // 
+            this.About_MenuItem1.Name = "About_MenuItem1";
+            this.About_MenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.About_MenuItem1.Text = "关于";
+            this.About_MenuItem1.Click += new System.EventHandler(this.About_MenuItem1_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.picLove);
+            this.groupBox1.Controls.Add(this.picPriv);
+            this.groupBox1.Controls.Add(this.picBin);
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.ck_ContinuMark);
+            this.groupBox1.Location = new System.Drawing.Point(773, 227);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(220, 312);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "备注";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(6, 18);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(208, 288);
+            this.textBox1.TabIndex = 9;
+            // 
+            // ck_ContinuMark
+            // 
+            this.ck_ContinuMark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ck_ContinuMark.AutoSize = true;
+            this.ck_ContinuMark.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ck_ContinuMark.Location = new System.Drawing.Point(142, -1);
+            this.ck_ContinuMark.Name = "ck_ContinuMark";
+            this.ck_ContinuMark.Size = new System.Drawing.Size(72, 16);
+            this.ck_ContinuMark.TabIndex = 8;
+            this.ck_ContinuMark.Text = "持续备注";
+            this.ck_ContinuMark.UseVisualStyleBackColor = true;
+            this.ck_ContinuMark.CheckedChanged += new System.EventHandler(this.ck_ContinuMark_CheckedChanged);
+            this.ck_ContinuMark.MouseHover += new System.EventHandler(this.ck_ContinuMark_MouseHover);
+            // 
+            // picLove
+            // 
+            this.picLove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picLove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.picLove.Enabled = false;
+            this.picLove.Image = global::Com.Skewky.Cam.Properties.Resources.love;
+            this.picLove.Location = new System.Drawing.Point(9, 263);
+            this.picLove.Name = "picLove";
+            this.picLove.Size = new System.Drawing.Size(40, 40);
+            this.picLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLove.TabIndex = 10;
+            this.picLove.TabStop = false;
+            // 
+            // picPriv
+            // 
+            this.picPriv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picPriv.Image = global::Com.Skewky.Cam.Properties.Resources.ys;
+            this.picPriv.Location = new System.Drawing.Point(101, 263);
+            this.picPriv.Name = "picPriv";
+            this.picPriv.Size = new System.Drawing.Size(40, 40);
+            this.picPriv.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPriv.TabIndex = 12;
+            this.picPriv.TabStop = false;
+            // 
+            // picBin
+            // 
+            this.picBin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picBin.Enabled = false;
+            this.picBin.Image = global::Com.Skewky.Cam.Properties.Resources.bin;
+            this.picBin.Location = new System.Drawing.Point(55, 263);
+            this.picBin.Name = "picBin";
+            this.picBin.Size = new System.Drawing.Size(40, 40);
+            this.picBin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picBin.TabIndex = 11;
+            this.picBin.TabStop = false;
+            // 
+            // pBplayEnv
+            // 
+            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBplayEnv.BackColor = System.Drawing.Color.Transparent;
+            this.pBplayEnv.Location = new System.Drawing.Point(2, -2);
+            this.pBplayEnv.Name = "pBplayEnv";
+            this.pBplayEnv.Size = new System.Drawing.Size(746, 451);
+            this.pBplayEnv.TabIndex = 0;
+            this.pBplayEnv.TabStop = false;
+            this.pBplayEnv.Click += new System.EventHandler(this.pBplayEnv_Click);
+            this.pBplayEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBplayEnv_MouseClick);
+            this.pBplayEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBplayEnv_MouseDoubleClick);
+            this.pBplayEnv.MouseEnter += new System.EventHandler(this.pBplayEnv_MouseEnter);
+            this.pBplayEnv.MouseHover += new System.EventHandler(this.pBplayEnv_MouseHover);
+            this.pBplayEnv.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pBplayEnv_MouseWheel);
+            // 
             // toolStripSplitButton1
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -275,153 +437,35 @@
             this.toolStripMenuItem4.Size = new System.Drawing.Size(83, 22);
             this.toolStripMenuItem4.Text = "2";
             // 
-            // toolTip1
+            // pBmin
             // 
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Controls.Add(this.txSpeed);
-            this.panel1.Controls.Add(this.pBplayEnv);
-            this.panel1.Location = new System.Drawing.Point(12, 30);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(749, 453);
-            this.panel1.TabIndex = 0;
+            this.pBmin.BackColor = System.Drawing.SystemColors.Control;
+            this.pBmin.Location = new System.Drawing.Point(24, 20);
+            this.pBmin.Name = "pBmin";
+            this.pBmin.Size = new System.Drawing.Size(720, 14);
+            this.pBmin.TabIndex = 8;
+            this.pBmin.TabStop = false;
+            this.pBmin.Click += new System.EventHandler(this.pBmin_Click);
+            this.pBmin.Paint += new System.Windows.Forms.PaintEventHandler(this.pBmin_Paint);
+            this.pBmin.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseClick);
+            this.pBmin.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseDoubleClick);
+            this.pBmin.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseMove);
             // 
-            // txSpeed
+            // pBhour
             // 
-            this.txSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txSpeed.AutoSize = true;
-            this.txSpeed.BackColor = System.Drawing.Color.Crimson;
-            this.txSpeed.Location = new System.Drawing.Point(8, 441);
-            this.txSpeed.Name = "txSpeed";
-            this.txSpeed.Size = new System.Drawing.Size(89, 12);
-            this.txSpeed.TabIndex = 1;
-            this.txSpeed.Text = "播放速度：8.0x";
-            this.txSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.txSpeed.Visible = false;
-            // 
-            // pBplayEnv
-            // 
-            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
+            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBplayEnv.BackColor = System.Drawing.Color.Transparent;
-            this.pBplayEnv.Location = new System.Drawing.Point(2, -2);
-            this.pBplayEnv.Name = "pBplayEnv";
-            this.pBplayEnv.Size = new System.Drawing.Size(746, 451);
-            this.pBplayEnv.TabIndex = 0;
-            this.pBplayEnv.TabStop = false;
-            this.pBplayEnv.Click += new System.EventHandler(this.pBplayEnv_Click);
-            this.pBplayEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBplayEnv_MouseClick);
-            this.pBplayEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBplayEnv_MouseDoubleClick);
-            this.pBplayEnv.MouseEnter += new System.EventHandler(this.pBplayEnv_MouseEnter);
-            this.pBplayEnv.MouseHover += new System.EventHandler(this.pBplayEnv_MouseHover);
-            this.pBplayEnv.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.PictureBox_MouseWheel);
-            // 
-            // monthCalendar2
-            // 
-            this.monthCalendar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.monthCalendar2.Location = new System.Drawing.Point(773, 34);
-            this.monthCalendar2.Name = "monthCalendar2";
-            this.monthCalendar2.TabIndex = 5;
-            this.monthCalendar2.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar2_DateChanged);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.File_MenuItem,
-            this.Help_MenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1011, 25);
-            this.menuStrip1.TabIndex = 6;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // File_MenuItem
-            // 
-            this.File_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMgr_MenuItem,
-            this.Settings_MenuItem});
-            this.File_MenuItem.Name = "File_MenuItem";
-            this.File_MenuItem.Size = new System.Drawing.Size(44, 21);
-            this.File_MenuItem.Text = "文件";
-            // 
-            // FileMgr_MenuItem
-            // 
-            this.FileMgr_MenuItem.Name = "FileMgr_MenuItem";
-            this.FileMgr_MenuItem.Size = new System.Drawing.Size(152, 22);
-            this.FileMgr_MenuItem.Text = "管理中心";
-            this.FileMgr_MenuItem.Click += new System.EventHandler(this.FileMgr_MenuItem_Click);
-            // 
-            // Settings_MenuItem
-            // 
-            this.Settings_MenuItem.Name = "Settings_MenuItem";
-            this.Settings_MenuItem.Size = new System.Drawing.Size(152, 22);
-            this.Settings_MenuItem.Text = "设置";
-            this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
-            // 
-            // Help_MenuItem
-            // 
-            this.Help_MenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ReadMe_MenuItem,
-            this.About_MenuItem1});
-            this.Help_MenuItem.Name = "Help_MenuItem";
-            this.Help_MenuItem.Size = new System.Drawing.Size(44, 21);
-            this.Help_MenuItem.Text = "帮助";
-            // 
-            // ReadMe_MenuItem
-            // 
-            this.ReadMe_MenuItem.Name = "ReadMe_MenuItem";
-            this.ReadMe_MenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ReadMe_MenuItem.Text = "使用说明";
-            this.ReadMe_MenuItem.Click += new System.EventHandler(this.ReadMe_MenuItem_Click);
-            // 
-            // About_MenuItem1
-            // 
-            this.About_MenuItem1.Name = "About_MenuItem1";
-            this.About_MenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.About_MenuItem1.Text = "关于";
-            this.About_MenuItem1.Click += new System.EventHandler(this.About_MenuItem1_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.ck_ContinuMark);
-            this.groupBox1.Location = new System.Drawing.Point(773, 227);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(220, 204);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "备注";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(6, 18);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(208, 180);
-            this.textBox1.TabIndex = 9;
-            // 
-            // ck_ContinuMark
-            // 
-            this.ck_ContinuMark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ck_ContinuMark.AutoSize = true;
-            this.ck_ContinuMark.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ck_ContinuMark.Location = new System.Drawing.Point(142, -1);
-            this.ck_ContinuMark.Name = "ck_ContinuMark";
-            this.ck_ContinuMark.Size = new System.Drawing.Size(72, 16);
-            this.ck_ContinuMark.TabIndex = 8;
-            this.ck_ContinuMark.Text = "持续备注";
-            this.ck_ContinuMark.UseVisualStyleBackColor = true;
-            this.ck_ContinuMark.CheckedChanged += new System.EventHandler(this.ck_ContinuMark_CheckedChanged);
-            this.ck_ContinuMark.MouseHover += new System.EventHandler(this.ck_ContinuMark_MouseHover);
+            this.pBhour.BackColor = System.Drawing.SystemColors.Control;
+            this.pBhour.Location = new System.Drawing.Point(24, 39);
+            this.pBhour.Name = "pBhour";
+            this.pBhour.Size = new System.Drawing.Size(720, 14);
+            this.pBhour.TabIndex = 8;
+            this.pBhour.TabStop = false;
+            this.pBhour.Click += new System.EventHandler(this.pBhour_Click);
+            this.pBhour.Paint += new System.Windows.Forms.PaintEventHandler(this.pBhour_Paint);
+            this.pBhour.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBhour_MouseDoubleClick);
             // 
             // MainForm
             // 
@@ -450,17 +494,20 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBmin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pBhour)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pBplayEnv)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLove)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPriv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picBin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBplayEnv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBmin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBhour)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -502,6 +549,9 @@
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.PictureBox picPriv;
+        private System.Windows.Forms.PictureBox picBin;
+        private System.Windows.Forms.PictureBox picLove;
     }
 }
 

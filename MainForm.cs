@@ -44,7 +44,6 @@ namespace Com.Skewky.Cam
             txSound.Text = string.Format("{0}", cfsettings.iValume);
             tbVideoTime.Text = "00:00:00/00:00:00";
             resetTimerInterval();
-
         }
         private VlcPlayer newVlcPlayer()
         {
@@ -265,16 +264,32 @@ namespace Com.Skewky.Cam
         {
             updateHourAndMinView_Force();
         }
-        private void PictureBox_MouseWheel(object sender, MouseEventArgs e)
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+      
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+      
+        private void pBplayEnv_MouseWheel(object sender, MouseEventArgs e)
+        {
+            updateVolume(e.Delta == 120);
+        
+        }
+        private void updateVolume(bool louder)
         {
             //设置声音
             cfsettings.iValume = vlc_player_.GetVolume();
-           
-            if (e.Delta == 120)
+
+            if (louder)
                 cfsettings.iValume += 5;
-            else if (e.Delta == -120)
-                cfsettings.iValume -=5;
-            
+            else
+                cfsettings.iValume -= 5;
+
             if (cfsettings.iValume < 0)
                 cfsettings.iValume = 0;
             vlc_player_.SetVolume(cfsettings.iValume);
@@ -284,16 +299,6 @@ namespace Com.Skewky.Cam
             else
                 txSound.ForeColor = Color.Black;
         }
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolTip1_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
         private void pBplayEnv_MouseEnter(object sender, EventArgs e)
         {
             this.pBplayEnv.Focus();
@@ -355,30 +360,49 @@ namespace Com.Skewky.Cam
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Alt && e.Control && e.Shift)
+            {
+                //pressed all the control keys
+                //Do some thing
+            }
+            else if (e.Alt && e.Control)
+            {
+            }
+            else if (e.Alt && e.Shift)
+            {
+            }
+            else if (e.Shift && e.Control)
+            {
+            }
+            else if (e.Alt)
+            {
+
+            }
+            else if (e.Control)
+            {
+                KeyEnv_Speed(sender,e);
+
+            }
+            else if (e.Shift)
+            {
+
+            }
+            else //Normal key input
+            {
+                KeyEnv_TogglePlay(sender, e);
+                KeyEnv_Control(sender, e);
+                KeyEnv_Sound(sender, e);
+            }
+        }
+        private void KeyEnv_TogglePlay(object sender, KeyEventArgs e)
+        {
             if (Keys.Space == e.KeyCode)
             {
                 togglePlay();
             }
-            if (Keys.Left == e.KeyCode ||
-                Keys.Right == e.KeyCode)
-            {
-                //前进
-                if (Keys.Left == e.KeyCode)
-                {
-                    int newPlayTime = trackBar1.Value - 5 * cfsettings.iPlaySpeed / 10;
-                    newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
-                    vlc_player_.SetPlayTime(newPlayTime);
-                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
-                }
-                //后退
-                if (Keys.Right == e.KeyCode)
-                {
-                    int newPlayTime = trackBar1.Value + 5 * cfsettings.iPlaySpeed / 10;
-                    newPlayTime = newPlayTime < 0 ? 0 : newPlayTime;
-                    vlc_player_.SetPlayTime(newPlayTime);
-                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
-                }
-            }
+        }
+        private void KeyEnv_Speed(object sender, KeyEventArgs e)
+        {
             if (Keys.Up == e.KeyCode ||
                 Keys.Down == e.KeyCode)
             {
@@ -404,6 +428,44 @@ namespace Com.Skewky.Cam
                 }
                 UpdateSpeed();
             }
+        }
+        private void KeyEnv_Sound(object sender, KeyEventArgs e)
+        {
+            if (Keys.Up == e.KeyCode ||
+                Keys.Down == e.KeyCode)
+            {
+                //加速
+                updateVolume(Keys.Up == e.KeyCode);
+            }
+        }
+        private void KeyEnv_Control(object sender, KeyEventArgs e)
+        {
+            if (Keys.Left == e.KeyCode ||
+                Keys.Right == e.KeyCode)
+            {
+                //前进
+                if (Keys.Left == e.KeyCode)
+                {
+                    int newPlayTime = trackBar1.Value - 5 * cfsettings.iPlaySpeed / 10;
+                    newPlayTime = Math.Max(0,newPlayTime);
+                    bool bIsPlayEnded = vlc_player_.isPlayEnded();
+                    vlc_player_.SetPlayTime(newPlayTime);
+                     bIsPlayEnded = vlc_player_.isPlayEnded();
+                    vlc_player_.Play();
+                     bIsPlayEnded = vlc_player_.isPlayEnded();
+                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                }
+                //后退
+                if (Keys.Right == e.KeyCode)
+                {
+                    int newPlayTime = trackBar1.Value + 5 * cfsettings.iPlaySpeed / 10;
+                    newPlayTime = Math.Max(0, newPlayTime);
+                    vlc_player_.SetPlayTime(newPlayTime);
+                    vlc_player_.Play();
+                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                }
+            }
+           
         }
         private void UpdateSpeed()
         {
@@ -463,8 +525,8 @@ namespace Com.Skewky.Cam
                 reMarkCalendar(monthCalendar2);
             }
             curDt = curDate;
-            UpdateHours(bForceRefresh);
-            UpdateMinute(bForceRefresh);
+            updateHourAndMinView(bForceRefresh);
+         
         }
         private void reMarkCalendar(System.Windows.Forms.MonthCalendar mc)
         {
@@ -506,7 +568,7 @@ namespace Com.Skewky.Cam
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
             }
-
+            pBhour.Update();
         }
         private void UpdateMinute(bool bForceUpdate = false)
         {
@@ -541,10 +603,11 @@ namespace Com.Skewky.Cam
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
             }
-
+            pBmin.Update();
         }
         private void updateHourAndMinView(bool bForceRefresh = false)
         {
+           // Thread.Sleep(10);
             UpdateHours(bForceRefresh);
             UpdateMinute(bForceRefresh);
         }
@@ -625,13 +688,17 @@ namespace Com.Skewky.Cam
         {
             if (WindowState == FormWindowState.Maximized)
             {
+                //Thread.Sleep(1);
                 this.updateHourAndMinView_Force();
-                
+
             }
+            this.updateHourAndMinView_Force();
+            
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
+            //Thread.Sleep(1000);
             updateHourAndMinView();
         }
 

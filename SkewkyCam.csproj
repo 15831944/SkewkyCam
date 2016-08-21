@@ -110,6 +110,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OtherRef\Res\love1.jpg" />
+    <None Include="OtherRef\Res\love1.png" />
+    <None Include="OtherRef\Res\bin1.png" />
+    <None Include="OtherRef\Res\ys1.png" />
+    <None Include="OtherRef\Res\love.png" />
+    <None Include="OtherRef\Res\bin.jpg" />
+    <None Include="OtherRef\Res\ys.png" />
     <Content Include="SkewkyCam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
