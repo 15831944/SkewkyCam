@@ -8,9 +8,13 @@ namespace Com.Skewky.Cam
     {
         protected override string getDayPath(DateTime dt)
         {
-            // E:\Meida\XM\2016年01月11日
-            string dayPath = string.Format("{0}\\{1}年{2:D2}月{3:D2}日", rootDir, dt.Year, dt.Month, dt.Day);
-            return dayPath;
+            foreach (string rootDir in rootDirs)
+            {
+                // E:\Meida\XM\2016年01月11日
+                string dayPath = string.Format("{0}\\{1}年{2:D2}月{3:D2}日", rootDir, dt.Year, dt.Month, dt.Day);
+                if (System.IO.Directory.Exists(dayPath)) return dayPath;
+            }
+            return string.Format("NotFind");
         }
         protected override string getHourPath(DateTime dt)
         {

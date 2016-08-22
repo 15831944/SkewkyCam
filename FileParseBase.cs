@@ -6,7 +6,7 @@ namespace Com.Skewky.Cam
 {
     public abstract class FileParseBase
     {
-        protected string rootDir;
+        protected List<string> rootDirs = new List<string>();
         protected CheckedBuffer checkedDays;
         protected CheckedBuffer checkedHours;
         protected CheckedBuffer checkedMinute;
@@ -17,9 +17,9 @@ namespace Com.Skewky.Cam
             checkedMinute = new CheckedBuffer();
 
         }
-        public void setRootDir(string RootDir)
+        public void setRootDir(List<string> RootDirs)
         {
-            rootDir = RootDir;
+            rootDirs = RootDirs;
             checkedDays.clear();
             checkedHours.clear();
             checkedMinute.clear();

@@ -25,22 +25,22 @@ namespace Com.Skewky.Cam
         private ConfigSettings cfsettings;
         public MainForm()
         {
-             
-            
+
+
             is_playing_ = false;
             is_fullScreen_ = false;
             bFindNext = false;
-            
+            cfsettings = new ConfigSettings();
             loadConfig();
 
-            InitFileParseTool();    
-            
+            InitFileParseTool();
+
             InitializeComponent();
 
             this.KeyPreview = true;
-            
+
             vlc_player_ = newVlcPlayer();
-            vlc_player_Next =newVlcPlayer();
+            vlc_player_Next = newVlcPlayer();
             txSound.Text = string.Format("{0}", cfsettings.iValume);
             tbVideoTime.Text = "00:00:00/00:00:00";
             resetTimerInterval();
@@ -62,14 +62,14 @@ namespace Com.Skewky.Cam
             string filePath = configFile();
             try
             {
-                cfsettings.iValume = 50;
-                cfsettings.iRecType = 15;
+                //cfsettings.iValume = 50;
+                //cfsettings.iRecType = 15;
                 Stream s = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite);
                 BinaryFormatter b = new BinaryFormatter();
                 b.Serialize(s, cfsettings);
                 s.Close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
@@ -87,31 +87,28 @@ namespace Com.Skewky.Cam
                     Stream s = File.Open(filePath, FileMode.Open, FileAccess.Read);
                     BinaryFormatter c = new BinaryFormatter();
                     cfsettings = (ConfigSettings)c.Deserialize(s);
+                    cfsettings.initLoadFaildValues();
                     s.Close();
-                }      
+                }
             }
             catch (Exception e)
             {
                 File.Delete(filePath);
             }
-            if (cfsettings.rootDirArr == null)
-                cfsettings.rootDirArr = new List<string>();
-            if(cfsettings.rootDirArr.Count==0)
-                cfsettings.rootDirArr.Add(@"E:\Meida\XM");
-           
+
         }
         private void InitFileParseTool()
         {
-            switch(cfsettings.iRecType)
+            switch (cfsettings.iRecType)
             {
                 case 0: //XiaoMi
                     fileParseTool = new FileParseXiaoMi();
                     break;
                 default:
                     fileParseTool = new FileParseXiaoMi();
-                    break;        
+                    break;
             }
-            fileParseTool.setRootDir(cfsettings.rootDirArr[0]);
+            fileParseTool.setRootDir(cfsettings.rootDirArr);
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -137,7 +134,7 @@ namespace Com.Skewky.Cam
                 updateHourAndMinView();
                 UpdateSpeed();
                 threadFindNextFile();
-                
+
             }
             if (System.IO.File.Exists(path))
             {
@@ -148,35 +145,10 @@ namespace Com.Skewky.Cam
                 threadFindNextFile();
             }
         }
-        private void updatePlayStatus_Start()
-        {
-            vlc_player_.Play();
-            vlc_player_.SetRate(cfsettings.iPlaySpeed / 10);
-            vlc_player_.SetVolume(cfsettings.iValume);
-
-            double dDuration = vlc_player_.Duration();
-            trackBar1.SetRange(0, (int)dDuration);
-            trackBar1.Value = 0;
-            timer1.Start();
-            is_playing_ = true;
-        }
-        private void updatePlayStatus_Stop()
-        {
-            vlc_player_.Stop();
-            trackBar1.Value = trackBar1.Maximum;
-            timer1.Stop();
-            is_playing_ = false;
-        }
-        private void threadFindNextFile()
-        {
-            vlc_player_Next = newVlcPlayer();
-            Thread trd = new Thread(this.PrepearNextFile);
-            trd.Start();
-        }
         private void PlayRecord(DateTime dt, bool AutoPlayNext = false)
         {
             string path = fileParseTool.MinutePath(dt);
-            PlayRecord(path,AutoPlayNext);
+            PlayRecord(path, AutoPlayNext);
         }
         private void PrepearNextFile()
         {
@@ -188,6 +160,13 @@ namespace Com.Skewky.Cam
                 vlc_player_Next.PrepareFile(nextfilePath);
                 bFindNext = true;
             }
+        }
+
+        private void threadFindNextFile()
+        {
+            vlc_player_Next = newVlcPlayer();
+            Thread trd = new Thread(this.PrepearNextFile);
+            trd.Start();
         }
         private void btnReset_Click(object sender, EventArgs e)
         {
@@ -216,28 +195,28 @@ namespace Com.Skewky.Cam
                 {
                     updatePlayStatus_Stop();
                     DateTime nextDt = curDt;
-                    if(fileParseTool.findNextDt(curDt,ref nextDt))
+                    if (fileParseTool.findNextDt(curDt, ref nextDt))
                     {
                         PlayRecord(nextDt, true);
                     }
                     else
                     {
                         string msg = string.Format("没有找到下一个要播放文件");
-                        toolTip1.Show(msg,pBmin, 15,15, 3);
+                        toolTip1.Show(msg, pBmin, 15, 15, 3);
                     }
                 }
                 else
                 {
-                    int curVal = trackBar1.Value + 1000 * cfsettings.iPlaySpeed/10;;
+                    int curVal = trackBar1.Value + (int)(1000 * cfsettings.getDoubleSpeed());
                     curVal = Math.Max(trackBar1.Minimum, curVal);
                     curVal = Math.Min(trackBar1.Maximum, curVal);
-                    double curPlayTime = vlc_player_.GetPlayTime()*1000;
+                    double curPlayTime = vlc_player_.GetPlayTime() * 1000;
                     curPlayTime = Math.Max(trackBar1.Minimum, curPlayTime);
                     curPlayTime = Math.Min(trackBar1.Maximum, curPlayTime);
                     trackBar1.Value = (int)curPlayTime;
-                    tbVideoTime.Text = string.Format("{0}/{1}", 
-                        GetTimeString(trackBar1.Value/1000), 
-                        GetTimeString(trackBar1.Maximum/1000));
+                    tbVideoTime.Text = string.Format("{0}/{1}",
+                        GetTimeString(trackBar1.Value / 1000),
+                        GetTimeString(trackBar1.Maximum / 1000));
                 }
             }
         }
@@ -269,46 +248,33 @@ namespace Com.Skewky.Cam
         {
 
         }
-      
+
         private void MainForm_Load(object sender, EventArgs e)
         {
 
         }
-      
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            vlc_player_.Stop();
+            saveConfig();
+        }
+
+        #region PlayEnvMouseEnv
         private void pBplayEnv_MouseWheel(object sender, MouseEventArgs e)
         {
             updateVolume(e.Delta == 120);
-        
-        }
-        private void updateVolume(bool louder)
-        {
-            //设置声音
-            cfsettings.iValume = vlc_player_.GetVolume();
 
-            if (louder)
-                cfsettings.iValume += 5;
-            else
-                cfsettings.iValume -= 5;
-
-            if (cfsettings.iValume < 0)
-                cfsettings.iValume = 0;
-            vlc_player_.SetVolume(cfsettings.iValume);
-            txSound.Text = string.Format("{0}", cfsettings.iValume);
-            if (cfsettings.iValume > 100)
-                txSound.ForeColor = Color.Red;
-            else
-                txSound.ForeColor = Color.Black;
         }
         private void pBplayEnv_MouseEnter(object sender, EventArgs e)
         {
             this.pBplayEnv.Focus();
-      
+
         }
 
         private void pBplayEnv_MouseHover(object sender, EventArgs e)
         {
             this.pBplayEnv.Focus();
-      
+
         }
 
         private void pBplayEnv_MouseClick(object sender, MouseEventArgs e)
@@ -316,9 +282,9 @@ namespace Com.Skewky.Cam
             MouseButtons clk = e.Button;
             if (clk == MouseButtons.Left)
             {
-               // togglePlay();
+                // togglePlay();
             }
-            if(clk == MouseButtons.Middle)
+            if (clk == MouseButtons.Middle)
             {
                 toggleFullScreen();
             }
@@ -327,9 +293,17 @@ namespace Com.Skewky.Cam
 
         private void pBplayEnv_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
                 togglePlay();
         }
+        private void pBplayEnv_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+
+
         private void toggleFullScreen()
         {
             is_fullScreen_ = !is_fullScreen_;
@@ -351,13 +325,8 @@ namespace Com.Skewky.Cam
             }
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            vlc_player_.Stop();
-            saveConfig();
-        }
 
-
+        #region Key Envents
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Alt && e.Control && e.Shift)
@@ -380,8 +349,11 @@ namespace Com.Skewky.Cam
             }
             else if (e.Control)
             {
-                KeyEnv_Speed(sender,e);
-
+                KeyEnv_Speed(sender, e);
+                KeyEnv_FileForm(sender, e);
+                KeyEnv_SettingsForm(sender, e);
+                KeyEnv_AboutForm(sender, e);
+                KeyEnv_HelpForm(sender, e);
             }
             else if (e.Shift)
             {
@@ -406,26 +378,19 @@ namespace Com.Skewky.Cam
             if (Keys.Up == e.KeyCode ||
                 Keys.Down == e.KeyCode)
             {
+                int curSpd = cfsettings.iPlaySpeed;
                 //加速
                 if (Keys.Up == e.KeyCode)
                 {
-                    if (cfsettings.iPlaySpeed < 10)
-                        cfsettings.iPlaySpeed += 1;
-                    else
-                        cfsettings.iPlaySpeed += 5;
-                    if (cfsettings.iPlaySpeed > 160)
-                        cfsettings.iPlaySpeed = 160;
+                    curSpd += 1;
                 }
                 //减速
                 if (Keys.Down == e.KeyCode)
                 {
-                    if (cfsettings.iPlaySpeed <= 10)
-                        cfsettings.iPlaySpeed -= 1;
-                    else
-                        cfsettings.iPlaySpeed -= 5;
-                    if (cfsettings.iPlaySpeed < 1)
-                        cfsettings.iPlaySpeed = 1;
+                    curSpd -= 1;
                 }
+                cfsettings.iPlaySpeed = Math.Max(curSpd, 0);
+                cfsettings.iPlaySpeed = Math.Min(curSpd, 6);
                 UpdateSpeed();
             }
         }
@@ -446,63 +411,129 @@ namespace Com.Skewky.Cam
                 //前进
                 if (Keys.Left == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value - 5 * cfsettings.iPlaySpeed / 10;
-                    newPlayTime = Math.Max(0,newPlayTime);
+                    int newPlayTime = trackBar1.Value - 5 * (int)(cfsettings.getDoubleSpeed());
+                    newPlayTime = Math.Max(0, newPlayTime);
                     bool bIsPlayEnded = vlc_player_.isPlayEnded();
                     vlc_player_.SetPlayTime(newPlayTime);
-                     bIsPlayEnded = vlc_player_.isPlayEnded();
+                    bIsPlayEnded = vlc_player_.isPlayEnded();
                     vlc_player_.Play();
-                     bIsPlayEnded = vlc_player_.isPlayEnded();
+                    bIsPlayEnded = vlc_player_.isPlayEnded();
                     trackBar1.Value = (int)vlc_player_.GetPlayTime();
                 }
                 //后退
                 if (Keys.Right == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value + 5 * cfsettings.iPlaySpeed / 10;
+                    int newPlayTime = trackBar1.Value + 5 * (int)(cfsettings.getDoubleSpeed());
                     newPlayTime = Math.Max(0, newPlayTime);
                     vlc_player_.SetPlayTime(newPlayTime);
                     vlc_player_.Play();
                     trackBar1.Value = (int)vlc_player_.GetPlayTime();
                 }
             }
-           
+
         }
-        private void UpdateSpeed()
+        private void KeyEnv_FileForm(object sender, KeyEventArgs e)
         {
-            double dRate = (double)cfsettings.iPlaySpeed / 10.0;
-            vlc_player_.SetRate(dRate);
-            if (cfsettings.iPlaySpeed == 10)
+            if (Keys.F == e.KeyCode)
             {
-                txSpeed.Visible = false;
+                ShowFileMgrForm();
             }
-            else
-            {
-                txSpeed.Visible = true;
-                txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
-            }
-            resetTimerInterval();
         }
-        
+        private void KeyEnv_SettingsForm(object sender, KeyEventArgs e)
+        {
+            if (Keys.S == e.KeyCode)
+            {
+                ShowSettingsForm();
+            }
+        }
+        private void KeyEnv_AboutForm(object sender, KeyEventArgs e)
+        {
+            if (Keys.A == e.KeyCode)
+            {
+                ShowAboutForm();
+            }
+        }
+        private void KeyEnv_HelpForm(object sender, KeyEventArgs e)
+        {
+            if (Keys.H == e.KeyCode)
+            {
+                ShowHelpForm();
+            }
+        }
+        #endregion
+
+        private void ShowFileMgrForm()
+        {
+            FileMgrForm fmf = new FileMgrForm();
+            fmf.ShowDialog();
+        }
+        private void ShowSettingsForm()
+        {
+            SettingsForm sf = new SettingsForm();
+            sf.initValues(cfsettings);
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                ConfigSettings cf = sf.getValues();
+                if (cfsettings.iValume != cf.iValume)
+                {
+                    cfsettings.iValume = cf.iValume;
+                    updateVolume();
+                }
+                if (cfsettings.iPlaySpeed!= cf.iPlaySpeed)
+                {
+                    cfsettings.iPlaySpeed = cf.iPlaySpeed;
+                    UpdateSpeed();
+                }
+                cfsettings.bAutoPalyNext = cf.bAutoPalyNext;
+                if (cfsettings.rootDirArr != cf.rootDirArr)
+                {
+                    cfsettings.rootDirArr.Clear();
+                    cfsettings.rootDirArr.AddRange(cf.rootDirArr);
+                    InitFileParseTool();
+                }
+            }
+        }
+        private void ShowHelpForm()
+        {
+
+        }
+        private void ShowAboutForm()
+        {
+            AboutBox1 ab = new AboutBox1();
+            ab.ShowDialog();
+        }
 
         private void resetTimerInterval()
         {
-            double dInv = 10.0 / (double)cfsettings.iPlaySpeed;
+            double dInv = 1 / cfsettings.getDoubleSpeed();
             timer1.Interval = (int)(dInv * 1000);
-        }
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
-        {
-
-        }
-
-        private void monthCalendar2_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            UpdateCalender();
         }
         private void threadUpdateAllTimeView()
         {
             //Thread trd = new Thread(this.UpdateAllTimeView);
             //trd.Start();
             UpdateCalender();
+        }
+
+        #region updateStatus
+        private void updatePlayStatus_Start()
+        {
+            vlc_player_.Play();
+            vlc_player_.SetRate(cfsettings.getDoubleSpeed());
+            vlc_player_.SetVolume(cfsettings.iValume);
+
+            double dDuration = vlc_player_.Duration();
+            trackBar1.SetRange(0, (int)dDuration);
+            trackBar1.Value = 0;
+            timer1.Start();
+            is_playing_ = true;
+        }
+        private void updatePlayStatus_Stop()
+        {
+            vlc_player_.Stop();
+            trackBar1.Value = trackBar1.Maximum;
+            timer1.Stop();
+            is_playing_ = false;
         }
         private void UpdateAllTimeView()
         {
@@ -518,7 +549,7 @@ namespace Com.Skewky.Cam
                 monthCalendar2.SetSelectionRange(curDt, curDt);
             DateTime curDate = monthCalendar2.SelectionStart;
             monthCalendar2.SetSelectionRange(curDate, curDate);
-            if (bForceRefresh||
+            if (bForceRefresh ||
                 curDate.Year != curDt.Year ||
                 curDate.Month != curDt.Month)
             {
@@ -526,7 +557,7 @@ namespace Com.Skewky.Cam
             }
             curDt = curDate;
             updateHourAndMinView(bForceRefresh);
-         
+
         }
         private void reMarkCalendar(System.Windows.Forms.MonthCalendar mc)
         {
@@ -536,12 +567,12 @@ namespace Com.Skewky.Cam
             DateTime dt = disRange.Start;
             if (fileParseTool.DayBlod(dt))
                 mc.AddBoldedDate(dt);
-            while(dt != disRange.End)
+            while (dt != disRange.End)
             {
                 dt = dt.AddDays(1);
                 if (fileParseTool.DayBlod(dt))
                     mc.AddBoldedDate(dt);
-             }
+            }
             mc.UpdateBoldedDates();
         }
         private void UpdateHours(bool bForceUpdate = false)
@@ -561,9 +592,9 @@ namespace Com.Skewky.Cam
                 System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
-                if(i==curDt.Hour)
+                if (i == curDt.Hour)
                 {
-                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X-drawWidth/2+1,drawPt.Y+1,drawWidth-2,height-2);
+                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
                 }
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
@@ -586,7 +617,7 @@ namespace Com.Skewky.Cam
                 bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
                 System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
-                if (i==0||i==30||i==59)
+                if (i == 0 || i == 30 || i == 59)
                 {
                     Point tmpDrawPt = drawPt;
                     tmpDrawPt.X -= drawWidth / 2;
@@ -597,8 +628,8 @@ namespace Com.Skewky.Cam
                     Point tmpDrawPt = drawPt;
                     tmpDrawPt.X -= drawWidth / 2;
                     g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), tmpDrawPt);
-                
-                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2+1, drawPt.Y+1, drawWidth-2, height-2);
+
+                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
                 }
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
@@ -607,7 +638,7 @@ namespace Com.Skewky.Cam
         }
         private void updateHourAndMinView(bool bForceRefresh = false)
         {
-           // Thread.Sleep(10);
+            // Thread.Sleep(10);
             UpdateHours(bForceRefresh);
             UpdateMinute(bForceRefresh);
         }
@@ -615,9 +646,57 @@ namespace Com.Skewky.Cam
         {
             updateHourAndMinView(true);
         }
+        private void updateVolume(bool bLouder)
+        {
+            //设置声音
+            cfsettings.iValume = vlc_player_.GetVolume();
+
+            if (bLouder)
+                cfsettings.iValume += 5;
+            else
+                cfsettings.iValume -= 5;
+
+            if (cfsettings.iValume < 0)
+                cfsettings.iValume = 0;
+            updateVolume();
+        }
+        private void updateVolume()
+        {
+            vlc_player_.SetVolume(cfsettings.iValume);
+            txSound.Text = string.Format("{0}", cfsettings.iValume);
+            if (cfsettings.iValume > 100)
+                txSound.ForeColor = Color.Red;
+            else
+                txSound.ForeColor = Color.Black;
+        }
+        private void UpdateSpeed()
+        {
+            double dRate = cfsettings.getDoubleSpeed();
+            vlc_player_.SetRate(dRate);
+            if (cfsettings.iPlaySpeed == 2)
+            {
+                txSpeed.Visible = false;
+            }
+            else
+            {
+                txSpeed.Visible = true;
+                txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
+            }
+            resetTimerInterval();
+        }
+        #endregion
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
+        private void monthCalendar2_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            UpdateCalender();
+        }
         private void pBmin_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void pBhour_Click(object sender, EventArgs e)
@@ -626,13 +705,13 @@ namespace Com.Skewky.Cam
 
         private void pBmin_Paint(object sender, PaintEventArgs e)
         {
-     
+
         }
 
         private void pBhour_Paint(object sender, PaintEventArgs e)
         {
-            
-            
+
+
             /*pBhour.Refresh();*/
         }
 
@@ -644,10 +723,10 @@ namespace Com.Skewky.Cam
             Point clkPt = new Point(e.Location.X, e.Location.Y);
             int clkHour = clkPt.X / drawWidth;
             clkHour = Math.Min(clkHour, 23);
-            
+
             if (curDt.Hour != clkHour)
             {
-                curDt = new DateTime(curDt.Year,curDt.Month, curDt.Day,
+                curDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
                                         clkHour, curDt.Minute, curDt.Second);
                 updateHourAndMinView();
             }
@@ -655,7 +734,7 @@ namespace Com.Skewky.Cam
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-           
+
         }
 
         private void pBmin_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -664,9 +743,9 @@ namespace Com.Skewky.Cam
             int width = pBmin.Width;
             int drawWidth = width / 60;
             Point clkPt = new Point(e.Location.X, e.Location.Y);
-            int clkMinute= clkPt.X / drawWidth;
+            int clkMinute = clkPt.X / drawWidth;
             clkMinute = Math.Min(clkMinute, 59);
-            if(curDt.Minute != clkMinute)
+            if (curDt.Minute != clkMinute)
             {
                 curDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute, curDt.Second);
@@ -676,13 +755,13 @@ namespace Com.Skewky.Cam
         }
         private bool playCurrentDt()
         {
-            if(fileParseTool.MinuteBlod(curDt))
+            if (fileParseTool.MinuteBlod(curDt))
             {
                 PlayRecord(curDt);
                 return true;
             }
             return false;
-         }
+        }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
@@ -693,7 +772,7 @@ namespace Com.Skewky.Cam
 
             }
             this.updateHourAndMinView_Force();
-            
+
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)
@@ -718,7 +797,7 @@ namespace Com.Skewky.Cam
                 string msg = string.Format("{0}/{1:D2}/{2:D2} {3:D2}:{4:D2}",
                                                 curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute);
-                toolTip1.Show(msg, pBmin, clkPt,3);
+                toolTip1.Show(msg, pBmin, clkPt, 3);
             }
         }
 
@@ -729,7 +808,7 @@ namespace Com.Skewky.Cam
 
         private void ck_ContinuMark_MouseHover(object sender, EventArgs e)
         {
-            
+
             string msg = string.Format("持续标注\n直到取消勾选\n或碰到下一个有标注的视频");
             Point pt = ck_ContinuMark.Location;
             pt.X -= 220;
@@ -737,10 +816,6 @@ namespace Com.Skewky.Cam
             toolTip1.Show(msg, ck_ContinuMark, pt, 3000);
         }
 
-        private void pBplayEnv_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void ck_ContinuMark_CheckedChanged(object sender, EventArgs e)
         {
@@ -757,43 +832,30 @@ namespace Com.Skewky.Cam
 
         }
 
+
+        #region MenuClickEnv
         private void FileMgr_MenuItem_Click(object sender, EventArgs e)
         {
-            FileMgrForm fmf = new FileMgrForm();
-            fmf.ShowDialog();
+            ShowFileMgrForm();
         }
 
         private void About_MenuItem1_Click(object sender, EventArgs e)
         {
-            AboutBox1 ab = new AboutBox1();
-            ab.ShowDialog();
+            ShowAboutForm();
         }
 
         private void ReadMe_MenuItem_Click(object sender, EventArgs e)
-        {/*
-            Shell32.Shell shell = new Shell32.ShellClass();
-            //文件路径
-            Shell32.Folder folder = shell.NameSpace(path.Substring(0, path.LastIndexOf("\\")));
-            //文件名称
-            Shell32.FolderItem folderitem = folder.ParseName(path.Substring(path.LastIndexOf("\\") + 1));
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                return folder.GetDetailsOf(folderitem, 27);
-            }
-            else
-            {
-                return folder.GetDetailsOf(folderitem, 21);
-            }
-           */    
- 
+        {
+            ShowHelpForm();
+
         }
 
         private void Settings_MenuItem_Click(object sender, EventArgs e)
         {
-            SettingsForm sf = new SettingsForm();
-            sf.ShowDialog();
+            ShowSettingsForm();
         }
+        #endregion
 
-       
+
     }
 }
