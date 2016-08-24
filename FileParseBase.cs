@@ -7,23 +7,24 @@ namespace Com.Skewky.Cam
     public abstract class FileParseBase
     {
         protected List<string> rootDirs = new List<string>();
-        protected CheckedBuffer checkedDays;
-        protected CheckedBuffer checkedHours;
-        protected CheckedBuffer checkedMinute;
+        protected CheckedBuffer checkedDays = new CheckedBuffer();
+        protected CheckedBuffer checkedHours = new CheckedBuffer();
+        protected CheckedBuffer checkedMinute = new CheckedBuffer();
+        protected MarkFileMgr mkFileMgr = new MarkFileMgr();
+
+        #region public methonds
         public FileParseBase()
         {
-            checkedDays = new CheckedBuffer();
-            checkedHours = new CheckedBuffer();
-            checkedMinute = new CheckedBuffer();
-
         }
         public void setRootDir(List<string> RootDirs)
         {
-            rootDirs = RootDirs;
+            rootDirs.Clear();
+            rootDirs.AddRange(RootDirs);
             checkedDays.clear();
             checkedHours.clear();
             checkedMinute.clear();
-        }
+            initMarkFiles();
+         }
         public string DayPath(DateTime dt)
         {
             if (checkedDays.isDateChecked(dt))
@@ -111,6 +112,27 @@ namespace Com.Skewky.Cam
         }
         public abstract bool findNextDt(DateTime dt, ref DateTime nextDt);
 
+        public abstract bool saveMarkFiles();
+
+        public bool GetMarkData(DateTime dt,ref MarkData mk)
+        {
+            return mkFileMgr.getMarkData(dt,ref mk);
+        }
+        public bool SetMarkData(DateTime dt,MarkData mk)
+        {
+            if (mkFileMgr.setMarkData(dt, mk))
+                return true;
+            else
+            {
+                string rootDir = getRootDirByPath(getMinutePath(dt));
+                return mkFileMgr.addMarkData(dt, mk, rootDir);
+            }
+        }
+        #endregion
+
+
+        protected abstract bool initMarkFiles();
+    
         protected abstract string getDayPath(DateTime dt);
         protected abstract string getHourPath(DateTime dt);
         protected abstract string getMinutePath(DateTime dt);
@@ -118,9 +140,6 @@ namespace Com.Skewky.Cam
         protected abstract bool isDayBlod(DateTime dt);
         protected abstract bool isHourBlod(DateTime dt);
         protected abstract bool isMinuteBlod(DateTime dt);
-
-
-
 
         internal abstract string getRootDirByPath(string path);
         internal abstract DateTime getDtMinByPath(string path);

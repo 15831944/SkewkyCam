@@ -6,6 +6,15 @@ namespace Com.Skewky.Cam
 {
     class FileParseXiaoMi : FileParseBase
     {
+        protected override bool initMarkFiles()
+        {
+            return mkFileMgr.initMarkFiles(rootDirs);
+        }
+        public override bool saveMarkFiles()
+        {
+            return mkFileMgr.saveMarkFiles();
+        }
+    
         protected override string getDayPath(DateTime dt)
         {
             foreach (string rootDir in rootDirs)

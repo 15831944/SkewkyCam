@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Com.Skewky.Cam
 {
-    class MarkData
+    [Serializable]
+    public class MarkData
     {
         string description;
         public string Description

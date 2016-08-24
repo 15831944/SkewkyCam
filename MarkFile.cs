@@ -4,19 +4,66 @@ using System.Text;
 
 namespace Com.Skewky.Cam
 {
-    class MarkFile
+    [Serializable]
+    public class MarkFile
     {
-        DateTime dtMonth;       //to identify the MarkData file name
-        Dictionary<DateTime, MarkData> mkDatas;
-
-        MarkFile(DateTime dt)
+        public DateTime dtMonth;       //to identify the MarkData file name (every month have on mark file)
+        public string filePath;    //maybe in different roots
+        Dictionary<DateTime, MarkData> mkDatas = new Dictionary<DateTime, MarkData>();
+        public MarkFile()
         {
-            dtMonth = new DateTime(dt.Year, dt.Month, 0, 0, 0, 0);
+            dtMonth = DateTime.Now;
         }
+        public MarkFile(DateTime dt)
+        {
+            dtMonth = new DateTime(dt.Year, dt.Month, 1);
+        }
+        public void initLoadFaildValues()       //version update caused some parameters are Deserialize error.
+        {
+        
+        }
+
         public string getMarkFileName()
         {
-            string fileName = string.Format("{0:D4}-{1:D2}", dtMonth.Year, dtMonth.Month);
+            string fileName = string.Format("{0:D4}-{1:D2}.mrk", dtMonth.Year, dtMonth.Month);
             return fileName;
         }
+        public bool getMarkData(DateTime dt,ref MarkData md)
+        {
+            if(mkDatas.ContainsKey(dt))
+            {
+                md = mkDatas[dt];
+                return true;
+            }
+            return false;
+        }
+        public bool setMarkData(DateTime dt, MarkData md)
+        {
+            if(!mkDatas.ContainsKey(dt))
+            {
+                mkDatas.Add(dt, md);
+                return true;
+            }
+            else 
+            {
+                mkDatas[dt] = md;
+                return true;
+            }
+            return false;
+        }
+        
+        public void clearUseslessMarkData()
+        {
+            foreach(var pr in mkDatas)
+            {
+                MarkData mk = pr.Value;
+                if((mk.Description == null||mk.Description == "")&&
+                    !mk.Favourite&&!mk.ToDelete&&!mk.Private)
+                {
+                    mkDatas.Remove(pr.Key);
+                }
+            }
+        }
+
     }
 }

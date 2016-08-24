@@ -14,6 +14,7 @@ namespace Com.Skewky.Cam
         public int iRecType;
         public int iValume;
         public double[] dPlaySpeeds;
+        public ThemeColors myColors = new ThemeColors();
         public ConfigSettings()
         {
 
@@ -27,6 +28,9 @@ namespace Com.Skewky.Cam
         }
         public double getDoubleSpeed()
         {
+
+            iPlaySpeed = Math.Max(iPlaySpeed, 0);
+            iPlaySpeed = Math.Min(iPlaySpeed, 6);
             return dPlaySpeeds[iPlaySpeed];
         }
         public bool initLoadFaildValues()
@@ -41,7 +45,9 @@ namespace Com.Skewky.Cam
                     dPlaySpeeds = new double[7] { 0.1, 0.5, 1, 2, 4, 8, 16 };
                 iPlaySpeed = Math.Max(iPlaySpeed, 0);
                 iPlaySpeed = Math.Min(iPlaySpeed, 6);
-               
+
+                if (myColors == null)
+                    myColors = new ThemeColors();
                return true;
        }
             catch (System.Exception ex)

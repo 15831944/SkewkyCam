@@ -73,6 +73,16 @@ namespace Com.Skewky.Cam.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bin_Gray {
+            get {
+                object obj = ResourceManager.GetObject("bin_Gray", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bin1 {
             get {
                 object obj = ResourceManager.GetObject("bin1", resourceCulture);
@@ -86,6 +96,16 @@ namespace Com.Skewky.Cam.Properties {
         internal static System.Drawing.Bitmap love {
             get {
                 object obj = ResourceManager.GetObject("love", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap love_Gray {
+            get {
+                object obj = ResourceManager.GetObject("love_Gray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,6 +136,16 @@ namespace Com.Skewky.Cam.Properties {
         internal static System.Drawing.Bitmap ys {
             get {
                 object obj = ResourceManager.GetObject("ys", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ys_Gray {
+            get {
+                object obj = ResourceManager.GetObject("ys_Gray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

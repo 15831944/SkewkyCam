@@ -19,10 +19,11 @@ namespace Com.Skewky.Cam
         private bool bFindNext;
         private bool is_playing_;
         private bool is_fullScreen_;
-
         private FileParseBase fileParseTool;
         private DateTime curDt;
         private ConfigSettings cfsettings;
+
+
         public MainForm()
         {
 
@@ -44,6 +45,8 @@ namespace Com.Skewky.Cam
             txSound.Text = string.Format("{0}", cfsettings.iValume);
             tbVideoTime.Text = "00:00:00/00:00:00";
             resetTimerInterval();
+            pBmin.BackColor = cfsettings.myColors.clrMarkBackground;
+            pBhour.BackColor = cfsettings.myColors.clrMarkBackground;
         }
         private VlcPlayer newVlcPlayer()
         {
@@ -59,11 +62,11 @@ namespace Com.Skewky.Cam
         }
         public void saveConfig()
         {
-            string filePath = configFile();
             try
             {
                 //cfsettings.iValume = 50;
                 //cfsettings.iRecType = 15;
+                string filePath = configFile();
                 Stream s = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite);
                 BinaryFormatter b = new BinaryFormatter();
                 b.Serialize(s, cfsettings);
@@ -88,6 +91,7 @@ namespace Com.Skewky.Cam
                     BinaryFormatter c = new BinaryFormatter();
                     cfsettings = (ConfigSettings)c.Deserialize(s);
                     cfsettings.initLoadFaildValues();
+                    cfsettings.myColors = new ThemeColors();
                     s.Close();
                 }
             }
@@ -257,6 +261,8 @@ namespace Com.Skewky.Cam
         {
             vlc_player_.Stop();
             saveConfig();
+            SaveMarkData();
+            fileParseTool.saveMarkFiles();
         }
 
         #region PlayEnvMouseEnv
@@ -354,6 +360,7 @@ namespace Com.Skewky.Cam
                 KeyEnv_SettingsForm(sender, e);
                 KeyEnv_AboutForm(sender, e);
                 KeyEnv_HelpForm(sender, e);
+                KeyEnv_Marks(sender,e);
             }
             else if (e.Shift)
             {
@@ -362,7 +369,7 @@ namespace Com.Skewky.Cam
             else //Normal key input
             {
                 KeyEnv_TogglePlay(sender, e);
-                KeyEnv_Control(sender, e);
+                KeyEnv_Process(sender, e);
                 KeyEnv_Sound(sender, e);
             }
         }
@@ -403,7 +410,7 @@ namespace Com.Skewky.Cam
                 updateVolume(Keys.Up == e.KeyCode);
             }
         }
-        private void KeyEnv_Control(object sender, KeyEventArgs e)
+        private void KeyEnv_Process(object sender, KeyEventArgs e)
         {
             if (Keys.Left == e.KeyCode ||
                 Keys.Right == e.KeyCode)
@@ -460,6 +467,24 @@ namespace Com.Skewky.Cam
                 ShowHelpForm();
             }
         }
+        private void KeyEnv_Marks(object sender, KeyEventArgs e)
+        {
+            if (Keys.D1== e.KeyCode||
+                Keys.NumPad1 == e.KeyCode)
+            {
+                picLove.Visible = !picLove.Visible;
+            }
+            else if (Keys.D2== e.KeyCode||
+                Keys.NumPad2 == e.KeyCode)
+            {
+                picBin.Visible = !picBin.Visible;
+            }
+            else if (Keys.D3== e.KeyCode||
+                Keys.NumPad3 == e.KeyCode)
+            {
+                picPriv.Visible = !picPriv.Visible;
+            }
+        }
         #endregion
 
         private void ShowFileMgrForm()
@@ -489,6 +514,8 @@ namespace Com.Skewky.Cam
                 {
                     cfsettings.rootDirArr.Clear();
                     cfsettings.rootDirArr.AddRange(cf.rootDirArr);
+                    SaveMarkData();
+                    fileParseTool.saveMarkFiles();
                     InitFileParseTool();
                 }
             }
@@ -527,6 +554,7 @@ namespace Com.Skewky.Cam
             trackBar1.Value = 0;
             timer1.Start();
             is_playing_ = true;
+            UpdateMarkData();
         }
         private void updatePlayStatus_Stop()
         {
@@ -534,6 +562,34 @@ namespace Com.Skewky.Cam
             trackBar1.Value = trackBar1.Maximum;
             timer1.Stop();
             is_playing_ = false;
+            SaveMarkData();
+        }
+        private void UpdateMarkData()
+        {
+            MarkData mk = new MarkData();
+            if(!ck_ContinuMark.Checked)
+            {
+                tbNote.Text = string.Empty;
+                picBin.Visible = false;
+                picLove.Visible = false;
+                picPriv.Visible = false;
+            }
+            if(fileParseTool.GetMarkData(curDt,ref mk))
+            {
+                tbNote.Text = mk.Description;
+                picBin.Visible = mk.ToDelete;
+                picLove.Visible = mk.Favourite;
+                picPriv.Visible = mk.Private;
+            }            
+        }
+        private void SaveMarkData()
+        {
+            MarkData mk = new MarkData();
+            mk.Description = tbNote.Text;
+            mk.ToDelete = picBin.Visible;
+            mk.Favourite = picLove.Visible;
+            mk.Private = picPriv.Visible;
+            fileParseTool.SetMarkData(curDt, mk);
         }
         private void UpdateAllTimeView()
         {
@@ -589,7 +645,7 @@ namespace Com.Skewky.Cam
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, i, 0, 0);
                 bool bNowBlod = fileParseTool.HourBlod(nowdt);
-                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
+                System.Drawing.Color cl = bNowBlod ? cfsettings.myColors.clrNormal:cfsettings.myColors.clrMarkBackground;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
                 if (i == curDt.Hour)
@@ -614,16 +670,19 @@ namespace Com.Skewky.Cam
             for (int i = 0; i < 60; i++)
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, curDt.Hour, i, 0);
-                bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
-                System.Drawing.Color cl = bNowBlod ? System.Drawing.Color.Red : System.Drawing.SystemColors.ActiveBorder;
-                g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
-                if (i == 0 || i == 30 || i == 59)
+                //BackGround
+                 bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
+                System.Drawing.Color clr = bNowBlod?cfsettings.myColors.clrNormal:cfsettings.myColors.clrMarkBackground;
+                g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1); 
+                if(bNowBlod)
+                    updateMinute_Marks(g, nowdt,drawWidth,drawPt, height);
+                if (i == 0 || i == 30 || i == 59)   //Draw key minutes
                 {
                     Point tmpDrawPt = drawPt;
                     tmpDrawPt.X -= drawWidth / 2;
                     g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), tmpDrawPt);
                 }
-                if (i == curDt.Minute)
+                if (i == curDt.Minute)  //DrawCurTime and Rect
                 {
                     Point tmpDrawPt = drawPt;
                     tmpDrawPt.X -= drawWidth / 2;
@@ -635,6 +694,48 @@ namespace Com.Skewky.Cam
                 drawPt1.X += drawWidth;
             }
             pBmin.Update();
+        }
+        private void updateMinute_Marks(Graphics g, DateTime nowdt,int drawWidth,Point drawPt,int height)
+        {
+            Point drawPt1 = drawPt;
+            drawPt1.Y += height;
+            int markHeight = height/5;
+
+            MarkData mk = new MarkData();
+            System.Drawing.Color clr = cfsettings.myColors.clrNormal;
+            fileParseTool.GetMarkData(nowdt, ref mk);
+
+
+            //Favourite
+            drawPt1 = drawPt;
+            drawPt1.Y += markHeight;
+            clr = mk.Favourite ? cfsettings.myColors.clrFavorite : cfsettings.myColors.clrNormal;
+            g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1);
+            drawPt1.Y += 1;
+
+            //ToDelete
+            drawPt = drawPt1;
+            drawPt1.Y += markHeight;
+            clr = mk.ToDelete ? cfsettings.myColors.clrToDelete : cfsettings.myColors.clrNormal;
+            g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1);
+            drawPt1.Y += 1;
+
+            //Private
+            drawPt = drawPt1;
+            drawPt1.Y += markHeight;
+            clr = mk.Private ? cfsettings.myColors.clrPrivate : cfsettings.myColors.clrNormal;
+            g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1);
+            drawPt1.Y += 1;
+
+            //Description
+            drawPt = drawPt1;
+            drawPt1.Y += markHeight;
+            clr = !string.IsNullOrEmpty(mk.Description) ? cfsettings.myColors.clrDescrib : cfsettings.myColors.clrNormal;
+            g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1);
+
+        
+             
+            
         }
         private void updateHourAndMinView(bool bForceRefresh = false)
         {
@@ -747,10 +848,12 @@ namespace Com.Skewky.Cam
             clkMinute = Math.Min(clkMinute, 59);
             if (curDt.Minute != clkMinute)
             {
+                if (is_playing_)
+                    updatePlayStatus_Stop();
                 curDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute, curDt.Second);
-                UpdateMinute();
-                playCurrentDt();
+                 UpdateMinute();
+                 playCurrentDt();
             }
         }
         private bool playCurrentDt()
@@ -819,7 +922,6 @@ namespace Com.Skewky.Cam
 
         private void ck_ContinuMark_CheckedChanged(object sender, EventArgs e)
         {
-
         }
 
         private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -856,6 +958,41 @@ namespace Com.Skewky.Cam
         }
         #endregion
 
+        #region PicButtoms
+        private void picPrivGray_MouseClick(object sender, MouseEventArgs e)
+        {
+            picPriv.Visible = true;
+        
+        }
+
+        private void picBinGray_MouseClick(object sender, MouseEventArgs e)
+        {
+            picBin.Visible = true;
+        
+        }
+
+        private void picLoveGray_MouseClick(object sender, MouseEventArgs e)
+        {
+            picLove.Visible = true;
+        
+        }
+
+        private void picLove_MouseClick(object sender, MouseEventArgs e)
+        {
+            picLove.Visible = false;
+        }
+
+        private void picBin_MouseClick(object sender, MouseEventArgs e)
+        {
+            picBin.Visible = false;
+        }
+
+        private void picPriv_MouseClick(object sender, MouseEventArgs e)
+        {
+            picPriv.Visible = false;
+        }
+
+        #endregion
 
     }
 }
