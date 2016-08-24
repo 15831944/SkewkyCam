@@ -17,7 +17,7 @@ namespace Com.Skewky.Cam
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
+            this.lbDescription.Text = AssemblyDescription;
         }
 
         #region Assembly Attribute Accessors
@@ -99,5 +99,10 @@ namespace Com.Skewky.Cam
             }
         }
         #endregion
+
+        private void tableLayoutPanel_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Skewky.Cam")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("  四年前的2012.8.26\n\n上帝把一个小宝贝送到了我们身边\n\n四年来我们一起走过太多的风雨!\n\n谨以此送给我的宝贝----豆豆\n\n祝永远健康快乐!")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Skewky")]
 [assembly: AssemblyProduct("Skewky.Cam")]

@@ -2398,6 +2398,10 @@
         jDHGGGOMMcYYY4wxxhhjjDHGGGOMMcYYY4wxZjyt/f9cHar6vPmi2gAAAABJRU5ErkJggg==
 </value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="aboutBg_看图王" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aboutBg_看图王.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ys" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAABGdBTUEAALGPC/xhBQAATmxJREFUeF7t
@@ -2738,7 +2742,6 @@
         Tyut3Dlcal5lOrX/RPXcdFaOS/Svjzy6zhsO/x8zzGKYvUw/6gAAAABJRU5ErkJggg==
 </value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ys1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\OtherRef\Res\ys1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -3412,11 +3415,17 @@
   <data name="love1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\OtherRef\Res\love1.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ys_Gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\OtherRef\Res\ys_Gray.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="aboutBg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aboutBg.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="love_Gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\OtherRef\Res\love_Gray.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ys_Gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\OtherRef\Res\ys_Gray.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="thankyou" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thankyou.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

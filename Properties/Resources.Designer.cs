@@ -63,6 +63,26 @@ namespace Com.Skewky.Cam.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap aboutBg {
+            get {
+                object obj = ResourceManager.GetObject("aboutBg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap aboutBg_看图王 {
+            get {
+                object obj = ResourceManager.GetObject("aboutBg_看图王", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bin {
             get {
                 object obj = ResourceManager.GetObject("bin", resourceCulture);
@@ -126,6 +146,16 @@ namespace Com.Skewky.Cam.Properties {
         internal static System.Drawing.Bitmap love11 {
             get {
                 object obj = ResourceManager.GetObject("love11", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thankyou {
+            get {
+                object obj = ResourceManager.GetObject("thankyou", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

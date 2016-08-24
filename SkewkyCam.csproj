@@ -124,6 +124,9 @@
     <None Include="OtherRef\Res\love_Gray.png" />
     <None Include="OtherRef\Res\bin_Gray.jpg" />
     <None Include="OtherRef\Res\ys_Gray.jpg" />
+    <None Include="Resources\aboutBg.png" />
+    <None Include="Resources\aboutBg_看图王.png" />
+    <None Include="Resources\thankyou.png" />
     <Content Include="SkewkyCam.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
