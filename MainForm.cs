@@ -45,8 +45,8 @@ namespace Com.Skewky.Cam
             txSound.Text = string.Format("{0}", cfsettings.iValume);
             tbVideoTime.Text = "00:00:00/00:00:00";
             resetTimerInterval();
-            pBmin.BackColor = cfsettings.myColors.clrMarkBackground;
-            pBhour.BackColor = cfsettings.myColors.clrMarkBackground;
+            pBmin.BackColor = cfsettings.myColors.clrBg;
+            pBhour.BackColor = cfsettings.myColors.clrBg;
         }
         private VlcPlayer newVlcPlayer()
         {
@@ -238,7 +238,7 @@ namespace Com.Skewky.Cam
         {
             if (is_playing_)
             {
-                vlc_player_.SetPlayTime(trackBar1.Value);
+                vlc_player_.SetPlayTime(trackBar1.Value/1000.0);
                 trackBar1.Value = (int)vlc_player_.GetPlayTime();
             }
         }
@@ -321,12 +321,14 @@ namespace Com.Skewky.Cam
             {
                 vlc_player_.Pause();
                 timer1.Stop();
+                tssPause.Text = "已暂停";
                 is_playing_ = false;
             }
             else
             {
                 vlc_player_.Play();
                 timer1.Start();
+                tssPause.Text = "";
                 is_playing_ = true;
             }
         }
@@ -347,20 +349,22 @@ namespace Com.Skewky.Cam
             {
             }
             else if (e.Shift && e.Control)
-            {
-            }
-            else if (e.Alt)
-            {
-
-            }
-            else if (e.Control)
-            {
-                KeyEnv_Speed(sender, e);
+            {    
                 KeyEnv_FileForm(sender, e);
                 KeyEnv_SettingsForm(sender, e);
                 KeyEnv_AboutForm(sender, e);
                 KeyEnv_HelpForm(sender, e);
-                KeyEnv_Marks(sender,e);
+           
+            }
+            else if (e.Alt)
+            {
+                KeyEnv_TogglePlay(sender, e);
+               
+            }
+            else if (e.Control)
+            {
+                 KeyEnv_Speed(sender, e);
+                 KeyEnv_Marks(sender,e);
             }
             else if (e.Shift)
             {
@@ -368,7 +372,6 @@ namespace Com.Skewky.Cam
             }
             else //Normal key input
             {
-                KeyEnv_TogglePlay(sender, e);
                 KeyEnv_Process(sender, e);
                 KeyEnv_Sound(sender, e);
             }
@@ -415,27 +418,25 @@ namespace Com.Skewky.Cam
             if (Keys.Left == e.KeyCode ||
                 Keys.Right == e.KeyCode)
             {
+                int iSpeedStep = 5000;      //5s per step
+                int dureTime = (int)vlc_player_.Duration();
                 //前进
                 if (Keys.Left == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value - 5 * (int)(cfsettings.getDoubleSpeed());
-                    newPlayTime = Math.Max(0, newPlayTime);
-                    bool bIsPlayEnded = vlc_player_.isPlayEnded();
-                    vlc_player_.SetPlayTime(newPlayTime);
-                    bIsPlayEnded = vlc_player_.isPlayEnded();
-                    vlc_player_.Play();
-                    bIsPlayEnded = vlc_player_.isPlayEnded();
-                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                   iSpeedStep = -iSpeedStep;
                 }
                 //后退
                 if (Keys.Right == e.KeyCode)
                 {
-                    int newPlayTime = trackBar1.Value + 5 * (int)(cfsettings.getDoubleSpeed());
-                    newPlayTime = Math.Max(0, newPlayTime);
-                    vlc_player_.SetPlayTime(newPlayTime);
-                    vlc_player_.Play();
-                    trackBar1.Value = (int)vlc_player_.GetPlayTime();
+                   
                 }
+                int newPlayTime = trackBar1.Value + iSpeedStep;
+                double dNewPlayTime = newPlayTime / 1000.0;
+                dNewPlayTime = Math.Max(0, dNewPlayTime);
+                dNewPlayTime = Math.Min(dNewPlayTime, vlc_player_.Duration());
+                vlc_player_.SetPlayTime(dNewPlayTime);
+                vlc_player_.Play();
+                //trackBar1.Value = (int)vlc_player_.GetPlayTime();
             }
 
         }
@@ -469,6 +470,8 @@ namespace Com.Skewky.Cam
         }
         private void KeyEnv_Marks(object sender, KeyEventArgs e)
         {
+            if (!nowValid())
+                return;
             if (Keys.D1== e.KeyCode||
                 Keys.NumPad1 == e.KeyCode)
             {
@@ -484,6 +487,8 @@ namespace Com.Skewky.Cam
             {
                 picPriv.Visible = !picPriv.Visible;
             }
+            SaveMarkData();
+            UpdateMinute(true);
         }
         #endregion
 
@@ -554,6 +559,10 @@ namespace Com.Skewky.Cam
             trackBar1.Value = 0;
             timer1.Start();
             is_playing_ = true;
+            string strNowPlaying = "当前播放："+ fileParseTool.MinutePath(curDt);
+            lbNowPlaying.Text = strNowPlaying;
+            tssPause.Text = "";
+            
             UpdateMarkData();
         }
         private void updatePlayStatus_Stop()
@@ -562,6 +571,8 @@ namespace Com.Skewky.Cam
             trackBar1.Value = trackBar1.Maximum;
             timer1.Stop();
             is_playing_ = false;
+            lbNowPlaying.Text = "";
+            tssPause.Text = "已停止";
             SaveMarkData();
         }
         private void UpdateMarkData()
@@ -573,6 +584,7 @@ namespace Com.Skewky.Cam
                 picBin.Visible = false;
                 picLove.Visible = false;
                 picPriv.Visible = false;
+                picNote.Visible = false;
             }
             if(fileParseTool.GetMarkData(curDt,ref mk))
             {
@@ -580,10 +592,13 @@ namespace Com.Skewky.Cam
                 picBin.Visible = mk.ToDelete;
                 picLove.Visible = mk.Favourite;
                 picPriv.Visible = mk.Private;
+                picNote.Visible = mk.Describ;
             }            
         }
         private void SaveMarkData()
         {
+            if (!nowValid())
+                return;
             MarkData mk = new MarkData();
             mk.Description = tbNote.Text;
             mk.ToDelete = picBin.Visible;
@@ -645,12 +660,12 @@ namespace Com.Skewky.Cam
             {
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, i, 0, 0);
                 bool bNowBlod = fileParseTool.HourBlod(nowdt);
-                System.Drawing.Color cl = bNowBlod ? cfsettings.myColors.clrNormal:cfsettings.myColors.clrMarkBackground;
+                System.Drawing.Color cl = bNowBlod ? cfsettings.myColors.clrNormal:cfsettings.myColors.clrBg;
                 g.DrawLine(new Pen(cl, drawWidth), drawPt, drawPt1);
                 g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), drawPt);
                 if (i == curDt.Hour)
                 {
-                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
+                    g.DrawRectangle(new Pen(Color.Black, 1), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
                 }
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
@@ -672,7 +687,7 @@ namespace Com.Skewky.Cam
                 DateTime nowdt = new DateTime(curDt.Year, curDt.Month, curDt.Day, curDt.Hour, i, 0);
                 //BackGround
                  bool bNowBlod = fileParseTool.MinuteBlod(nowdt);
-                System.Drawing.Color clr = bNowBlod?cfsettings.myColors.clrNormal:cfsettings.myColors.clrMarkBackground;
+                System.Drawing.Color clr = bNowBlod?cfsettings.myColors.clrNormal:cfsettings.myColors.clrBg;
                 g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1); 
                 if(bNowBlod)
                     updateMinute_Marks(g, nowdt,drawWidth,drawPt, height);
@@ -688,12 +703,13 @@ namespace Com.Skewky.Cam
                     tmpDrawPt.X -= drawWidth / 2;
                     g.DrawString(string.Format("{0}", i), Label.DefaultFont, new SolidBrush(Color.Black), tmpDrawPt);
 
-                    g.DrawRectangle(new Pen(Color.Black, 2), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
+                    g.DrawRectangle(new Pen(Color.Black, 1), drawPt.X - drawWidth / 2 + 1, drawPt.Y + 1, drawWidth - 2, height - 2);
                 }
                 drawPt.X += drawWidth;
                 drawPt1.X += drawWidth;
             }
             pBmin.Update();
+            updatePicBounds();
         }
         private void updateMinute_Marks(Graphics g, DateTime nowdt,int drawWidth,Point drawPt,int height)
         {
@@ -730,12 +746,9 @@ namespace Com.Skewky.Cam
             //Description
             drawPt = drawPt1;
             drawPt1.Y += markHeight;
-            clr = !string.IsNullOrEmpty(mk.Description) ? cfsettings.myColors.clrDescrib : cfsettings.myColors.clrNormal;
+            clr = mk.Describ ? cfsettings.myColors.clrDescrib : cfsettings.myColors.clrNormal;
             g.DrawLine(new Pen(clr, drawWidth), drawPt, drawPt1);
-
-        
-             
-            
+    
         }
         private void updateHourAndMinView(bool bForceRefresh = false)
         {
@@ -777,11 +790,14 @@ namespace Com.Skewky.Cam
             if (cfsettings.iPlaySpeed == 2)
             {
                 txSpeed.Visible = false;
+                tssPlaySpeed.Text = "";
             }
             else
             {
                 txSpeed.Visible = true;
                 txSpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
+                tssPlaySpeed.Text = string.Format("播放速度：{0:N1}x", dRate);
+          
             }
             resetTimerInterval();
         }
@@ -893,15 +909,28 @@ namespace Com.Skewky.Cam
             clkPt.Y += height;
             int clkMinute = clkPt.X / drawWidth;
             clkMinute = Math.Min(clkMinute, 59);
-            if (curDt.Minute != clkMinute)
-            {
-                DateTime dispDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
+             DateTime dispDt = new DateTime(curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute, curDt.Second);
+            
+            //if (curDt.Minute != clkMinute)
+            //{
                 string msg = string.Format("{0}/{1:D2}/{2:D2} {3:D2}:{4:D2}",
                                                 curDt.Year, curDt.Month, curDt.Day,
                                         curDt.Hour, clkMinute);
-                toolTip1.Show(msg, pBmin, clkPt, 3);
+                //toolTip1.SetToolTip(this.pBmin, msg);
+            //    toolTip1.Show(msg, pBmin, clkPt, 3);
+            //}//
+            MarkData mk = new MarkData();
+            if (fileParseTool.GetMarkData(dispDt, ref mk)&&
+                mk.Describ)
+            {
+                msg = "["+msg + "] " + mk.Description;
+                msg = msg.Replace("\n", " ");
+                msg = msg.Replace("\r", " ");
+                tssNote.Text = msg;            
             }
+            else
+                tssNote.Text = "";
         }
 
         private void pBmin_MouseClick(object sender, MouseEventArgs e)
@@ -961,38 +990,138 @@ namespace Com.Skewky.Cam
         #region PicButtoms
         private void picPrivGray_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picPriv.Visible = true;
-        
+            SaveMarkData();
+            UpdateMinute(true);
         }
 
         private void picBinGray_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picBin.Visible = true;
-        
+            SaveMarkData();
+            UpdateMinute(true);
+            
         }
 
         private void picLoveGray_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picLove.Visible = true;
-        
+            SaveMarkData();
+            UpdateMinute(true);
+           
         }
 
         private void picLove_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picLove.Visible = false;
+            SaveMarkData();
+            UpdateMinute(true);
         }
 
         private void picBin_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picBin.Visible = false;
+            SaveMarkData();
+            UpdateMinute(true);
         }
 
         private void picPriv_MouseClick(object sender, MouseEventArgs e)
         {
+            if (!nowValid())
+                return;
             picPriv.Visible = false;
+            SaveMarkData();
+            UpdateMinute(true);
         }
 
+        private void picNote_MouseClick(object sender, MouseEventArgs e)
+        {
+                      
+        }
+
+        private void picNoteGray_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void picMarks_Paint(object sender, PaintEventArgs e)
+        {
+            updatePicBounds();
+        }
+       private void updatePicBounds()
+        {
+            return;
+            if (picLove.Visible)
+            {
+                Graphics g = picLove.CreateGraphics();
+                g.DrawRectangle(new Pen(cfsettings.myColors.clrFavorite, 4), 0, 0, picLove.Width - 1, picLove.Height - 1);
+                picLove.Update();
+            }
+            if (picBin.Visible)
+            {
+                Graphics g = picBin.CreateGraphics();
+                g.DrawRectangle(new Pen(cfsettings.myColors.clrToDelete, 4), 0, 0, picBin.Width - 1, picBin.Height - 1);
+                picBin.Update();
+            }
+            if (picPriv.Visible)
+            {
+                Graphics g = picPriv.CreateGraphics();
+                g.DrawRectangle(new Pen(cfsettings.myColors.clrPrivate, 4), 0, 0, picPriv.Width - 1, picPriv.Height - 1);
+                picPriv.Update();
+            }
+            if (picNote.Visible)
+            {
+                Graphics g = picNote.CreateGraphics();
+                g.DrawRectangle(new Pen(cfsettings.myColors.clrDescrib, 4), 0, 0, picNote.Width - 1, picNote.Height - 1);
+                picNote.Update();
+            }
+        }
+
+ 
+  
         #endregion
 
-    }
+
+        private void lbNowPlaying_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            string path = fileParseTool.MinutePath(curDt);
+            if (Directory.Exists(Path.GetDirectoryName(path)))
+                System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(path));
+        }
+
+        private bool nowValid()
+        {
+            if(fileParseTool.MinuteBlod(curDt))
+                return true;
+            return false;
+        }
+
+        private void tbNote_TextChanged(object sender, EventArgs e)
+        {
+            if (!nowValid())
+                return;
+            picNote.Visible = !string.IsNullOrEmpty(tbNote.Text);
+            SaveMarkData();
+            UpdateMinute(true);
+        
+        }
+
+        private void pBmin_MouseLeave(object sender, EventArgs e)
+        {
+            tssNote.Text = "";
+        }
+
+   
+
+     }
 }

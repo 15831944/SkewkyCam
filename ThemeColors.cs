@@ -12,6 +12,6 @@ namespace Com.Skewky.Cam
         public System.Drawing.Color clrPrivate = System.Drawing.Color.Gold;
         public System.Drawing.Color clrDescrib= System.Drawing.Color.Violet;
         public System.Drawing.Color clrNormal = System.Drawing.Color.DeepSkyBlue;
-        public System.Drawing.Color clrMarkBackground = System.Drawing.Color.PowderBlue;
+        public System.Drawing.Color clrBg = System.Drawing.Color.PowderBlue;
     }
 }

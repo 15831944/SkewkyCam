@@ -57,8 +57,10 @@ namespace Com.Skewky.Cam
             foreach(var pr in mkDatas)
             {
                 MarkData mk = pr.Value;
-                if((mk.Description == null||mk.Description == "")&&
-                    !mk.Favourite&&!mk.ToDelete&&!mk.Private)
+                if(!mk.Favourite&&
+                    !mk.ToDelete&&
+                    !mk.Private&&
+                    !mk.Describ)
                 {
                     mkDatas.Remove(pr.Key);
                 }

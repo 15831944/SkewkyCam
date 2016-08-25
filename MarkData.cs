@@ -31,5 +31,21 @@ namespace Com.Skewky.Cam
             get { return bPrivate; }
             set { bPrivate = value; }
         }
+        public bool Describ
+        {
+            get { return !string.IsNullOrEmpty(description); }
+        }
+        public string MDStr
+        {
+            get 
+            { 
+                string res = "";
+                res += bFavourite ? "L" : " ";
+                res += bToDelete ? "D" : " ";
+                res += bPrivate ? "P" : " ";
+                res += Describ ? "N" : " ";
+                return res;
+            }
+        }
     }
 }

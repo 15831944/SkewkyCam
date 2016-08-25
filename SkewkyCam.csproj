@@ -53,6 +53,7 @@
     <Compile Include="CheckedBuffer.cs" />
     <Compile Include="CheckedDt.cs" />
     <Compile Include="ConfigSettings.cs" />
+    <Compile Include="FileMgr.cs" />
     <Compile Include="FileMgrForm.cs">
       <SubType>Form</SubType>
     </Compile>

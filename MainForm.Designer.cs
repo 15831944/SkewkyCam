@@ -43,12 +43,11 @@
             this.btnStart = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.tssPlaySpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tssPlaySpeed = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tssPause = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tssNote = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.txSpeed = new System.Windows.Forms.Label();
@@ -63,15 +62,16 @@
             this.About_MenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.picLove = new System.Windows.Forms.PictureBox();
+            this.picNote = new System.Windows.Forms.PictureBox();
             this.picPriv = new System.Windows.Forms.PictureBox();
             this.picBin = new System.Windows.Forms.PictureBox();
             this.picLoveGray = new System.Windows.Forms.PictureBox();
+            this.picNoteGray = new System.Windows.Forms.PictureBox();
             this.picPrivGray = new System.Windows.Forms.PictureBox();
             this.picBinGray = new System.Windows.Forms.PictureBox();
             this.tbNote = new System.Windows.Forms.TextBox();
             this.ck_ContinuMark = new System.Windows.Forms.CheckBox();
-            this.tssPause = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tssFilePath = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lbNowPlaying = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pBmin)).BeginInit();
@@ -82,9 +82,11 @@
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLove)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPriv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLoveGray)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picNoteGray)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPrivGray)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBinGray)).BeginInit();
             this.SuspendLayout();
@@ -185,6 +187,7 @@
             this.pBmin.Paint += new System.Windows.Forms.PaintEventHandler(this.pBmin_Paint);
             this.pBmin.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseClick);
             this.pBmin.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseDoubleClick);
+            this.pBmin.MouseLeave += new System.EventHandler(this.pBmin_MouseLeave);
             this.pBmin.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pBmin_MouseMove);
             // 
             // pBhour
@@ -203,22 +206,26 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(352, 1);
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReset.Location = new System.Drawing.Point(924, -1);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 25);
             this.btnReset.TabIndex = 2;
             this.btnReset.Text = "浏览";
             this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Visible = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(250, 1);
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStart.Location = new System.Drawing.Point(839, -1);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 25);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "开始";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Visible = false;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // timer1
@@ -229,63 +236,45 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslStatus,
             this.toolStripProgressBar1,
-            this.toolStripSplitButton1,
-            this.toolStripDropDownButton1,
             this.tssPlaySpeed,
             this.tssPause,
-            this.tssFilePath});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 585);
+            this.tssNote});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 586);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1011, 23);
+            this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
             // 
-            // tssPlaySpeed
+            // tsslStatus
             // 
-            this.tssPlaySpeed.Name = "tssPlaySpeed";
-            this.tssPlaySpeed.Size = new System.Drawing.Size(81, 18);
-            this.tssPlaySpeed.Text = "播放速度：8.0x";
+            this.tsslStatus.Name = "tsslStatus";
+            this.tsslStatus.Size = new System.Drawing.Size(56, 18);
+            this.tsslStatus.Text = "正在加载";
+            this.tsslStatus.Visible = false;
             // 
             // toolStripProgressBar1
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 17);
+            this.toolStripProgressBar1.Visible = false;
             // 
-            // toolStripSplitButton1
+            // tssPlaySpeed
             // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem3});
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(32, 21);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+            this.tssPlaySpeed.Name = "tssPlaySpeed";
+            this.tssPlaySpeed.Size = new System.Drawing.Size(0, 17);
             // 
-            // toolStripMenuItem3
+            // tssPause
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(80, 22);
-            this.toolStripMenuItem3.Text = "2";
+            this.tssPause.Name = "tssPause";
+            this.tssPause.Size = new System.Drawing.Size(0, 17);
             // 
-            // toolStripDropDownButton1
+            // tssNote
             // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem4});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 21);
-            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(80, 22);
-            this.toolStripMenuItem4.Text = "2";
+            this.tssNote.Name = "tssNote";
+            this.tssNote.Size = new System.Drawing.Size(0, 17);
             // 
             // toolTip1
             // 
@@ -338,7 +327,7 @@
             // monthCalendar2
             // 
             this.monthCalendar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.monthCalendar2.Location = new System.Drawing.Point(772, 102);
+            this.monthCalendar2.Location = new System.Drawing.Point(772, 46);
             this.monthCalendar2.Margin = new System.Windows.Forms.Padding(9, 10, 9, 10);
             this.monthCalendar2.Name = "monthCalendar2";
             this.monthCalendar2.TabIndex = 5;
@@ -406,16 +395,18 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.picLove);
+            this.groupBox1.Controls.Add(this.picNote);
             this.groupBox1.Controls.Add(this.picPriv);
             this.groupBox1.Controls.Add(this.picBin);
             this.groupBox1.Controls.Add(this.picLoveGray);
+            this.groupBox1.Controls.Add(this.picNoteGray);
             this.groupBox1.Controls.Add(this.picPrivGray);
             this.groupBox1.Controls.Add(this.picBinGray);
             this.groupBox1.Controls.Add(this.tbNote);
             this.groupBox1.Controls.Add(this.ck_ContinuMark);
-            this.groupBox1.Location = new System.Drawing.Point(773, 311);
+            this.groupBox1.Location = new System.Drawing.Point(773, 239);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(220, 273);
+            this.groupBox1.Size = new System.Drawing.Size(220, 345);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "备注";
@@ -427,14 +418,31 @@
             this.picLove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.picLove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLove.Image = global::Com.Skewky.Cam.Properties.Resources.love;
-            this.picLove.Location = new System.Drawing.Point(11, 220);
+            this.picLove.Location = new System.Drawing.Point(11, 292);
             this.picLove.Name = "picLove";
             this.picLove.Size = new System.Drawing.Size(40, 43);
             this.picLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLove.TabIndex = 10;
             this.picLove.TabStop = false;
             this.picLove.Visible = false;
+            this.picLove.Paint += new System.Windows.Forms.PaintEventHandler(this.picMarks_Paint);
             this.picLove.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picLove_MouseClick);
+            // 
+            // picNote
+            // 
+            this.picNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picNote.BackColor = System.Drawing.Color.Transparent;
+            this.picNote.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picNote.Image = global::Com.Skewky.Cam.Properties.Resources.ys;
+            this.picNote.Location = new System.Drawing.Point(147, 292);
+            this.picNote.Name = "picNote";
+            this.picNote.Size = new System.Drawing.Size(40, 43);
+            this.picNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picNote.TabIndex = 12;
+            this.picNote.TabStop = false;
+            this.picNote.Visible = false;
+            this.picNote.Paint += new System.Windows.Forms.PaintEventHandler(this.picMarks_Paint);
+            this.picNote.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picNote_MouseClick);
             // 
             // picPriv
             // 
@@ -442,13 +450,14 @@
             this.picPriv.BackColor = System.Drawing.Color.Transparent;
             this.picPriv.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picPriv.Image = global::Com.Skewky.Cam.Properties.Resources.ys;
-            this.picPriv.Location = new System.Drawing.Point(101, 220);
+            this.picPriv.Location = new System.Drawing.Point(101, 292);
             this.picPriv.Name = "picPriv";
             this.picPriv.Size = new System.Drawing.Size(40, 43);
             this.picPriv.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picPriv.TabIndex = 12;
             this.picPriv.TabStop = false;
             this.picPriv.Visible = false;
+            this.picPriv.Paint += new System.Windows.Forms.PaintEventHandler(this.picMarks_Paint);
             this.picPriv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picPriv_MouseClick);
             // 
             // picBin
@@ -457,13 +466,14 @@
             this.picBin.BackColor = System.Drawing.Color.Transparent;
             this.picBin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picBin.Image = global::Com.Skewky.Cam.Properties.Resources.bin;
-            this.picBin.Location = new System.Drawing.Point(56, 220);
+            this.picBin.Location = new System.Drawing.Point(56, 292);
             this.picBin.Name = "picBin";
             this.picBin.Size = new System.Drawing.Size(40, 43);
             this.picBin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBin.TabIndex = 11;
             this.picBin.TabStop = false;
             this.picBin.Visible = false;
+            this.picBin.Paint += new System.Windows.Forms.PaintEventHandler(this.picMarks_Paint);
             this.picBin.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picBin_MouseClick);
             // 
             // picLoveGray
@@ -473,7 +483,7 @@
             this.picLoveGray.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.picLoveGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLoveGray.Image = global::Com.Skewky.Cam.Properties.Resources.love_Gray;
-            this.picLoveGray.Location = new System.Drawing.Point(11, 220);
+            this.picLoveGray.Location = new System.Drawing.Point(11, 292);
             this.picLoveGray.Name = "picLoveGray";
             this.picLoveGray.Size = new System.Drawing.Size(40, 43);
             this.picLoveGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -481,13 +491,27 @@
             this.picLoveGray.TabStop = false;
             this.picLoveGray.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picLoveGray_MouseClick);
             // 
+            // picNoteGray
+            // 
+            this.picNoteGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.picNoteGray.BackColor = System.Drawing.Color.Transparent;
+            this.picNoteGray.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picNoteGray.Image = global::Com.Skewky.Cam.Properties.Resources.ys_Gray;
+            this.picNoteGray.Location = new System.Drawing.Point(147, 292);
+            this.picNoteGray.Name = "picNoteGray";
+            this.picNoteGray.Size = new System.Drawing.Size(40, 43);
+            this.picNoteGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picNoteGray.TabIndex = 12;
+            this.picNoteGray.TabStop = false;
+            this.picNoteGray.Click += new System.EventHandler(this.picNoteGray_Click);
+            // 
             // picPrivGray
             // 
             this.picPrivGray.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.picPrivGray.BackColor = System.Drawing.Color.Transparent;
             this.picPrivGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picPrivGray.Image = global::Com.Skewky.Cam.Properties.Resources.ys_Gray;
-            this.picPrivGray.Location = new System.Drawing.Point(101, 220);
+            this.picPrivGray.Location = new System.Drawing.Point(101, 292);
             this.picPrivGray.Name = "picPrivGray";
             this.picPrivGray.Size = new System.Drawing.Size(40, 43);
             this.picPrivGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -501,7 +525,7 @@
             this.picBinGray.BackColor = System.Drawing.Color.Transparent;
             this.picBinGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picBinGray.Image = global::Com.Skewky.Cam.Properties.Resources.bin_Gray;
-            this.picBinGray.Location = new System.Drawing.Point(56, 220);
+            this.picBinGray.Location = new System.Drawing.Point(56, 292);
             this.picBinGray.Name = "picBinGray";
             this.picBinGray.Size = new System.Drawing.Size(40, 43);
             this.picBinGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -517,8 +541,9 @@
             this.tbNote.Location = new System.Drawing.Point(6, 22);
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
-            this.tbNote.Size = new System.Drawing.Size(208, 245);
+            this.tbNote.Size = new System.Drawing.Size(208, 317);
             this.tbNote.TabIndex = 9;
+            this.tbNote.TextChanged += new System.EventHandler(this.tbNote_TextChanged);
             // 
             // ck_ContinuMark
             // 
@@ -534,23 +559,22 @@
             this.ck_ContinuMark.CheckedChanged += new System.EventHandler(this.ck_ContinuMark_CheckedChanged);
             this.ck_ContinuMark.MouseHover += new System.EventHandler(this.ck_ContinuMark_MouseHover);
             // 
-            // tssPause
+            // lbNowPlaying
             // 
-            this.tssPause.Name = "tssPause";
-            this.tssPause.Size = new System.Drawing.Size(44, 18);
-            this.tssPause.Text = "已暂停";
-            // 
-            // tssFilePath
-            // 
-            this.tssFilePath.Name = "tssFilePath";
-            this.tssFilePath.Size = new System.Drawing.Size(240, 18);
-            this.tssFilePath.Text = "E:\\xms\\sdfkljaf\\sdagfklajdsflk\\dsfa\\abc.mp4";
+            this.lbNowPlaying.AutoSize = true;
+            this.lbNowPlaying.BackColor = System.Drawing.Color.Transparent;
+            this.lbNowPlaying.Location = new System.Drawing.Point(195, 6);
+            this.lbNowPlaying.Name = "lbNowPlaying";
+            this.lbNowPlaying.Size = new System.Drawing.Size(0, 13);
+            this.lbNowPlaying.TabIndex = 8;
+            this.lbNowPlaying.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbNowPlaying_MouseDoubleClick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1011, 608);
+            this.Controls.Add(this.lbNowPlaying);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.monthCalendar2);
             this.Controls.Add(this.btnReset);
@@ -585,9 +609,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLove)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPriv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picLoveGray)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picNoteGray)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picPrivGray)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBinGray)).EndInit();
             this.ResumeLayout(false);
@@ -627,10 +653,6 @@
         private System.Windows.Forms.CheckBox ck_ContinuMark;
         private System.Windows.Forms.ToolStripStatusLabel tssPlaySpeed;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
-        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.PictureBox picPriv;
         private System.Windows.Forms.PictureBox picBin;
         private System.Windows.Forms.PictureBox picLove;
@@ -638,7 +660,11 @@
         private System.Windows.Forms.PictureBox picPrivGray;
         private System.Windows.Forms.PictureBox picBinGray;
         private System.Windows.Forms.ToolStripStatusLabel tssPause;
-        private System.Windows.Forms.ToolStripStatusLabel tssFilePath;
+        private System.Windows.Forms.ToolStripStatusLabel tssNote;
+        private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
+        private System.Windows.Forms.Label lbNowPlaying;
+        private System.Windows.Forms.PictureBox picNote;
+        private System.Windows.Forms.PictureBox picNoteGray;
     }
 }
 
