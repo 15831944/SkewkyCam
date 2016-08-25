@@ -93,8 +93,8 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.lbHour);
             this.panel2.Controls.Add(this.lbMinute);
             this.panel2.Controls.Add(this.lbSecond);
@@ -103,27 +103,27 @@
             this.panel2.Controls.Add(this.tbVideoTime);
             this.panel2.Controls.Add(this.pBmin);
             this.panel2.Controls.Add(this.pBhour);
-            this.panel2.Location = new System.Drawing.Point(12, 523);
+            this.panel2.Location = new System.Drawing.Point(12, 483);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(749, 61);
+            this.panel2.Size = new System.Drawing.Size(749, 56);
             this.panel2.TabIndex = 1;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // lbHour
             // 
             this.lbHour.AutoSize = true;
-            this.lbHour.Location = new System.Drawing.Point(0, 42);
+            this.lbHour.Location = new System.Drawing.Point(0, 39);
             this.lbHour.Name = "lbHour";
-            this.lbHour.Size = new System.Drawing.Size(22, 13);
+            this.lbHour.Size = new System.Drawing.Size(23, 12);
             this.lbHour.TabIndex = 9;
             this.lbHour.Text = "时:";
             // 
             // lbMinute
             // 
             this.lbMinute.AutoSize = true;
-            this.lbMinute.Location = new System.Drawing.Point(0, 23);
+            this.lbMinute.Location = new System.Drawing.Point(0, 21);
             this.lbMinute.Name = "lbMinute";
-            this.lbMinute.Size = new System.Drawing.Size(22, 13);
+            this.lbMinute.Size = new System.Drawing.Size(23, 12);
             this.lbMinute.TabIndex = 9;
             this.lbMinute.Text = "分:";
             this.lbMinute.Click += new System.EventHandler(this.lbMinute_Click);
@@ -133,7 +133,7 @@
             this.lbSecond.AutoSize = true;
             this.lbSecond.Location = new System.Drawing.Point(1, 4);
             this.lbSecond.Name = "lbSecond";
-            this.lbSecond.Size = new System.Drawing.Size(22, 13);
+            this.lbSecond.Size = new System.Drawing.Size(23, 12);
             this.lbSecond.TabIndex = 9;
             this.lbSecond.Tag = "";
             this.lbSecond.Text = "秒:";
@@ -144,19 +144,19 @@
             this.txSound.AutoSize = true;
             this.txSound.Location = new System.Drawing.Point(723, 4);
             this.txSound.Name = "txSound";
-            this.txSound.Size = new System.Drawing.Size(25, 13);
+            this.txSound.Size = new System.Drawing.Size(23, 12);
             this.txSound.TabIndex = 7;
             this.txSound.Text = "100";
             this.txSound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // trackBar1
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
             this.trackBar1.Location = new System.Drawing.Point(24, 2);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(569, 20);
+            this.trackBar1.Size = new System.Drawing.Size(569, 18);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
@@ -168,19 +168,19 @@
             this.tbVideoTime.Location = new System.Drawing.Point(599, 3);
             this.tbVideoTime.Name = "tbVideoTime";
             this.tbVideoTime.ReadOnly = true;
-            this.tbVideoTime.Size = new System.Drawing.Size(109, 13);
+            this.tbVideoTime.Size = new System.Drawing.Size(109, 14);
             this.tbVideoTime.TabIndex = 6;
             this.tbVideoTime.Text = "00:00:00/00:00:00";
             this.tbVideoTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pBmin
             // 
-            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBmin.BackColor = System.Drawing.SystemColors.Control;
-            this.pBmin.Location = new System.Drawing.Point(24, 22);
+            this.pBmin.Location = new System.Drawing.Point(24, 20);
             this.pBmin.Name = "pBmin";
-            this.pBmin.Size = new System.Drawing.Size(720, 15);
+            this.pBmin.Size = new System.Drawing.Size(720, 14);
             this.pBmin.TabIndex = 8;
             this.pBmin.TabStop = false;
             this.pBmin.Click += new System.EventHandler(this.pBmin_Click);
@@ -192,12 +192,12 @@
             // 
             // pBhour
             // 
-            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBhour.BackColor = System.Drawing.SystemColors.Control;
-            this.pBhour.Location = new System.Drawing.Point(24, 42);
+            this.pBhour.Location = new System.Drawing.Point(24, 39);
             this.pBhour.Name = "pBhour";
-            this.pBhour.Size = new System.Drawing.Size(720, 15);
+            this.pBhour.Size = new System.Drawing.Size(720, 14);
             this.pBhour.TabIndex = 8;
             this.pBhour.TabStop = false;
             this.pBhour.Click += new System.EventHandler(this.pBhour_Click);
@@ -209,7 +209,7 @@
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReset.Location = new System.Drawing.Point(924, -1);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 25);
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
             this.btnReset.TabIndex = 2;
             this.btnReset.Text = "浏览";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -221,7 +221,7 @@
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStart.Location = new System.Drawing.Point(839, -1);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 25);
+            this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "开始";
             this.btnStart.UseVisualStyleBackColor = true;
@@ -241,7 +241,7 @@
             this.tssPlaySpeed,
             this.tssPause,
             this.tssNote});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 586);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
             this.statusStrip1.TabIndex = 3;
@@ -251,14 +251,14 @@
             // tsslStatus
             // 
             this.tsslStatus.Name = "tsslStatus";
-            this.tsslStatus.Size = new System.Drawing.Size(56, 18);
+            this.tsslStatus.Size = new System.Drawing.Size(56, 17);
             this.tsslStatus.Text = "正在加载";
             this.tsslStatus.Visible = false;
             // 
             // toolStripProgressBar1
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 17);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             this.toolStripProgressBar1.Visible = false;
             // 
             // tssPlaySpeed
@@ -282,15 +282,15 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.txSpeed);
             this.panel1.Controls.Add(this.pBplayEnv);
-            this.panel1.Location = new System.Drawing.Point(12, 33);
+            this.panel1.Location = new System.Drawing.Point(12, 30);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(749, 491);
+            this.panel1.Size = new System.Drawing.Size(749, 453);
             this.panel1.TabIndex = 0;
             // 
             // txSpeed
@@ -298,9 +298,9 @@
             this.txSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txSpeed.AutoSize = true;
             this.txSpeed.BackColor = System.Drawing.Color.Crimson;
-            this.txSpeed.Location = new System.Drawing.Point(8, 478);
+            this.txSpeed.Location = new System.Drawing.Point(8, 441);
             this.txSpeed.Name = "txSpeed";
-            this.txSpeed.Size = new System.Drawing.Size(81, 13);
+            this.txSpeed.Size = new System.Drawing.Size(89, 12);
             this.txSpeed.TabIndex = 1;
             this.txSpeed.Text = "播放速度：8.0x";
             this.txSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -308,13 +308,13 @@
             // 
             // pBplayEnv
             // 
-            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBplayEnv.BackColor = System.Drawing.Color.Transparent;
             this.pBplayEnv.Location = new System.Drawing.Point(2, -2);
             this.pBplayEnv.Name = "pBplayEnv";
-            this.pBplayEnv.Size = new System.Drawing.Size(746, 489);
+            this.pBplayEnv.Size = new System.Drawing.Size(746, 451);
             this.pBplayEnv.TabIndex = 0;
             this.pBplayEnv.TabStop = false;
             this.pBplayEnv.Click += new System.EventHandler(this.pBplayEnv_Click);
@@ -327,8 +327,7 @@
             // monthCalendar2
             // 
             this.monthCalendar2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.monthCalendar2.Location = new System.Drawing.Point(772, 46);
-            this.monthCalendar2.Margin = new System.Windows.Forms.Padding(9, 10, 9, 10);
+            this.monthCalendar2.Location = new System.Drawing.Point(772, 32);
             this.monthCalendar2.Name = "monthCalendar2";
             this.monthCalendar2.TabIndex = 5;
             this.monthCalendar2.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar2_DateChanged);
@@ -340,7 +339,7 @@
             this.Help_MenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1011, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1011, 25);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -350,20 +349,20 @@
             this.FileMgr_MenuItem,
             this.Settings_MenuItem});
             this.File_MenuItem.Name = "File_MenuItem";
-            this.File_MenuItem.Size = new System.Drawing.Size(43, 20);
+            this.File_MenuItem.Size = new System.Drawing.Size(44, 21);
             this.File_MenuItem.Text = "文件";
             // 
             // FileMgr_MenuItem
             // 
             this.FileMgr_MenuItem.Name = "FileMgr_MenuItem";
-            this.FileMgr_MenuItem.Size = new System.Drawing.Size(122, 22);
+            this.FileMgr_MenuItem.Size = new System.Drawing.Size(124, 22);
             this.FileMgr_MenuItem.Text = "管理中心";
             this.FileMgr_MenuItem.Click += new System.EventHandler(this.FileMgr_MenuItem_Click);
             // 
             // Settings_MenuItem
             // 
             this.Settings_MenuItem.Name = "Settings_MenuItem";
-            this.Settings_MenuItem.Size = new System.Drawing.Size(122, 22);
+            this.Settings_MenuItem.Size = new System.Drawing.Size(124, 22);
             this.Settings_MenuItem.Text = "设置";
             this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
             // 
@@ -373,27 +372,27 @@
             this.ReadMe_MenuItem,
             this.About_MenuItem1});
             this.Help_MenuItem.Name = "Help_MenuItem";
-            this.Help_MenuItem.Size = new System.Drawing.Size(43, 20);
+            this.Help_MenuItem.Size = new System.Drawing.Size(44, 21);
             this.Help_MenuItem.Text = "帮助";
             // 
             // ReadMe_MenuItem
             // 
             this.ReadMe_MenuItem.Name = "ReadMe_MenuItem";
-            this.ReadMe_MenuItem.Size = new System.Drawing.Size(123, 22);
+            this.ReadMe_MenuItem.Size = new System.Drawing.Size(124, 22);
             this.ReadMe_MenuItem.Text = "使用说明";
             this.ReadMe_MenuItem.Click += new System.EventHandler(this.ReadMe_MenuItem_Click);
             // 
             // About_MenuItem1
             // 
             this.About_MenuItem1.Name = "About_MenuItem1";
-            this.About_MenuItem1.Size = new System.Drawing.Size(123, 22);
+            this.About_MenuItem1.Size = new System.Drawing.Size(124, 22);
             this.About_MenuItem1.Text = "关于";
             this.About_MenuItem1.Click += new System.EventHandler(this.About_MenuItem1_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.picLove);
             this.groupBox1.Controls.Add(this.picNote);
             this.groupBox1.Controls.Add(this.picPriv);
@@ -404,9 +403,9 @@
             this.groupBox1.Controls.Add(this.picBinGray);
             this.groupBox1.Controls.Add(this.tbNote);
             this.groupBox1.Controls.Add(this.ck_ContinuMark);
-            this.groupBox1.Location = new System.Drawing.Point(773, 239);
+            this.groupBox1.Location = new System.Drawing.Point(773, 221);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(220, 345);
+            this.groupBox1.Size = new System.Drawing.Size(220, 318);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "备注";
@@ -418,9 +417,9 @@
             this.picLove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.picLove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLove.Image = global::Com.Skewky.Cam.Properties.Resources.love;
-            this.picLove.Location = new System.Drawing.Point(11, 292);
+            this.picLove.Location = new System.Drawing.Point(11, 270);
             this.picLove.Name = "picLove";
-            this.picLove.Size = new System.Drawing.Size(40, 43);
+            this.picLove.Size = new System.Drawing.Size(40, 40);
             this.picLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLove.TabIndex = 10;
             this.picLove.TabStop = false;
@@ -434,9 +433,9 @@
             this.picNote.BackColor = System.Drawing.Color.Transparent;
             this.picNote.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picNote.Image = global::Com.Skewky.Cam.Properties.Resources.ys;
-            this.picNote.Location = new System.Drawing.Point(147, 292);
+            this.picNote.Location = new System.Drawing.Point(147, 270);
             this.picNote.Name = "picNote";
-            this.picNote.Size = new System.Drawing.Size(40, 43);
+            this.picNote.Size = new System.Drawing.Size(40, 40);
             this.picNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picNote.TabIndex = 12;
             this.picNote.TabStop = false;
@@ -450,9 +449,9 @@
             this.picPriv.BackColor = System.Drawing.Color.Transparent;
             this.picPriv.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picPriv.Image = global::Com.Skewky.Cam.Properties.Resources.ys;
-            this.picPriv.Location = new System.Drawing.Point(101, 292);
+            this.picPriv.Location = new System.Drawing.Point(101, 270);
             this.picPriv.Name = "picPriv";
-            this.picPriv.Size = new System.Drawing.Size(40, 43);
+            this.picPriv.Size = new System.Drawing.Size(40, 40);
             this.picPriv.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picPriv.TabIndex = 12;
             this.picPriv.TabStop = false;
@@ -466,9 +465,9 @@
             this.picBin.BackColor = System.Drawing.Color.Transparent;
             this.picBin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picBin.Image = global::Com.Skewky.Cam.Properties.Resources.bin;
-            this.picBin.Location = new System.Drawing.Point(56, 292);
+            this.picBin.Location = new System.Drawing.Point(56, 270);
             this.picBin.Name = "picBin";
-            this.picBin.Size = new System.Drawing.Size(40, 43);
+            this.picBin.Size = new System.Drawing.Size(40, 40);
             this.picBin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBin.TabIndex = 11;
             this.picBin.TabStop = false;
@@ -483,9 +482,9 @@
             this.picLoveGray.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.picLoveGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLoveGray.Image = global::Com.Skewky.Cam.Properties.Resources.love_Gray;
-            this.picLoveGray.Location = new System.Drawing.Point(11, 292);
+            this.picLoveGray.Location = new System.Drawing.Point(11, 270);
             this.picLoveGray.Name = "picLoveGray";
-            this.picLoveGray.Size = new System.Drawing.Size(40, 43);
+            this.picLoveGray.Size = new System.Drawing.Size(40, 40);
             this.picLoveGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLoveGray.TabIndex = 10;
             this.picLoveGray.TabStop = false;
@@ -497,9 +496,9 @@
             this.picNoteGray.BackColor = System.Drawing.Color.Transparent;
             this.picNoteGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picNoteGray.Image = global::Com.Skewky.Cam.Properties.Resources.ys_Gray;
-            this.picNoteGray.Location = new System.Drawing.Point(147, 292);
+            this.picNoteGray.Location = new System.Drawing.Point(147, 270);
             this.picNoteGray.Name = "picNoteGray";
-            this.picNoteGray.Size = new System.Drawing.Size(40, 43);
+            this.picNoteGray.Size = new System.Drawing.Size(40, 40);
             this.picNoteGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picNoteGray.TabIndex = 12;
             this.picNoteGray.TabStop = false;
@@ -511,9 +510,9 @@
             this.picPrivGray.BackColor = System.Drawing.Color.Transparent;
             this.picPrivGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picPrivGray.Image = global::Com.Skewky.Cam.Properties.Resources.ys_Gray;
-            this.picPrivGray.Location = new System.Drawing.Point(101, 292);
+            this.picPrivGray.Location = new System.Drawing.Point(101, 270);
             this.picPrivGray.Name = "picPrivGray";
-            this.picPrivGray.Size = new System.Drawing.Size(40, 43);
+            this.picPrivGray.Size = new System.Drawing.Size(40, 40);
             this.picPrivGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picPrivGray.TabIndex = 12;
             this.picPrivGray.TabStop = false;
@@ -525,9 +524,9 @@
             this.picBinGray.BackColor = System.Drawing.Color.Transparent;
             this.picBinGray.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picBinGray.Image = global::Com.Skewky.Cam.Properties.Resources.bin_Gray;
-            this.picBinGray.Location = new System.Drawing.Point(56, 292);
+            this.picBinGray.Location = new System.Drawing.Point(56, 270);
             this.picBinGray.Name = "picBinGray";
-            this.picBinGray.Size = new System.Drawing.Size(40, 43);
+            this.picBinGray.Size = new System.Drawing.Size(40, 40);
             this.picBinGray.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBinGray.TabIndex = 11;
             this.picBinGray.TabStop = false;
@@ -535,13 +534,13 @@
             // 
             // tbNote
             // 
-            this.tbNote.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbNote.Location = new System.Drawing.Point(6, 22);
+            this.tbNote.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbNote.Location = new System.Drawing.Point(6, 20);
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
-            this.tbNote.Size = new System.Drawing.Size(208, 317);
+            this.tbNote.Size = new System.Drawing.Size(208, 293);
             this.tbNote.TabIndex = 9;
             this.tbNote.TextChanged += new System.EventHandler(this.tbNote_TextChanged);
             // 
@@ -550,9 +549,9 @@
             this.ck_ContinuMark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ck_ContinuMark.AutoSize = true;
             this.ck_ContinuMark.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ck_ContinuMark.Location = new System.Drawing.Point(140, -1);
+            this.ck_ContinuMark.Location = new System.Drawing.Point(142, -1);
             this.ck_ContinuMark.Name = "ck_ContinuMark";
-            this.ck_ContinuMark.Size = new System.Drawing.Size(74, 17);
+            this.ck_ContinuMark.Size = new System.Drawing.Size(72, 16);
             this.ck_ContinuMark.TabIndex = 8;
             this.ck_ContinuMark.Text = "持续备注";
             this.ck_ContinuMark.UseVisualStyleBackColor = true;
@@ -565,15 +564,15 @@
             this.lbNowPlaying.BackColor = System.Drawing.Color.Transparent;
             this.lbNowPlaying.Location = new System.Drawing.Point(195, 6);
             this.lbNowPlaying.Name = "lbNowPlaying";
-            this.lbNowPlaying.Size = new System.Drawing.Size(0, 13);
+            this.lbNowPlaying.Size = new System.Drawing.Size(0, 12);
             this.lbNowPlaying.TabIndex = 8;
             this.lbNowPlaying.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbNowPlaying_MouseDoubleClick);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1011, 608);
+            this.ClientSize = new System.Drawing.Size(1011, 561);
             this.Controls.Add(this.lbNowPlaying);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.monthCalendar2);
@@ -585,7 +584,7 @@
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1027, 647);
+            this.MinimumSize = new System.Drawing.Size(1027, 600);
             this.Name = "MainForm";
             this.Text = "SkewkyCam";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

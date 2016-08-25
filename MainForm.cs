@@ -494,7 +494,8 @@ namespace Com.Skewky.Cam
 
         private void ShowFileMgrForm()
         {
-            FileMgrForm fmf = new FileMgrForm();
+            fileParseTool.saveMarkFiles();
+            FileMgrForm fmf = new FileMgrForm(cfsettings);
             fmf.ShowDialog();
         }
         private void ShowSettingsForm()
@@ -578,14 +579,7 @@ namespace Com.Skewky.Cam
         private void UpdateMarkData()
         {
             MarkData mk = new MarkData();
-            if(!ck_ContinuMark.Checked)
-            {
-                tbNote.Text = string.Empty;
-                picBin.Visible = false;
-                picLove.Visible = false;
-                picPriv.Visible = false;
-                picNote.Visible = false;
-            }
+            
             if(fileParseTool.GetMarkData(curDt,ref mk))
             {
                 tbNote.Text = mk.Description;
@@ -593,7 +587,15 @@ namespace Com.Skewky.Cam
                 picLove.Visible = mk.Favourite;
                 picPriv.Visible = mk.Private;
                 picNote.Visible = mk.Describ;
-            }            
+            }
+            else if(!ck_ContinuMark.Checked)
+            {
+                tbNote.Text = string.Empty;
+                picBin.Visible = false;
+                picLove.Visible = false;
+                picPriv.Visible = false;
+                picNote.Visible = false;
+            }           
         }
         private void SaveMarkData()
         {

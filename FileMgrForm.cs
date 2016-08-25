@@ -5,12 +5,14 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Com.Skewky.Cam
 {
     public partial class FileMgrForm : Form
     {
-        public FileMgrForm()
+        public FileMgr fileMgr;
+        public FileMgrForm(ConfigSettings cf)
         {
             InitializeComponent();
             ColumnHeader cFile = new ColumnHeader();//创建一个列
@@ -22,6 +24,9 @@ namespace Com.Skewky.Cam
             cDiscr.Text = "备注";
             listFiles.Columns.AddRange(new ColumnHeader[] { cFile, cStatu, cDiscr });//将这两列加入listView1
             listFiles.View = View.Details;//列的显示模式
+
+            fileMgr = new FileMgr(cf);
+            threadInitAllFiles();
             initList();
         }
         private void initList()
@@ -58,11 +63,30 @@ namespace Com.Skewky.Cam
            
             }
         }
+        private void initAllFile()
+        {
+            fileMgr.initAllFiles();
+        }
+
+        private void threadInitAllFiles()
+        {
+            timer1.Interval = 1000;
+            timer1.Start();
+            Thread trd = new Thread(this.initAllFile);
+            trd.Start();
+         }
         private void dtStart_ValueChanged(object sender, EventArgs e)
         {
             DateTime dtMin = new DateTime(2014,11,1);
             if (dtStart.Value < dtMin)
                 dtStart.Value = dtMin;
+            if (dtStart.Value > dtEnd.Value)
+            {
+                dtMin = dtStart.Value;
+                dtStart.Value = dtEnd.Value;
+                dtEnd.Value = dtMin;
+            }
+            fillAllFilesToList();
         }
 
         private void dtEnd_ValueChanged(object sender, EventArgs e)
@@ -70,6 +94,13 @@ namespace Com.Skewky.Cam
             DateTime dtMax = DateTime.Now;
             if (dtEnd.Value > dtMax)
                 dtEnd.Value = dtMax;
+            if (dtStart.Value > dtEnd.Value)
+            {
+                dtMax = dtStart.Value;
+                dtStart.Value = dtEnd.Value;
+                dtEnd.Value = dtMax;
+            }
+            fillAllFilesToList();
         }
 
         private void tsmiAll_Click(object sender, EventArgs e)
@@ -146,11 +177,94 @@ namespace Com.Skewky.Cam
                     strRes += strHidden;
             }
             tsslFilter.Text = strRes;
+            fillAllFilesToList();
         }
 
         private void btSelAll_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (fileMgr.bInprocess)
+                tssLabel.Text = string.Format("正在扫描文件：已发现{0}个文件", fileMgr.fileArr.Count);
+            else
+            {
+                tssLabel.Text = string.Format("扫描完成：共发现{0}个文件", fileMgr.fileArr.Count);
+                timer1.Stop();
+                fillAllFilesToList();
+            } 
+        }
+        private void fillAllFilesToList()
+        {
+            listFiles.Items.Clear();
+            listFiles.Groups.Clear();
+            listFiles.ShowGroups = true;
+            for (int i = 0; i < fileMgr.fileArr.Count; i++)
+            {
+                DateTime dt = fileMgr.fileTool.getDtMinByPath(fileMgr.fileArr[i]);
+                MarkData mk = new MarkData();
+                fileMgr.fileTool.GetMarkData(dt,ref mk);
+                bool bCheckShow = checkShow(dt,mk);
+                if (!bCheckShow)
+                    continue;
+                string gpName = string.Format("{0:4D}-{1:2D}-{2:2D}", dt.Year, dt.Month, dt.Day);
+                gpName = dt.ToString("yyyy-MM-dd");
+                string fileName = dt.ToString("yyyy-MM-dd HH:mm");
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = fileName;
+                lvi.SubItems.Add(mk.MDStr);
+                lvi.SubItems.Add(mk.Description);
+
+                ListViewGroup gp = getGroup(gpName);
+                gp.Items.Add(lvi);
+                listFiles.Items.Add(lvi);
+
+            }
+        }
+        private bool checkShow(DateTime dt, MarkData mk)
+        {
+            if (dt < dtStart.Value)
+                return false;
+            if  (dt > dtEnd.Value)
+                return false;
+            if (!tsmiLove.Checked && mk.Favourite)
+                return false;
+            if (!tsmiDel.Checked && mk.ToDelete)
+                return false;
+            if (!tsmiPriv.Checked && mk.Private)
+                return false;
+            if (!tsmiNote.Checked && mk.Describ)
+                return false;
+            if (!tsmiAll.Checked && !(mk.Favourite ||mk.ToDelete||mk.Private|| mk.Describ))
+                return false;
+            if (string.IsNullOrEmpty(tbKeyword.Text))
+                return true;
+            else if (!mk.Describ || !mk.Description.Contains(tbKeyword.Text))
+                return false;
+            return true;
+        }
+        private ListViewGroup getGroup(string gpName)
+        {
+             foreach (ListViewGroup gp in listFiles.Groups)
+            {
+                if (gp.Header == gpName)
+                {
+                    return gp;
+                }
+            }
+            ListViewGroup lg = new ListViewGroup();
+            lg.Header = gpName;
+            lg.HeaderAlignment = HorizontalAlignment.Left;
+            listFiles.Groups.Add(lg);
+            return lg;
+        }
+
+        private void tbKeyword_TextChanged(object sender, EventArgs e)
+        {
+            fillAllFilesToList();
+        }
+                
     }
 }
