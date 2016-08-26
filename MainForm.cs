@@ -22,7 +22,8 @@ namespace Com.Skewky.Cam
         private FileParseBase fileParseTool;
         private DateTime curDt;
         private ConfigSettings cfsettings;
-
+        Thread trdFindNextFile = null;
+        Thread trdFileMgr = null;
 
         public MainForm()
         {
@@ -169,8 +170,8 @@ namespace Com.Skewky.Cam
         private void threadFindNextFile()
         {
             vlc_player_Next = newVlcPlayer();
-            Thread trd = new Thread(this.PrepearNextFile);
-            trd.Start();
+            trdFindNextFile = new Thread(this.PrepearNextFile);
+            trdFindNextFile.Start();
         }
         private void btnReset_Click(object sender, EventArgs e)
         {
@@ -263,6 +264,10 @@ namespace Com.Skewky.Cam
             saveConfig();
             SaveMarkData();
             fileParseTool.saveMarkFiles();
+            if (trdFindNextFile != null)
+            {
+                trdFindNextFile.Abort();
+            }
         }
 
         #region PlayEnvMouseEnv
@@ -494,6 +499,25 @@ namespace Com.Skewky.Cam
 
         private void ShowFileMgrForm()
         {
+            if (trdFileMgr == null)
+            {
+                trdFileMgr = new Thread(this.trdShowFileMgrForm);
+            }
+            if(trdFileMgr.ThreadState == ThreadState.Unstarted)
+            {
+                trdFileMgr.ApartmentState = ApartmentState.STA;
+                trdFileMgr.Start();
+            }
+            else if (trdFileMgr.ThreadState == ThreadState.Stopped)
+            {
+                trdFileMgr.Abort();
+                trdFileMgr = new Thread(this.trdShowFileMgrForm);
+                trdFileMgr.ApartmentState = ApartmentState.STA;
+                trdFileMgr.Start();
+            }
+        }
+        private void trdShowFileMgrForm()
+        {
             fileParseTool.saveMarkFiles();
             FileMgrForm fmf = new FileMgrForm(cfsettings);
             fmf.ShowDialog();
@@ -528,7 +552,7 @@ namespace Com.Skewky.Cam
         }
         private void ShowHelpForm()
         {
-
+            System.Diagnostics.Process.Start("http://www.skewky.com/forum.php?mod=viewthread&tid=2&extra=");
         }
         private void ShowAboutForm()
         {
@@ -943,7 +967,7 @@ namespace Com.Skewky.Cam
         private void ck_ContinuMark_MouseHover(object sender, EventArgs e)
         {
 
-            string msg = string.Format("持续标注\n直到取消勾选\n或碰到下一个有标注的视频");
+            string msg = string.Format("持续备注\n直到取消勾选\n或碰到下一个有备注的视频");
             Point pt = ck_ContinuMark.Location;
             pt.X -= 220;
             pt.Y += 20;

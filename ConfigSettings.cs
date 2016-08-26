@@ -19,10 +19,10 @@ namespace Com.Skewky.Cam
         {
 
             rootDirArr = new List<string>();
-            rootDirArr.Add(@"E:\Meida\XM");
+            //rootDirArr.Add(@"E:\Meida\XM");
             bAutoPalyNext = true;
             dPlaySpeeds = new double[7]{ 0.1,0.5, 1, 2, 4, 8, 16 };
-            iPlaySpeed = 3;
+            iPlaySpeed = 2;
             iRecType = 0;
             iValume = 80;
         }
@@ -39,8 +39,8 @@ namespace Com.Skewky.Cam
             {
                 if (rootDirArr == null)
                     rootDirArr = new List<string>();
-                if (rootDirArr.Count == 0)
-                    rootDirArr.Add(@"E:\Meida\XM");
+                //if (rootDirArr.Count == 0)
+                //    rootDirArr.Add(@"E:\Meida\XM");
                 if (dPlaySpeeds == null)
                     dPlaySpeeds = new double[7] { 0.1, 0.5, 1, 2, 4, 8, 16 };
                 iPlaySpeed = Math.Max(iPlaySpeed, 0);

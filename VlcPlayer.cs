@@ -92,6 +92,11 @@ namespace Com.Skewky.Cam
         {
             return LibVlcAPI.libvlc_media_player_get_time(libvlc_media_player_) / 1000.0;
         }
+        public libvlc_state_t GetPlayStatus()
+        {
+            libvlc_state_t sta = (libvlc_state_t)LibVlcAPI.libvlc_media_player_get_state(libvlc_media_player_);
+            return sta;
+        }
 
         public void SetPlayTime(double seekTime)
         {

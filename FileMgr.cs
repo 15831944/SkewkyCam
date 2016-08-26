@@ -34,6 +34,9 @@ namespace Com.Skewky.Cam
         {
             foreach (string folder in folders)
             {
+                if (!Directory.Exists(folder))
+                    continue;
+                
                 List<string> subFolders = new List<string>();
                 subFolders.AddRange(Directory.GetDirectories(folder));
                 paths.AddRange(Directory.GetFiles(folder, "*.mp4"));
