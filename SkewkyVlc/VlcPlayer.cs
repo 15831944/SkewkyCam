@@ -21,6 +21,10 @@ namespace Com.Skewky.Vlc
 
             libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);
         }
+        ~VlcPlayer()
+        {
+            Stop();
+        }
         public void Copy(VlcPlayer vlcPlayer)
         {
             libvlc_instance_ = vlcPlayer.libvlc_instance_;
@@ -30,6 +34,8 @@ namespace Com.Skewky.Vlc
         }
         public void setPlayInfo(PlayInfo pInfo)
         {
+            if (null == pInfo)
+                return;
             if (playPath != pInfo.filePath)
                 PlayFile(pInfo.filePath);
             SetPlayTime(pInfo.curTime);
@@ -49,13 +55,15 @@ namespace Com.Skewky.Vlc
                 Stop();
             }
         }
-        public void getPlayInfo(ref PlayInfo pInfo)
+        public PlayInfo getPlayInfo()
         {
+            PlayInfo pInfo = new PlayInfo();
             pInfo.filePath = playPath;
             pInfo.curTime = GetPlayTime();
             pInfo.playStatus = getPlayerStatus();
             pInfo.dPlayingSpeed = GetRate();
-            pInfo.dValume = GetVolume(); ;
+            pInfo.dValume = GetVolume();
+            return pInfo;
         }
         public void SetRenderWindow(int wndHandle)
         {

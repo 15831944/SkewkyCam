@@ -373,7 +373,12 @@ namespace Com.Skewky.Cam
             }
             else if (e.Shift)
             {
-
+                if (e.KeyCode == Keys.S)
+                {
+                    MergeFilesForm mff = new MergeFilesForm();
+                    mff.playTestFile();
+                    mff.ShowDialog();
+                 }
             }
             else //Normal key input
             {

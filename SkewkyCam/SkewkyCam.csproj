@@ -105,6 +105,12 @@
     <Compile Include="MarkData.cs" />
     <Compile Include="MarkFile.cs" />
     <Compile Include="MarkFileMgr.cs" />
+    <Compile Include="MergeFilesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MergeFilesForm.Designer.cs">
+      <DependentUpon>MergeFilesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MergeFilesForm.resx">
+      <DependentUpon>MergeFilesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -147,7 +156,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="SkewkyCam_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OtherRef\Res\love1.jpg" />
@@ -183,6 +191,16 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SkewkyMp4Tool\SkewkyMp4Tool.csproj">
+      <Project>{23FC428C-5C75-4F3E-9B84-300E6B621A9C}</Project>
+      <Name>SkewkyMp4Tool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkewkyVlc\SkewkyVlc.csproj">
+      <Project>{2BA300CE-C36E-4CF7-9191-84B789D51D04}</Project>
+      <Name>SkewkyVlc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
