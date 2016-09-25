@@ -10,17 +10,17 @@ namespace Com.Skewky.Vlc
 {
     public partial class FullScreenForm : Form
     {
-        VlcPlayerUI vlcPlayer= new VlcPlayerUI();
+        VlcPlayerUI playUI= new VlcPlayerUI();
         public PlayInfo fullPlayInfo = new PlayInfo();
         public FullScreenForm()
         {
             InitializeComponent();
-            vlcPlayer.setComponents(panelPlay, null, null, null, null, null);
+            playUI.setComponents(panelPlay, null, null, lbTimer, lbSound, lbSpeed);
         }
        
         public PlayInfo getVlcPlayInfo()
         {
-            fullPlayInfo = vlcPlayer.getPlayInfo();
+            fullPlayInfo = playUI.getPlayInfo();
             return fullPlayInfo;
         }
         public void setVlcPlayInfo(PlayInfo playInfo)
@@ -29,7 +29,7 @@ namespace Com.Skewky.Vlc
             {
                 return;
             }
-            vlcPlayer.setPlayInfo(playInfo);
+            playUI.setPlayInfo(playInfo);
         }
         private void FullScreen_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -38,21 +38,36 @@ namespace Com.Skewky.Vlc
 
         private void FullScreenPlayer_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
                 exitFullScreen();
+            else
+            {
+                panelCtrl.Visible = true;
+                timer1.Interval = 2000;
+                timer1.Start();
+                playUI.Env_KeyUp(sender, e);
+                playUI.updateTexts();
+            }
         }
         private void exitFullScreen()
         {
-            fullPlayInfo = vlcPlayer.getPlayInfo();
+            fullPlayInfo = playUI.getPlayInfo();
             this.DialogResult = DialogResult.OK;
-            vlcPlayer.Stop();
-            this.Close();
+            playUI.Stop();
+            this.Visible = false;
+            //this.Close();
         }
 
    
         private void FullScreenPlayer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            vlcPlayer.Stop();
+            playUI.Stop();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            panelCtrl.Visible = false;
         }
     }
 }

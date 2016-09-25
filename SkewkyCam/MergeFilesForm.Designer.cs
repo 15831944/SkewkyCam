@@ -59,6 +59,7 @@
             this.Controls.Add(this.vlcCtrl);
             this.Name = "MergeFilesForm";
             this.Text = "MergeFilesForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MergeFilesForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -13,7 +13,7 @@ namespace Com.Skewky.Vlc
         private bool bFindNext = false;
         private bool bAutoPlayNext = true;
 
-        private bool is_playing_;
+        public bool is_playing_ = false;
     
         public int iPlaySpeed = 2;
         public int iValume = 80;
@@ -80,6 +80,7 @@ namespace Com.Skewky.Vlc
         {
             initVlcPlayer();
             m_vlc.setPlayInfo(pInfo);
+            updateTexts();
         }
         public PlayInfo getPlayInfo()
         {
@@ -96,6 +97,8 @@ namespace Com.Skewky.Vlc
                 return;
             bFindNext = true;
             m_vlc.PlayFile(path);
+            updateTexts();
+     
         }
         private void PlayNext()
         {
@@ -107,6 +110,7 @@ namespace Com.Skewky.Vlc
             m_vlc.Pause();
             bFindNext = false;
             updatePlayStatus_Start();
+            updateTexts();
         }
         #region updateStatus
         private void updatePlayStatus_Start()
@@ -128,6 +132,7 @@ namespace Com.Skewky.Vlc
                 playTimer.Start();
             }
             is_playing_ = true;
+            updateTexts();
         }
         private void updatePlayStatus_Stop()
         {
@@ -142,6 +147,7 @@ namespace Com.Skewky.Vlc
                 playTimer.Stop();
             } 
             is_playing_ = false;
+            updateTexts();
         }
         private void resetTimerInterval()
         {
@@ -153,10 +159,19 @@ namespace Com.Skewky.Vlc
         public void Play()
         {
             m_vlc.Play();
+            updateTexts();
         }
         public void Pause()
         {
             m_vlc.Pause();
+            updateTexts();
+        }
+        public void TogglePlay()
+        {
+            if (is_playing_)
+                m_vlc.Pause();
+            else
+                m_vlc.Play();
         }
         public void Stop()
         {
@@ -164,15 +179,16 @@ namespace Com.Skewky.Vlc
         }
         public void updateTexts()
         {
-
             initVlcPlayer();
             updateVolume();
             UpdateSpeed();
+            UpdateVedioTime();
         }
-        private void updateVolume(bool bLouder)
+        public void updateVolume(bool bLouder)
         {
             //设置声音
-            iValume = m_vlc.GetVolume();
+             initVlcPlayer();
+           iValume = m_vlc.GetVolume();
 
             if (bLouder)
                 iValume += 5;
@@ -181,13 +197,12 @@ namespace Com.Skewky.Vlc
 
             if (iValume < 0)
                 iValume = 0;
+            m_vlc.SetVolume(iValume);
             updateVolume();
         }
-        private void updateVolume()
+        public void updateVolume()
         {
 
-            initVlcPlayer();
-            m_vlc.SetVolume(iValume);
             if (null == lbSound)
                 return;
             lbSound.Text = string.Format("{0}", iValume);
@@ -196,34 +211,48 @@ namespace Com.Skewky.Vlc
             else
                 lbSound.ForeColor = Color.Black;
         }
-        private void UpdateSpeed()
+        public void SetSpeed(int iSpeed)
         {
 
             initVlcPlayer();
+            iPlaySpeed = iSpeed;
             double dRate = ConstVars.getDoubleSpeed(iPlaySpeed);
             m_vlc.SetRate(dRate);
             resetTimerInterval();
+            UpdateSpeed();
+        }
+        public void UpdateSpeed()
+        {
+
             if (lbSpeed == null)
                 return;
 
+            initVlcPlayer();
+            double dRate = ConstVars.getDoubleSpeed(iPlaySpeed);
+            
             lbSpeed.Visible = true;
             lbSpeed.Text = string.Format("{0:N1}x", dRate);
         }
-        private void UpdateVedioTime()
+        public void UpdateVedioTime(double dSteep = 0)
         {
-            if (lbVideoTime == null)
+            initVlcPlayer();
+            double curPlayTime = m_vlc.GetPlayTime() * 1000 + dSteep;
+            curPlayTime = Math.Max(0, curPlayTime);
+            curPlayTime = Math.Min(m_vlc.Duration(), curPlayTime);
+            if (!double.Equals(dSteep,0.0))
             {
-                return;
+                m_vlc.SetPlayTime(curPlayTime/1000);
             }
-            int curVal = tbProcess.Value + (int)(1000 * ConstVars.getDoubleSpeed(iPlaySpeed));
-            curVal = Math.Max(tbProcess.Minimum, curVal);
-            curVal = Math.Min(tbProcess.Maximum, curVal);
-            double curPlayTime = m_vlc.GetPlayTime() * 1000;
-            curPlayTime = Math.Max(tbProcess.Minimum, curPlayTime);
-            curPlayTime = Math.Min(tbProcess.Maximum, curPlayTime);
+
+            if (lbVideoTime == null)
+                return;
+
             lbVideoTime.Text = string.Format("{0}/{1}",
-                GetTimeString(tbProcess.Value / 1000),
-                GetTimeString(tbProcess.Maximum / 1000));
+                GetTimeString((int)(curPlayTime / 1000.0)),
+                GetTimeString((int)(m_vlc.Duration() / 1000.0)));
+
+            if (tbProcess == null)
+                return;
             tbProcess.Value = (int)curPlayTime;
         }
         #endregion
@@ -271,10 +300,104 @@ namespace Com.Skewky.Vlc
             iPlaySpeed++;
             if (iPlaySpeed == 7)
                 iPlaySpeed = 0;
-            UpdateSpeed();
+            SetSpeed(iPlaySpeed);
+        }
+        #region Key Envents
+        public void Env_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Alt && e.Control && e.Shift)
+            {
+                //pressed all the control keys
+                //Do some thing
+            }
+            else if (e.Alt && e.Control)
+            {
+            }
+            else if (e.Alt && e.Shift)
+            {
+            }
+            else if (e.Shift && e.Control)
+            {
+
+            }
+            else if (e.Alt)
+            {
+                KeyEnv_TogglePlay(sender, e);
+
+            }
+            else if (e.Control)
+            {
+                KeyEnv_Speed(sender, e);
+            }
+            else if (e.Shift)
+            {
+
+            }
+            else //Normal key input
+            {
+                KeyEnv_Process(sender, e);
+                KeyEnv_Sound(sender, e);
+            }
+        }
+        private void KeyEnv_TogglePlay(object sender, KeyEventArgs e)
+        {
+            if (Keys.Space == e.KeyCode)
+            {
+                TogglePlay();
+            }
+        }
+        private void KeyEnv_Speed(object sender, KeyEventArgs e)
+        {
+            if (Keys.Up == e.KeyCode ||
+                Keys.Down == e.KeyCode)
+            {
+                int curSpd = iPlaySpeed;
+                //加速
+                if (Keys.Up == e.KeyCode)
+                {
+                    curSpd += 1;
+                }
+                //减速
+                if (Keys.Down == e.KeyCode)
+                {
+                    curSpd -= 1;
+                }
+                curSpd = Math.Max(curSpd, 0);
+                curSpd = Math.Min(curSpd, 6);
+                SetSpeed(curSpd);
+            }
+        }
+        private void KeyEnv_Sound(object sender, KeyEventArgs e)
+        {
+            if (Keys.Up == e.KeyCode ||
+                Keys.Down == e.KeyCode)
+            {
+                //加速
+                updateVolume(Keys.Up == e.KeyCode);
+            }
+        }
+        private void KeyEnv_Process(object sender, KeyEventArgs e)
+        {
+            if (Keys.Left == e.KeyCode ||
+                Keys.Right == e.KeyCode)
+            {
+                double dSpeedStep = 5000;      //5s per step
+                //后退
+                if (Keys.Left == e.KeyCode)
+                {
+                    dSpeedStep = -dSpeedStep;
+                }
+                //前进
+                if (Keys.Right == e.KeyCode)
+                {
+                }
+                UpdateVedioTime(dSpeedStep); ;
+                //trackBar1.Value = (int)vlc_player_.GetPlayTime();
+            }
+
         }
 
-
-    
+        #endregion
+     
     }
 }

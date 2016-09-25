@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelPlay = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picEnv = new System.Windows.Forms.PictureBox();
             this.panelCtrl = new System.Windows.Forms.Panel();
             this.lbVideoTime = new System.Windows.Forms.Label();
             this.lbSpeed = new System.Windows.Forms.Label();
@@ -38,7 +38,7 @@
             this.tbProcess = new System.Windows.Forms.TrackBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelPlay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).BeginInit();
             this.panelCtrl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbProcess)).BeginInit();
             this.SuspendLayout();
@@ -48,24 +48,25 @@
             this.panelPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelPlay.Controls.Add(this.pictureBox1);
+            this.panelPlay.Controls.Add(this.picEnv);
             this.panelPlay.Location = new System.Drawing.Point(0, 0);
             this.panelPlay.Name = "panelPlay";
             this.panelPlay.Size = new System.Drawing.Size(580, 338);
             this.panelPlay.TabIndex = 0;
             // 
-            // pictureBox1
+            // picEnv
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.picEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(580, 338);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDoubleClick);
+            this.picEnv.BackColor = System.Drawing.Color.Black;
+            this.picEnv.Location = new System.Drawing.Point(0, 0);
+            this.picEnv.Name = "picEnv";
+            this.picEnv.Size = new System.Drawing.Size(580, 338);
+            this.picEnv.TabIndex = 0;
+            this.picEnv.TabStop = false;
+            this.picEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseClick);
+            this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseDoubleClick);
             // 
             // panelCtrl
             // 
@@ -116,9 +117,11 @@
             this.tbProcess.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tbProcess.AutoSize = false;
             this.tbProcess.Location = new System.Drawing.Point(36, 1);
+            this.tbProcess.Maximum = 100;
             this.tbProcess.Name = "tbProcess";
             this.tbProcess.Size = new System.Drawing.Size(390, 18);
             this.tbProcess.TabIndex = 0;
+            this.tbProcess.TabStop = false;
             this.tbProcess.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // VlcControl
@@ -129,8 +132,9 @@
             this.Controls.Add(this.panelPlay);
             this.Name = "VlcControl";
             this.Size = new System.Drawing.Size(580, 363);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.VlcControl_KeyUp);
             this.panelPlay.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).EndInit();
             this.panelCtrl.ResumeLayout(false);
             this.panelCtrl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbProcess)).EndInit();
@@ -146,7 +150,7 @@
         private System.Windows.Forms.Label lbSpeed;
         private System.Windows.Forms.Label lbSound;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picEnv;
         private System.Windows.Forms.Label lbVideoTime;
     }
 }

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Com.Skewky.Mp4Tool</RootNamespace>
-    <AssemblyName>SkewkyMp4Tool</AssemblyName>
+    <AssemblyName>Skewky.Mp4Tool</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

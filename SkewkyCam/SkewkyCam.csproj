@@ -197,6 +197,10 @@
       <Project>{23FC428C-5C75-4F3E-9B84-300E6B621A9C}</Project>
       <Name>SkewkyMp4Tool</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SkewkySqlite\SkewkySqlite.csproj">
+      <Project>{DFD5E781-DB28-49A8-B1AC-D7C2F5D15002}</Project>
+      <Name>SkewkySqlite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SkewkyVlc\SkewkyVlc.csproj">
       <Project>{2BA300CE-C36E-4CF7-9191-84B789D51D04}</Project>
       <Name>SkewkyVlc</Name>
