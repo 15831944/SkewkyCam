@@ -30,17 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelPlay = new System.Windows.Forms.Panel();
-            this.picEnv = new System.Windows.Forms.PictureBox();
             this.panelCtrl = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbSpeed = new System.Windows.Forms.Label();
-            this.lbTimer = new System.Windows.Forms.Label();
-            this.lbSound = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.lbSound = new System.Windows.Forms.Label();
+            this.lbTimer = new System.Windows.Forms.Label();
+            this.lbSpeed = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.picEnv = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panelPlay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).BeginInit();
             this.panelCtrl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).BeginInit();
             this.SuspendLayout();
             // 
             // panelPlay
@@ -56,19 +56,6 @@
             this.panelPlay.Size = new System.Drawing.Size(702, 462);
             this.panelPlay.TabIndex = 2;
             // 
-            // picEnv
-            // 
-            this.picEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.picEnv.BackColor = System.Drawing.Color.Black;
-            this.picEnv.Location = new System.Drawing.Point(0, 0);
-            this.picEnv.Name = "picEnv";
-            this.picEnv.Size = new System.Drawing.Size(702, 462);
-            this.picEnv.TabIndex = 0;
-            this.picEnv.TabStop = false;
-            this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FullScreen_MouseDoubleClick);
-            // 
             // panelCtrl
             // 
             this.panelCtrl.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -83,32 +70,14 @@
             this.panelCtrl.TabIndex = 1;
             this.panelCtrl.Visible = false;
             // 
-            // label1
+            // label5
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "播放速度：";
-            // 
-            // lbSpeed
-            // 
-            this.lbSpeed.AutoSize = true;
-            this.lbSpeed.Location = new System.Drawing.Point(65, 4);
-            this.lbSpeed.Name = "lbSpeed";
-            this.lbSpeed.Size = new System.Drawing.Size(29, 12);
-            this.lbSpeed.TabIndex = 1;
-            this.lbSpeed.Text = "0.5x";
-            // 
-            // lbTimer
-            // 
-            this.lbTimer.AutoSize = true;
-            this.lbTimer.Location = new System.Drawing.Point(115, 4);
-            this.lbTimer.Name = "lbTimer";
-            this.lbTimer.Size = new System.Drawing.Size(107, 12);
-            this.lbTimer.TabIndex = 1;
-            this.lbTimer.Text = "00:00:00/00:00:00";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(233, 4);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 12);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "音量：";
             // 
             // lbSound
             // 
@@ -119,14 +88,45 @@
             this.lbSound.TabIndex = 1;
             this.lbSound.Text = "80";
             // 
-            // label5
+            // lbTimer
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(233, 4);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 12);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "音量：";
+            this.lbTimer.AutoSize = true;
+            this.lbTimer.Location = new System.Drawing.Point(115, 4);
+            this.lbTimer.Name = "lbTimer";
+            this.lbTimer.Size = new System.Drawing.Size(107, 12);
+            this.lbTimer.TabIndex = 1;
+            this.lbTimer.Text = "00:00:00/00:00:00";
+            // 
+            // lbSpeed
+            // 
+            this.lbSpeed.AutoSize = true;
+            this.lbSpeed.Location = new System.Drawing.Point(65, 4);
+            this.lbSpeed.Name = "lbSpeed";
+            this.lbSpeed.Size = new System.Drawing.Size(29, 12);
+            this.lbSpeed.TabIndex = 1;
+            this.lbSpeed.Text = "0.5x";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "播放速度：";
+            // 
+            // picEnv
+            // 
+            this.picEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.picEnv.BackColor = System.Drawing.Color.Black;
+            this.picEnv.Location = new System.Drawing.Point(0, 0);
+            this.picEnv.Name = "picEnv";
+            this.picEnv.Size = new System.Drawing.Size(702, 462);
+            this.picEnv.TabIndex = 0;
+            this.picEnv.TabStop = false;
+            this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FullScreen_MouseDoubleClick);
             // 
             // timer1
             // 
@@ -142,12 +142,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FullScreenForm";
             this.Text = "FullScreenPlayer";
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FullScreenPlayer_FormClosed);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FullScreenPlayer_KeyUp);
             this.panelPlay.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).EndInit();
             this.panelCtrl.ResumeLayout(false);
             this.panelCtrl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picEnv)).EndInit();
             this.ResumeLayout(false);
 
         }

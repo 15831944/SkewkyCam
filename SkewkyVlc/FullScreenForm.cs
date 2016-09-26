@@ -16,6 +16,7 @@ namespace Com.Skewky.Vlc
         {
             InitializeComponent();
             playUI.setComponents(panelPlay, null, null, lbTimer, lbSound, lbSpeed);
+            this.TopMost = true;
         }
        
         public PlayInfo getVlcPlayInfo()
