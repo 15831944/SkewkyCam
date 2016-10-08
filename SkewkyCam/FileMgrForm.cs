@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using Com.Skewky.Vlc;
 
 namespace Com.Skewky.Cam
 {
@@ -39,7 +40,7 @@ namespace Com.Skewky.Cam
         Thread trdFileOpr = null;
 
         int iPlaySpeed = 1;
-        int iValume = 80;
+        int iValume = 80; 
 
         public FileMgrForm(ConfigSettings cf)
         {
@@ -61,8 +62,7 @@ namespace Com.Skewky.Cam
             dtStart.Value = dtS;
             tsslFilter.Text = getFileterString(bLove, bDel, bPriv, bNote, bNormal, dtS, dtE, keyWord);
             lbCurOpr.Text = ""; 
-            pictureBox1.BackColor = System.Drawing.Color.Transparent;
-
+        
       
         }
         private VlcPlayer newVlcPlayer()
@@ -75,15 +75,7 @@ namespace Com.Skewky.Cam
         }
         private void playFile(string path)
         {
-            vlc_player_.Stop();
-         
-            vlc_player_.PlayFile(path);
-            double duraTime = vlc_player_.Duration();
-            
-            timerPlay.Interval = 1000;
-            timerPlay.Start();
-            
-            trackBar1.SetRange(0, (int)duraTime);
+            vlcCtrl.PlayFile(path);
      
         }
         private void initList()
@@ -488,12 +480,12 @@ namespace Com.Skewky.Cam
         {
             threadInitAllFiles();
         }
-
-        
+                
         private void timerOprFiles_Tick(object sender, EventArgs e)
         {
             updateCurOprStatus();
         }
+       
         private void updateCurOprStatus()
         {
             if (iCurOprType == CurOprType.None)
@@ -546,8 +538,30 @@ namespace Com.Skewky.Cam
                 playFile(filePath);
             }
         }
+           
 
-        private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void timerPlay_Tick(object sender, EventArgs e)
+        {
+            //bool bIsPlayEnded = vlc_player_.isPlayEnded();
+            //double curPlayTime = vlc_player_.GetPlayTime() * 1000;
+            //if (bIsPlayEnded || curPlayTime<0)
+            //{
+            //      vlc_player_.Stop();
+            //      timerPlay.Stop();
+            //      trackBar1.Value = trackBar1.Maximum;
+            //}
+            //else
+            //{
+            //    curPlayTime = Math.Max(trackBar1.Minimum, curPlayTime);
+            //    curPlayTime = Math.Min(trackBar1.Maximum, curPlayTime);
+            //    trackBar1.Value = (int)curPlayTime;
+            //    tbVideoTime.Text = string.Format("{0}/{1}",
+            //        GetTimeString(trackBar1.Value / 1000),
+            //        GetTimeString(trackBar1.Maximum / 1000));
+            //}
+        }
+
+    private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerPlay.Stop();
             vlc_player_.Stop();
@@ -563,167 +577,6 @@ namespace Com.Skewky.Cam
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            libvlc_state_t sta = vlc_player_.GetPlayStatus() ;
-            if (libvlc_state_t.libvlc_Paused == sta)
-            {
-                vlc_player_.Play();
-                button1.Text = "暂停";
-            }
-            else if (libvlc_state_t.libvlc_Playing == sta)
-            {
-                vlc_player_.Pause();
-                button1.Text = "继续";
-            }
-
-        }
-
-        private void timerPlay_Tick(object sender, EventArgs e)
-        {
-            bool bIsPlayEnded = vlc_player_.isPlayEnded();
-            double curPlayTime = vlc_player_.GetPlayTime() * 1000;
-            if (bIsPlayEnded || curPlayTime<0)
-            {
-                  vlc_player_.Stop();
-                  timerPlay.Stop();
-                  trackBar1.Value = trackBar1.Maximum;
-            }
-            else
-            {
-                curPlayTime = Math.Max(trackBar1.Minimum, curPlayTime);
-                curPlayTime = Math.Min(trackBar1.Maximum, curPlayTime);
-                trackBar1.Value = (int)curPlayTime;
-                tbVideoTime.Text = string.Format("{0}/{1}",
-                    GetTimeString(trackBar1.Value / 1000),
-                    GetTimeString(trackBar1.Maximum / 1000));
-            }
-        }
-        private string GetTimeString(int val)
-        {
-            int hour = val / 3600;
-            val %= 3600;
-            int minute = val / 60;
-            int second = val % 60;
-            return string.Format("{0:00}:{1:00}:{2:00}", hour, minute, second);
-        }
-        private void FileMgrForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Shift)
-            {
-                KeyEnv_Speed(sender, e);
-             }
-            else 
-            {
-                KeyEnv_Process(sender, e);
-                KeyEnv_Sound(sender, e);
-            }
-        }
-        private void KeyEnv_Speed(object sender, KeyEventArgs e)
-        {
-            if (Keys.Up == e.KeyCode ||
-                Keys.Down == e.KeyCode)
-            {
-                int curSpd = iPlaySpeed;
-                //加速
-                if (Keys.Up == e.KeyCode)
-                {
-                    curSpd += 1;
-                }
-                //减速
-                if (Keys.Down == e.KeyCode)
-                {
-                    curSpd -= 1;
-                }
-                iPlaySpeed = Math.Max(curSpd, 0);
-                iPlaySpeed = Math.Min(curSpd, 6);
-                UpdateSpeed();
-            }
-        }
-        private void KeyEnv_Sound(object sender, KeyEventArgs e)
-        {
-            if (Keys.Up == e.KeyCode ||
-                Keys.Down == e.KeyCode)
-            {
-                //加速
-                updateVolume(Keys.Up == e.KeyCode);
-            }
-        }
-        private void KeyEnv_Process(object sender, KeyEventArgs e)
-        {
-            if (Keys.Left == e.KeyCode ||
-                Keys.Right == e.KeyCode)
-            {
-                int iSpeedStep = 5000;      //5s per step
-                int dureTime = (int)vlc_player_.Duration();
-                //前进
-                if (Keys.Left == e.KeyCode)
-                {
-                    iSpeedStep = -iSpeedStep;
-                }
-                //后退
-                if (Keys.Right == e.KeyCode)
-                {
-
-                }
-                int newPlayTime = trackBar1.Value + iSpeedStep;
-                double dNewPlayTime = newPlayTime / 1000.0;
-                dNewPlayTime = Math.Max(0, dNewPlayTime);
-                dNewPlayTime = Math.Min(dNewPlayTime, vlc_player_.Duration());
-                vlc_player_.SetPlayTime(dNewPlayTime);
-                vlc_player_.Play();
-            }
-
-        }
-
-        private void pPlayPaneEnv_MouseWheel(object sender, MouseEventArgs e)
-        {
-            updateVolume(e.Delta == 120);
-
-        }
-        private void updateVolume(bool bLouder)
-        {
-            //设置声音
-            iValume = vlc_player_.GetVolume();
-
-            if (bLouder)
-                iValume += 5;
-            else
-                iValume -= 5;
-
-            if (iValume < 0)
-                iValume = 0;
-            updateVolume();
-        }
-        private void updateVolume()
-        {
-            vlc_player_.SetVolume(iValume);
-            txSound.Text = string.Format("{0}", iValume);
-            if (iValume > 100)
-                txSound.ForeColor = Color.Red;
-            else
-                txSound.ForeColor = Color.Black;
-        }
-        private void UpdateSpeed()
-        {
-            double dRate = getDoubleSpeed();
-            vlc_player_.SetRate(dRate);
-                txSpeed.Text = string.Format("{0:N1}x", dRate);
-            resetTimerInterval();
-        
-        }
-
-        private double getDoubleSpeed()
-        {
-           double[] dSpeed = new double[]{0.1,0.5,1,2,4,8,16};
-           return dSpeed[iPlaySpeed];
-        }
-        private void resetTimerInterval()
-        {
-            double dInv = 1 / getDoubleSpeed();
-            timerPlay.Interval = (int)(dInv * 1000);
-        }
-
         private void FileMgrForm_Leave(object sender, EventArgs e)
         {
         }
@@ -734,12 +587,5 @@ namespace Com.Skewky.Cam
        
         }
 
-        private void txSpeed_Click(object sender, EventArgs e)
-        {
-            iPlaySpeed++;
-            if (iPlaySpeed == 7)
-                iPlaySpeed = 0;
-            UpdateSpeed();
-        }
-    }
+   }
 }

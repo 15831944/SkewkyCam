@@ -13,8 +13,6 @@ namespace Com.Skewky.Vlc
         private bool bFindNext = false;
         private bool bAutoPlayNext = true;
 
-        public bool is_playing_ = false;
-    
         public int iPlaySpeed = 2;
         public int iValume = 80;
 
@@ -131,7 +129,6 @@ namespace Com.Skewky.Vlc
             {
                 playTimer.Start();
             }
-            is_playing_ = true;
             updateTexts();
         }
         private void updatePlayStatus_Stop()
@@ -146,7 +143,6 @@ namespace Com.Skewky.Vlc
             {
                 playTimer.Stop();
             } 
-            is_playing_ = false;
             updateTexts();
         }
         private void resetTimerInterval()
@@ -158,23 +154,24 @@ namespace Com.Skewky.Vlc
         }
         public void Play()
         {
+            initVlcPlayer();
             m_vlc.Play();
-            updateTexts();
+           updateTexts();
         }
         public void Pause()
         {
+            initVlcPlayer();
             m_vlc.Pause();
             updateTexts();
         }
         public void TogglePlay()
         {
-            if (is_playing_)
-                m_vlc.Pause();
-            else
-                m_vlc.Play();
+            initVlcPlayer();
+            m_vlc.TooglePlay();            
         }
         public void Stop()
         {
+            initVlcPlayer();
             m_vlc.Stop();
         }
         public void updateTexts()
@@ -261,7 +258,7 @@ namespace Com.Skewky.Vlc
         {
 
             initVlcPlayer();
-            if (is_playing_)
+            if (m_vlc.IsPlaying)
             {
                 double playTime = m_vlc.GetPlayTime();
                 double duraTime = m_vlc.Duration();
@@ -289,7 +286,7 @@ namespace Com.Skewky.Vlc
         {
 
             initVlcPlayer();
-            if (is_playing_&&tbProcess!=null)
+            if (m_vlc.IsPlaying&&tbProcess!=null)
             {
                 m_vlc.SetPlayTime(tbProcess.Value / 1000.0);
                 tbProcess.Value = (int)m_vlc.GetPlayTime();

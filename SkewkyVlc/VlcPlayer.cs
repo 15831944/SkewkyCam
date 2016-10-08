@@ -13,6 +13,11 @@ namespace Com.Skewky.Vlc
         private IntPtr libvlc_media_player_;
         private double duration_;
         private string playPath;
+        private bool bIsPlaying = false;
+        public bool IsPlaying
+        {
+            get { return bIsPlaying; }
+        }
         public VlcPlayer(string pluginPath)
         {
             string plugin_arg = "--plugin-path=" + pluginPath;
@@ -86,6 +91,7 @@ namespace Com.Skewky.Vlc
 
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
                 playPath = filePath;
+                bIsPlaying = true;
             }
         }
         public void PrepareFile(string filePath)
@@ -107,14 +113,22 @@ namespace Com.Skewky.Vlc
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_pause(libvlc_media_player_);
+                bIsPlaying = false;
             }
         }
-
+        public void TooglePlay()
+        {
+            if (bIsPlaying)
+                Pause();
+            else
+                Play();
+        }
         public void Play()
         {
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
+                bIsPlaying = true;
             }
         }
         public void Stop()
@@ -122,6 +136,7 @@ namespace Com.Skewky.Vlc
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_stop(libvlc_media_player_);
+                bIsPlaying = true;
             }
         }
 

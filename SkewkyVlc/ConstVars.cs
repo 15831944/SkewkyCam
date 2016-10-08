@@ -7,7 +7,7 @@ namespace Com.Skewky.Vlc
     public static class ConstVars
     {
         public static double[] dPlaySpeeds = new double[7]{ 0.1,0.5, 1, 2, 4, 8, 16 };
-
+        public static int iDbClickIntervel = 200;
 
         public static double getDoubleSpeed(int iPlaySpeed)
         {

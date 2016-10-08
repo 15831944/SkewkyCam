@@ -53,14 +53,9 @@
             this.tsslFilter = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerInitFiles = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.txSpeed = new System.Windows.Forms.Label();
-            this.txSound = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.tbVideoTime = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panelPlay = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.vlcCtrl = new Com.Skewky.Vlc.VlcControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.miLove = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,9 +74,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panelPlay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -274,72 +267,12 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainer1.Panel2.Controls.Add(this.txSpeed);
-            this.splitContainer1.Panel2.Controls.Add(this.txSound);
-            this.splitContainer1.Panel2.Controls.Add(this.trackBar1);
-            this.splitContainer1.Panel2.Controls.Add(this.tbVideoTime);
-            this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.splitter1);
             this.splitContainer1.Panel2.Controls.Add(this.panelPlay);
             this.splitContainer1.Panel2MinSize = 0;
             this.splitContainer1.Size = new System.Drawing.Size(984, 468);
             this.splitContainer1.SplitterDistance = 321;
             this.splitContainer1.TabIndex = 6;
-            // 
-            // txSpeed
-            // 
-            this.txSpeed.AutoSize = true;
-            this.txSpeed.Location = new System.Drawing.Point(595, 441);
-            this.txSpeed.Name = "txSpeed";
-            this.txSpeed.Size = new System.Drawing.Size(29, 12);
-            this.txSpeed.TabIndex = 10;
-            this.txSpeed.Text = "1.0x";
-            this.txSpeed.Click += new System.EventHandler(this.txSpeed_Click);
-            // 
-            // txSound
-            // 
-            this.txSound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txSound.AutoSize = true;
-            this.txSound.Location = new System.Drawing.Point(625, 441);
-            this.txSound.Name = "txSound";
-            this.txSound.Size = new System.Drawing.Size(23, 12);
-            this.txSound.TabIndex = 9;
-            this.txSound.Text = "100";
-            this.txSound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.AutoSize = false;
-            this.trackBar1.Location = new System.Drawing.Point(67, 440);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(422, 18);
-            this.trackBar1.TabIndex = 7;
-            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
-            // 
-            // tbVideoTime
-            // 
-            this.tbVideoTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbVideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbVideoTime.Location = new System.Drawing.Point(486, 441);
-            this.tbVideoTime.Name = "tbVideoTime";
-            this.tbVideoTime.ReadOnly = true;
-            this.tbVideoTime.Size = new System.Drawing.Size(109, 14);
-            this.tbVideoTime.TabIndex = 8;
-            this.tbVideoTime.Text = "00:00:00/00:00:00";
-            this.tbVideoTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button1.Location = new System.Drawing.Point(11, 437);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(50, 21);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "暂停";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // splitter1
             // 
@@ -356,25 +289,20 @@
             this.panelPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelPlay.BackColor = System.Drawing.Color.Black;
-            this.panelPlay.Controls.Add(this.pictureBox1);
+            this.panelPlay.BackColor = System.Drawing.SystemColors.Control;
+            this.panelPlay.Controls.Add(this.vlcCtrl);
             this.panelPlay.Location = new System.Drawing.Point(10, 7);
             this.panelPlay.Name = "panelPlay";
-            this.panelPlay.Size = new System.Drawing.Size(635, 421);
+            this.panelPlay.Size = new System.Drawing.Size(637, 452);
             this.panelPlay.TabIndex = 11;
             // 
-            // pictureBox1
+            // vlcCtrl
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.DarkCyan;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(635, 421);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pPlayPaneEnv_MouseWheel);
+            this.vlcCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vlcCtrl.Location = new System.Drawing.Point(0, 0);
+            this.vlcCtrl.Name = "vlcCtrl";
+            this.vlcCtrl.Size = new System.Drawing.Size(637, 452);
+            this.vlcCtrl.TabIndex = 10;
             // 
             // menuStrip1
             // 
@@ -526,17 +454,13 @@
             this.Text = "文件搜索管理";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FileMgrForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FileMgrForm_FormClosed);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FileMgrForm_KeyUp);
             this.Leave += new System.EventHandler(this.FileMgrForm_Leave);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.panelPlay.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -576,15 +500,10 @@
         private System.Windows.Forms.Label lbSearchPrview;
         private System.Windows.Forms.ToolStripMenuItem miReloadFiles;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripStatusLabel lbCurOpr;
         private System.Windows.Forms.Timer timerOprFiles;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.TextBox tbVideoTime;
-        private System.Windows.Forms.Label txSound;
         private System.Windows.Forms.Timer timerPlay;
-        private System.Windows.Forms.Label txSpeed;
         private System.Windows.Forms.Panel panelPlay;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        public Vlc.VlcControl vlcCtrl;
     }
 }
