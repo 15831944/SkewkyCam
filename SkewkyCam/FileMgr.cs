@@ -59,7 +59,7 @@ namespace Com.Skewky.Cam
                     System.IO.File.Copy(filePath, destPath, false);
                     iCurIndex++;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     iFaild++;
 
@@ -87,7 +87,7 @@ namespace Com.Skewky.Cam
                         fileArr.Add(destPath);
                     iCurIndex++;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     iFaild++;
                 }
@@ -110,7 +110,7 @@ namespace Com.Skewky.Cam
                     fileArr.Remove(filePath);
                     iCurIndex++;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     iFaild++;
                 }

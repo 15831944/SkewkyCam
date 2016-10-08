@@ -49,7 +49,6 @@ namespace Com.Skewky.Cam
                 mkDatas[dt] = md;
                 return true;
             }
-            return false;
         }
         
         public void clearUseslessMarkData()

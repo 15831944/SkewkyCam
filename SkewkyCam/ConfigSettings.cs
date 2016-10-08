@@ -50,7 +50,7 @@ namespace Com.Skewky.Cam
                     myColors = new ThemeColors();
                return true;
        }
-            catch (System.Exception ex)
+            catch (Exception)
             {
             	return false;
             }

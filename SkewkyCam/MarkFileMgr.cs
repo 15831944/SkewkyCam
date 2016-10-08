@@ -23,7 +23,7 @@ namespace Com.Skewky.Cam
                 }
                 return true;
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
             }
             return false;
@@ -54,7 +54,7 @@ namespace Com.Skewky.Cam
                 }
                 return false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 File.Delete(mkFilePath);
                 return false;
@@ -79,7 +79,7 @@ namespace Com.Skewky.Cam
                         b.Serialize(s, mk);
                         s.Close();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
 
                     }
@@ -87,7 +87,7 @@ namespace Com.Skewky.Cam
                 }
                 return true;
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
             }
             return false;
@@ -132,7 +132,7 @@ namespace Com.Skewky.Cam
                     return true;
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
             }
             return false;
@@ -152,7 +152,7 @@ namespace Com.Skewky.Cam
                     return true;
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception)
             {
             }
             return false;

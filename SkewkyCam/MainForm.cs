@@ -73,7 +73,7 @@ namespace Com.Skewky.Cam
                 b.Serialize(s, cfsettings);
                 s.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -96,7 +96,7 @@ namespace Com.Skewky.Cam
                     s.Close();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 File.Delete(filePath);
             }
@@ -740,7 +740,7 @@ namespace Com.Skewky.Cam
                 drawPt1.X += drawWidth;
             }
             pBmin.Update();
-            updatePicBounds();
+            //updatePicBounds();
         }
         private void updateMinute_Marks(Graphics g, DateTime nowdt,int drawWidth,Point drawPt,int height)
         {
@@ -1087,11 +1087,10 @@ namespace Com.Skewky.Cam
 
         private void picMarks_Paint(object sender, PaintEventArgs e)
         {
-            updatePicBounds();
+            //updatePicBounds();
         }
        private void updatePicBounds()
         {
-            return;
             if (picLove.Visible)
             {
                 Graphics g = picLove.CreateGraphics();
