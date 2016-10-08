@@ -39,9 +39,6 @@ namespace Com.Skewky.Cam
         Thread trdFileInit = null;
         Thread trdFileOpr = null;
 
-        int iPlaySpeed = 1;
-        int iValume = 80; 
-
         public FileMgrForm(ConfigSettings cf)
         {
             this.KeyPreview = true;

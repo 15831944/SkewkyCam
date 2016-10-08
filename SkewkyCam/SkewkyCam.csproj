@@ -88,7 +88,9 @@
     <Compile Include="CheckedDt.cs" />
     <Compile Include="ConfigSettings.cs" />
     <Compile Include="FileMgr.cs" />
-    <Compile Include="FileMgrForm.cs" />
+    <Compile Include="FileMgrForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FileMgrForm.Designer.cs">
       <DependentUpon>FileMgrForm.cs</DependentUpon>
     </Compile>
@@ -122,8 +124,6 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ThemeColors.cs" />
-    <Compile Include="VlcEnum.cs" />
-    <Compile Include="VlcPlayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox1.resx">

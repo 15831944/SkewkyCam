@@ -62,7 +62,7 @@ namespace Com.Skewky.Vlc
         }
         private VlcPlayer newVlcPlayer()
         {
-            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
+            string pluginPath = System.Environment.CurrentDirectory + "\\plugins\\";
             VlcPlayer vlcPlayer = new VlcPlayer(pluginPath);
             IntPtr render_wnd = this.panelPlay.Handle;
             vlcPlayer.SetRenderWindow((int)render_wnd);

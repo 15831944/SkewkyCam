@@ -21,7 +21,7 @@ namespace Com.Skewky.Vlc
         public VlcPlayer(string pluginPath)
         {
             string plugin_arg = "--plugin-path=" + pluginPath;
-            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp", plugin_arg };
+            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp","-vvv" , plugin_arg };
             libvlc_instance_ = LibVlcAPI.libvlc_new(arguments);
 
             libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);
@@ -46,7 +46,7 @@ namespace Com.Skewky.Vlc
             SetPlayTime(pInfo.curTime);
             SetRate(pInfo.dPlayingSpeed);
             SetVolume(pInfo.dValume);
-            if(pInfo.playStatus == vlc_Sta.libvlc_Playing)
+            if (pInfo.playStatus == vlc_Sta.libvlc_Playing)
             {
                 Play();
                 SetPlayTime(pInfo.curTime);
@@ -397,6 +397,6 @@ namespace Com.Skewky.Vlc
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern int libvlc_media_player_get_state(IntPtr libvlc_media_player);
-    
+
     }
 }

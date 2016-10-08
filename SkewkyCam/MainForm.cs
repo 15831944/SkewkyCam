@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using Com.Skewky.Vlc;
 
 namespace Com.Skewky.Cam
 {
@@ -51,7 +52,7 @@ namespace Com.Skewky.Cam
         }
         private VlcPlayer newVlcPlayer()
         {
-            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
+            string pluginPath = System.Environment.CurrentDirectory + "\\plugins\\";
             VlcPlayer vlcPlayer = new VlcPlayer(pluginPath);
             IntPtr render_wnd = this.panel1.Handle;
             vlcPlayer.SetRenderWindow((int)render_wnd);
@@ -510,14 +511,14 @@ namespace Com.Skewky.Cam
             }
             if(trdFileMgr.ThreadState == ThreadState.Unstarted)
             {
-                trdFileMgr.ApartmentState = ApartmentState.STA;
+                trdFileMgr.SetApartmentState(ApartmentState.STA);
                 trdFileMgr.Start();
             }
             else if (trdFileMgr.ThreadState == ThreadState.Stopped)
             {
                 trdFileMgr.Abort();
                 trdFileMgr = new Thread(this.trdShowFileMgrForm);
-                trdFileMgr.ApartmentState = ApartmentState.STA;
+                trdFileMgr.SetApartmentState(ApartmentState.STA);
                 trdFileMgr.Start();
             }
         }
