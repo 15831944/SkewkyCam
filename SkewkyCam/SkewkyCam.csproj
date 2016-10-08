@@ -64,7 +64,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Com.Skewky.Cam.Program</StartupObject>
@@ -88,9 +88,7 @@
     <Compile Include="CheckedDt.cs" />
     <Compile Include="ConfigSettings.cs" />
     <Compile Include="FileMgr.cs" />
-    <Compile Include="FileMgrForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FileMgrForm.cs" />
     <Compile Include="FileMgrForm.Designer.cs">
       <DependentUpon>FileMgrForm.cs</DependentUpon>
     </Compile>
