@@ -67,10 +67,6 @@
             this.picEnv.TabStop = false;
             this.picEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseClick);
             this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseDoubleClick);
-            this.picEnv.MouseEnter += new System.EventHandler(this.picEnv_MouseEnter);
-            this.picEnv.MouseHover += new System.EventHandler(this.picEnv_MouseHover);
-            this.picEnv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseMove);
-            this.picEnv.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseWheel);
             // 
             // panelCtrl
             // 

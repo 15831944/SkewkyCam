@@ -126,8 +126,7 @@
             this.picEnv.Size = new System.Drawing.Size(702, 462);
             this.picEnv.TabIndex = 0;
             this.picEnv.TabStop = false;
-            this.picEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseClick);
-            this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseDoubleClick);
+            this.picEnv.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FullScreen_MouseDoubleClick);
             // 
             // timer1
             // 

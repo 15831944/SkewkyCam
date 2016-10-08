@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Com.Skewky.Vlc
 {
@@ -13,7 +12,6 @@ namespace Com.Skewky.Vlc
     {
         VlcPlayerUI playUI= new VlcPlayerUI();
         public PlayInfo fullPlayInfo = new PlayInfo();
-        private bool bDbClick = true;
         public FullScreenForm()
         {
             InitializeComponent();
@@ -36,7 +34,8 @@ namespace Com.Skewky.Vlc
         }
         private void FullScreen_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-         }
+            exitFullScreen();
+        }
 
         private void FullScreenPlayer_KeyUp(object sender, KeyEventArgs e)
         {
@@ -70,28 +69,6 @@ namespace Com.Skewky.Vlc
         {
             timer1.Stop();
             panelCtrl.Visible = false;
-        }
-
-        private void picEnv_MouseClick(object sender, MouseEventArgs e)
-        {
-            bDbClick = false;
-            Thread th = new Thread(new ThreadStart(signClicked));
-            th.Start();
-        }
-        private void signClicked()
-        {
-            Thread.Sleep(ConstVars.iDbClickIntervel);
-            if (!bDbClick)
-            {
-                playUI.TogglePlay();
-            }
-        }
-
-        private void picEnv_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            bDbClick = true;
-            exitFullScreen();
-       
         }
     }
 }
