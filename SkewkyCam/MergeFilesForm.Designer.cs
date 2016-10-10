@@ -28,19 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.vlcCtrl = new Com.Skewky.Vlc.VlcControl();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.vlcCtrl = new Com.Skewky.Vlc.VlcControl();
             this.SuspendLayout();
-            // 
-            // vlcCtrl
-            // 
-            this.vlcCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.vlcCtrl.Location = new System.Drawing.Point(183, 12);
-            this.vlcCtrl.Name = "vlcCtrl";
-            this.vlcCtrl.Size = new System.Drawing.Size(524, 392);
-            this.vlcCtrl.TabIndex = 0;
             // 
             // statusStrip1
             // 
@@ -49,6 +39,16 @@
             this.statusStrip1.Size = new System.Drawing.Size(719, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // vlcCtrl
+            // 
+            this.vlcCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.vlcCtrl.Location = new System.Drawing.Point(111, 0);
+            this.vlcCtrl.Name = "vlcCtrl";
+            this.vlcCtrl.Size = new System.Drawing.Size(524, 392);
+            this.vlcCtrl.TabIndex = 0;
             // 
             // MergeFilesForm
             // 

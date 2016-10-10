@@ -55,7 +55,7 @@
     <ApplicationIcon>SkewkyCam.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5530DAD28D585FF6A6F3E2E11B52A37CDF04947F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7D994D6031520ABC015A1441AEEFCDBD47978992</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>SkewkyCam_TemporaryKey.pfx</ManifestKeyFile>
@@ -154,6 +154,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SkewkyCam_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OtherRef\Res\love1.jpg" />

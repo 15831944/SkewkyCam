@@ -13,10 +13,15 @@ namespace Com.Skewky.Vlc
         private IntPtr libvlc_media_player_;
         private double duration_;
         private string playPath;
+        private bool bIsPlaying = false;
+        public bool IsPlaying
+        {
+            get { return bIsPlaying; }
+        }
         public VlcPlayer(string pluginPath)
         {
             string plugin_arg = "--plugin-path=" + pluginPath;
-            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp","-vvv" , plugin_arg };
+            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp", plugin_arg };
             libvlc_instance_ = LibVlcAPI.libvlc_new(arguments);
 
             libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);
@@ -41,7 +46,7 @@ namespace Com.Skewky.Vlc
             SetPlayTime(pInfo.curTime);
             SetRate(pInfo.dPlayingSpeed);
             SetVolume(pInfo.dValume);
-            if (pInfo.playStatus == vlc_Sta.libvlc_Playing)
+            if(pInfo.playStatus == vlc_Sta.libvlc_Playing)
             {
                 Play();
                 SetPlayTime(pInfo.curTime);
@@ -86,6 +91,7 @@ namespace Com.Skewky.Vlc
 
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
                 playPath = filePath;
+                bIsPlaying = true;
             }
         }
         public void PrepareFile(string filePath)
@@ -107,14 +113,22 @@ namespace Com.Skewky.Vlc
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_pause(libvlc_media_player_);
+                bIsPlaying = false;
             }
         }
-
+        public void TooglePlay()
+        {
+            if (bIsPlaying)
+                Pause();
+            else
+                Play();
+        }
         public void Play()
         {
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
+                bIsPlaying = true;
             }
         }
         public void Stop()
@@ -122,6 +136,7 @@ namespace Com.Skewky.Vlc
             if (libvlc_media_player_ != IntPtr.Zero)
             {
                 LibVlcAPI.libvlc_media_player_stop(libvlc_media_player_);
+                bIsPlaying = true;
             }
         }
 
@@ -382,6 +397,6 @@ namespace Com.Skewky.Vlc
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
         public static extern int libvlc_media_player_get_state(IntPtr libvlc_media_player);
-
+    
     }
 }

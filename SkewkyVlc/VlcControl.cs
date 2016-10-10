@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Com.Skewky.Vlc
 {
@@ -12,10 +13,9 @@ namespace Com.Skewky.Vlc
     {
 
         public bool bFullScreen = false;
-
         VlcPlayerUI playUI = new VlcPlayerUI();
         //FullScreenForm fsp = null;//定义成全局量的话第二次显示异常
-          
+        private bool bDbClick = false;
         public VlcControl()
         {
             InitializeComponent();
@@ -31,26 +31,8 @@ namespace Com.Skewky.Vlc
         }
         private void picEnv_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-//             FullScreenForm fsp = null;
-//             if (fsp == null)
-//                 fsp = new FullScreenForm();
-//             if (bFullScreen)
-//             {
-//                 bFullScreen = false;
-//                 playUI.setPlayInfo(fsp.getVlcPlayInfo());
-//                 playUI.Play();
-//             }
-//             else
-//             {
-// 
-// 
-//             }
-            if (e.Button == MouseButtons.Left)
-            {
-                playUI.TogglePlay();
-            }
-            else if (e.Button == MouseButtons.Right)
-                fullScreenPlay();
+            bDbClick = true;
+            fullScreenPlay();
         }
         private void fullScreenPlay()
         {
@@ -64,18 +46,26 @@ namespace Com.Skewky.Vlc
                 int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
                 int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
                 fsp.SetBounds(0, 0, iActulaWidth, iActulaHeight);
-                // fsp.Visible = true;
                 if (fsp.ShowDialog() == DialogResult.OK)
                 {
                     playUI.setPlayInfo(fsp.fullPlayInfo);
                     bFullScreen = false;
                 }
         }
-        private void picEnv_MouseClick(object sender, MouseEventArgs e)
+        private void picEnv_MouseClick(object sender, EventArgs e)
         {
-            //playUI.TogglePlay();
+            bDbClick = false;
+            Thread th = new Thread(new ThreadStart(signClicked));
+            th.Start();
         }
-
+        private void signClicked()
+        {
+            Thread.Sleep(ConstVars.iDbClickIntervel);
+            if (!bDbClick)
+            {
+                playUI.TogglePlay();
+            }
+        }
 
         #region Key Envents
         private void VlcControl_KeyUp(object sender, KeyEventArgs e)
@@ -83,5 +73,86 @@ namespace Com.Skewky.Vlc
             playUI.Env_KeyUp(sender, e);
         }
         #endregion
+
+        private void picEnv_MouseEnter(object sender, EventArgs e)
+        {
+           this.Focus();
+        }
+
+        private void picEnv_MouseMove(object sender, MouseEventArgs e)
+        {
+           this.Focus();
+        }
+
+        private void picEnv_MouseHover(object sender, EventArgs e)
+        {
+           this.Focus();
+        }
+        private void picEnv_MouseWheel(object sender, MouseEventArgs e)
+        {
+            playUI.updateVolume(e.Delta > 0);
+
+        }
+        
     }
 }
+
+
+
+//using System;
+//using System.Collections.Generic;
+//using System.ComponentModel;
+//using System.Data;
+//using System.Drawing;
+//using System.Text;
+//using System.Windows.Forms;
+//using System.Threading;
+ 
+//namespace CSharp_002_回调机制
+//{
+//    public partial class frmMain : Form
+//    {
+//        //定义回调
+//        private delegate void SetProgressBar2ValueCallBack(int value);
+//        //声明回调
+//        private SetProgressBar2ValueCallBack setProgressBar2ValueCallBack;
+ 
+//        public frmMain()
+//        {
+//            InitializeComponent();
+//        }
+ 
+//        private void btnStart_Click(object sender, EventArgs e)
+//        {
+//            //初始化回调
+//            setProgressBar2ValueCallBack = new SetProgressBar2ValueCallBack(SetProgressBar2ValueMethod);
+ 
+ 
+//            Thread progressBar2Thread = new Thread(SetProgressBar2Value);
+//            progressBar2Thread.Start();
+ 
+//            for (int i = 0; i <= 100; i++)
+//            {
+//                Application.DoEvents();
+//                Thread.Sleep(50);
+//                pgProgressBar1.Value = i;
+//            }
+//        }
+ 
+//        //设置进度条2的值 的线程
+//        private void SetProgressBar2Value()
+//        {
+//            for (int i = 0; i <= 100;i++ )
+//            {
+//                Thread.Sleep(50);
+//                pgProgressBar2.Invoke(setProgressBar2ValueCallBack, i);
+//            }
+//        }
+//        //设置进度条2的值 被委托的方法
+//        private void SetProgressBar2ValueMethod(int value)
+//        {
+//            pgProgressBar2.Value = value;
+//        }
+ 
+//    }//end class frmMain
+//}

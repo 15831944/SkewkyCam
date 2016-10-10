@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SkewkyMp4Tool
+namespace Com.Skewky.Mp4Tool
 {
-    public class Class1
+    public class Mp4Box
     {
     }
 }

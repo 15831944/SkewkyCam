@@ -93,8 +93,8 @@
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.lbHour);
             this.panel2.Controls.Add(this.lbMinute);
             this.panel2.Controls.Add(this.lbSecond);
@@ -123,7 +123,7 @@
             this.lbMinute.AutoSize = true;
             this.lbMinute.Location = new System.Drawing.Point(0, 23);
             this.lbMinute.Name = "lbMinute";
-            this.lbMinute.Size = new System.Drawing.Size(22, 13);
+            this.lbMinute.Size = new System.Drawing.Size(19, 13);
             this.lbMinute.TabIndex = 9;
             this.lbMinute.Text = "分:";
             this.lbMinute.Click += new System.EventHandler(this.lbMinute_Click);
@@ -133,7 +133,7 @@
             this.lbSecond.AutoSize = true;
             this.lbSecond.Location = new System.Drawing.Point(1, 4);
             this.lbSecond.Name = "lbSecond";
-            this.lbSecond.Size = new System.Drawing.Size(22, 13);
+            this.lbSecond.Size = new System.Drawing.Size(19, 13);
             this.lbSecond.TabIndex = 9;
             this.lbSecond.Tag = "";
             this.lbSecond.Text = "秒:";
@@ -151,8 +151,8 @@
             // 
             // trackBar1
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.AutoSize = false;
             this.trackBar1.Location = new System.Drawing.Point(24, 2);
             this.trackBar1.Name = "trackBar1";
@@ -175,8 +175,8 @@
             // 
             // pBmin
             // 
-            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBmin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBmin.BackColor = System.Drawing.SystemColors.Control;
             this.pBmin.Location = new System.Drawing.Point(24, 22);
             this.pBmin.Name = "pBmin";
@@ -192,8 +192,8 @@
             // 
             // pBhour
             // 
-            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBhour.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBhour.BackColor = System.Drawing.SystemColors.Control;
             this.pBhour.Location = new System.Drawing.Point(24, 42);
             this.pBhour.Name = "pBhour";
@@ -251,7 +251,7 @@
             // tsslStatus
             // 
             this.tsslStatus.Name = "tsslStatus";
-            this.tsslStatus.Size = new System.Drawing.Size(56, 18);
+            this.tsslStatus.Size = new System.Drawing.Size(59, 18);
             this.tsslStatus.Text = "正在加载";
             this.tsslStatus.Visible = false;
             // 
@@ -282,9 +282,9 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.Black;
             this.panel1.Controls.Add(this.txSpeed);
             this.panel1.Controls.Add(this.pBplayEnv);
@@ -300,7 +300,7 @@
             this.txSpeed.BackColor = System.Drawing.Color.Crimson;
             this.txSpeed.Location = new System.Drawing.Point(8, 478);
             this.txSpeed.Name = "txSpeed";
-            this.txSpeed.Size = new System.Drawing.Size(81, 13);
+            this.txSpeed.Size = new System.Drawing.Size(72, 13);
             this.txSpeed.TabIndex = 1;
             this.txSpeed.Text = "播放速度：8.0x";
             this.txSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -308,9 +308,9 @@
             // 
             // pBplayEnv
             // 
-            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBplayEnv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.pBplayEnv.BackColor = System.Drawing.Color.Transparent;
             this.pBplayEnv.Location = new System.Drawing.Point(2, -2);
             this.pBplayEnv.Name = "pBplayEnv";
@@ -350,24 +350,24 @@
             this.FileMgr_MenuItem,
             this.Settings_MenuItem});
             this.File_MenuItem.Name = "File_MenuItem";
-            this.File_MenuItem.Size = new System.Drawing.Size(43, 20);
+            this.File_MenuItem.Size = new System.Drawing.Size(45, 20);
             this.File_MenuItem.Text = "文件";
             // 
             // FileMgr_MenuItem
             // 
             this.FileMgr_MenuItem.Name = "FileMgr_MenuItem";
-            this.FileMgr_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F)));
-            this.FileMgr_MenuItem.Size = new System.Drawing.Size(194, 22);
+            this.FileMgr_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.F)));
+            this.FileMgr_MenuItem.Size = new System.Drawing.Size(198, 22);
             this.FileMgr_MenuItem.Text = "管理中心";
             this.FileMgr_MenuItem.Click += new System.EventHandler(this.FileMgr_MenuItem_Click);
             // 
             // Settings_MenuItem
             // 
             this.Settings_MenuItem.Name = "Settings_MenuItem";
-            this.Settings_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.S)));
-            this.Settings_MenuItem.Size = new System.Drawing.Size(194, 22);
+            this.Settings_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.S)));
+            this.Settings_MenuItem.Size = new System.Drawing.Size(198, 22);
             this.Settings_MenuItem.Text = "设置";
             this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
             // 
@@ -377,31 +377,31 @@
             this.ReadMe_MenuItem,
             this.About_MenuItem1});
             this.Help_MenuItem.Name = "Help_MenuItem";
-            this.Help_MenuItem.Size = new System.Drawing.Size(43, 20);
+            this.Help_MenuItem.Size = new System.Drawing.Size(45, 20);
             this.Help_MenuItem.Text = "帮助";
             // 
             // ReadMe_MenuItem
             // 
             this.ReadMe_MenuItem.Name = "ReadMe_MenuItem";
-            this.ReadMe_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.H)));
-            this.ReadMe_MenuItem.Size = new System.Drawing.Size(198, 22);
+            this.ReadMe_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.H)));
+            this.ReadMe_MenuItem.Size = new System.Drawing.Size(201, 22);
             this.ReadMe_MenuItem.Text = "使用说明";
             this.ReadMe_MenuItem.Click += new System.EventHandler(this.ReadMe_MenuItem_Click);
             // 
             // About_MenuItem1
             // 
             this.About_MenuItem1.Name = "About_MenuItem1";
-            this.About_MenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.A)));
-            this.About_MenuItem1.Size = new System.Drawing.Size(198, 22);
+            this.About_MenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+                        | System.Windows.Forms.Keys.A)));
+            this.About_MenuItem1.Size = new System.Drawing.Size(201, 22);
             this.About_MenuItem1.Text = "关于";
             this.About_MenuItem1.Click += new System.EventHandler(this.About_MenuItem1_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.picLove);
             this.groupBox1.Controls.Add(this.picNote);
             this.groupBox1.Controls.Add(this.picPriv);
@@ -543,9 +543,9 @@
             // 
             // tbNote
             // 
-            this.tbNote.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbNote.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tbNote.Location = new System.Drawing.Point(6, 22);
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
@@ -558,9 +558,9 @@
             this.ck_ContinuMark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ck_ContinuMark.AutoSize = true;
             this.ck_ContinuMark.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ck_ContinuMark.Location = new System.Drawing.Point(140, -1);
+            this.ck_ContinuMark.Location = new System.Drawing.Point(146, -1);
             this.ck_ContinuMark.Name = "ck_ContinuMark";
-            this.ck_ContinuMark.Size = new System.Drawing.Size(74, 17);
+            this.ck_ContinuMark.Size = new System.Drawing.Size(68, 17);
             this.ck_ContinuMark.TabIndex = 8;
             this.ck_ContinuMark.Text = "持续备注";
             this.ck_ContinuMark.UseVisualStyleBackColor = true;

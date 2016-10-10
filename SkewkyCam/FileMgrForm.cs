@@ -35,9 +35,10 @@ namespace Com.Skewky.Cam
         List<string> oprFiles = new List<string>();
         bool bFirstTimeUpdateList = false;
 
-        private VlcPlayer vlc_player_;
+        //private VlcPlayer vlc_player_;
         Thread trdFileInit = null;
         Thread trdFileOpr = null;
+
 
         public FileMgrForm(ConfigSettings cf)
         {
@@ -52,7 +53,7 @@ namespace Com.Skewky.Cam
             miNote.Checked = bNote;
             dtStart.Value = dtS;
             dtEnd.Value = dtE;
-            vlc_player_ = newVlcPlayer();
+            //vlc_player_ = newVlcPlayer();
             fileMgr = new FileMgr(cf);
             initList();
             threadInitAllFiles();
@@ -61,14 +62,6 @@ namespace Com.Skewky.Cam
             lbCurOpr.Text = ""; 
         
       
-        }
-        private VlcPlayer newVlcPlayer()
-        {
-            string pluginPath = System.Environment.CurrentDirectory + "\\vlc\\plugins\\";
-            VlcPlayer vlcPlayer = new VlcPlayer(pluginPath);
-            IntPtr render_wnd = this.panelPlay.Handle;
-            vlcPlayer.SetRenderWindow((int)render_wnd);
-            return vlcPlayer;
         }
         private void playFile(string path)
         {
@@ -561,7 +554,7 @@ namespace Com.Skewky.Cam
     private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerPlay.Stop();
-            vlc_player_.Stop();
+            //vlc_player_.Stop();
             if (trdFileInit != null)
             {
                
@@ -580,7 +573,7 @@ namespace Com.Skewky.Cam
 
         private void FileMgrForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            vlc_player_.Stop();
+            //vlc_player_.Stop();
        
         }
 
