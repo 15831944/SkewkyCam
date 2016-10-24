@@ -1,62 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Com.Skewky.Cam
 {
-    class FileParseXiaoMi : FileParseBase
+    internal class FileParseXiaoMi : FileParseBase
     {
-        protected override bool initMarkFiles()
+        protected override bool InitMarkFiles()
         {
-            return mkFileMgr.initMarkFiles(rootDirs);
+            return MkFileMgr.InitMarkFiles(RootDirs);
         }
-        public override bool saveMarkFiles()
+
+        public override bool SaveMarkFiles()
         {
-            return mkFileMgr.saveMarkFiles();
+            return MkFileMgr.SaveMarkFiles();
         }
-    
-        protected override string getDayPath(DateTime dt)
+
+        protected override string GetDayPath(DateTime dt)
         {
-            foreach (string rootDir in rootDirs)
+            foreach (var rootDir in RootDirs)
             {
                 // E:\Meida\XM\2016年01月11日
-                string dayPath = string.Format("{0}\\{1}年{2:D2}月{3:D2}日", rootDir, dt.Year, dt.Month, dt.Day);
-                if (System.IO.Directory.Exists(dayPath)) return dayPath;
+                var dayPath = string.Format("{0}\\{1}年{2:D2}月{3:D2}日", rootDir, dt.Year, dt.Month, dt.Day);
+                if (Directory.Exists(dayPath)) return dayPath;
             }
-            return string.Format("NotFind");
+            return "NotFind";
         }
-        protected override string getHourPath(DateTime dt)
-        {
-            string hourPath = string.Format("{0}\\{1:D2}时", getDayPath(dt), dt.Hour);
-            return hourPath;
 
-        }
-        protected override string getMinutePath(DateTime dt)
+        protected override string GetHourPath(DateTime dt)
         {
-            string minutePath = string.Format("{0}\\{1:D2}分00秒.mp4", getHourPath(dt), dt.Minute);
+            var hourPath = string.Format("{0}\\{1:D2}时", GetDayPath(dt), dt.Hour);
+            return hourPath;
+        }
+
+        protected override string GetMinutePath(DateTime dt)
+        {
+            var minutePath = string.Format("{0}\\{1:D2}分00秒.mp4", GetHourPath(dt), dt.Minute);
             return minutePath;
         }
 
 
-        internal override string getRootDirByPath(string path)
+        internal override string GetRootDirByPath(string path)
         {
             //path = "Z:\\小蚁智能摄像机_B0D59D482E5A\\2016年08月10日\\00时\\01分00秒.mp4"
-            
-            int iPos = path.Length - 27;
-            iPos = Math.Max(iPos,0);
-            string rootDir = path.Substring(0, iPos);
-            return  rootDir;
+
+            var iPos = path.Length - 27;
+            iPos = Math.Max(iPos, 0);
+            var rootDir = path.Substring(0, iPos);
+            return rootDir;
         }
-       
-        internal override DateTime getDtMinByPath(string path)
+
+        internal override DateTime GetDtMinByPath(string path)
         {
             //path = "Z:\\小蚁智能摄像机_B0D59D482E5A\\2016年08月10日\\00时\\01分00秒.mp4"
-            int iPos = path.Length - 26;
-            int iSubLen = 22;
+            var iPos = path.Length - 26;
+            var iSubLen = 22;
             iPos = Math.Max(iPos, 0);
             iSubLen = Math.Min(path.Length - iPos, iSubLen);
-            
-            string dtString = path.Substring(iPos, iSubLen);
+
+            var dtString = path.Substring(iPos, iSubLen);
             //"2005-11-6 16:11:04"
             dtString = dtString.Replace("\\", "");
             dtString = dtString.Replace("年", "-");
@@ -65,55 +66,59 @@ namespace Com.Skewky.Cam
             dtString = dtString.Replace("时", ":");
             dtString = dtString.Replace("分", ":");
             dtString = dtString.Replace("秒", " ");
-            DateTime dt = DateTime.Now;
-            DateTime.TryParse(dtString,out dt);
-            return  dt;
+            var dt = DateTime.Now;
+            DateTime.TryParse(dtString, out dt);
+            return dt;
         }
-        protected override bool isDayBlod(DateTime dt)
+
+        protected override bool IsDayBlod(DateTime dt)
         {
-            string dayPath = getDayPath(dt);
-            if (!System.IO.Directory.Exists(dayPath)) return false;
+            var dayPath = GetDayPath(dt);
+            if (!Directory.Exists(dayPath)) return false;
 
             return true;
         }
-        protected override bool isHourBlod(DateTime dt)
+
+        protected override bool IsHourBlod(DateTime dt)
         {
-            string hourPath = getHourPath(dt);
-            if (!System.IO.Directory.Exists(hourPath)) return false;
+            var hourPath = GetHourPath(dt);
+            if (!Directory.Exists(hourPath)) return false;
 
             return true;
         }
-        protected override bool isMinuteBlod(DateTime dt)
+
+        protected override bool IsMinuteBlod(DateTime dt)
         {
-            string minutePath = getMinutePath(dt);
-            if (!System.IO.File.Exists(minutePath)) return false;
+            var minutePath = GetMinutePath(dt);
+            if (!File.Exists(minutePath)) return false;
             return true;
         }
 
-        public override bool findNextDt(DateTime dt, ref DateTime nextDt)
+        public override bool FindNextDt(DateTime dt, ref DateTime nextDt)
         {
-            DateTime baseDt = dt;
+            var baseDt = dt;
             baseDt = baseDt.AddMinutes(1);
-            if (searchInThisHour(baseDt, ref nextDt))
+            if (SearchInThisHour(baseDt, ref nextDt))
                 return true;
             baseDt = baseDt.AddHours(1);
-            if (searchInNextHour(baseDt, ref nextDt))
+            if (SearchInNextHour(baseDt, ref nextDt))
                 return true;
             baseDt = baseDt.AddDays(1);
-            if (searchInNextDay(baseDt, ref nextDt))
+            if (SearchInNextDay(baseDt, ref nextDt))
                 return true;
             baseDt = baseDt.AddMonths(1);
-            if (searchInNextMonth(baseDt, ref nextDt))
+            if (SearchInNextMonth(baseDt, ref nextDt))
                 return true;
             baseDt = baseDt.AddYears(1);
-            if (searchInNextYear(baseDt, ref nextDt))
+            if (SearchInNextYear(baseDt, ref nextDt))
                 return true;
             return false;
         }
-        protected bool searchInThisHour(DateTime dt, ref DateTime nextDt)
+
+        protected bool SearchInThisHour(DateTime dt, ref DateTime nextDt)
         {
             nextDt = dt;
-            for (int i = dt.Minute; i < 60; i++)
+            for (var i = dt.Minute; i < 60; i++)
             {
                 if (MinuteBlod(nextDt))
                     return true;
@@ -121,61 +126,65 @@ namespace Com.Skewky.Cam
             }
             return false;
         }
-        protected bool searchInNextHour(DateTime dt, ref DateTime nextDt)
+
+        protected bool SearchInNextHour(DateTime dt, ref DateTime nextDt)
         {
             nextDt = dt;
-            DateTime baseDt = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0);
-            for (int i = dt.Hour; i < 24; i++)
+            var baseDt = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, 0, 0);
+            for (var i = dt.Hour; i < 24; i++)
             {
-                if (!isHourBlod(baseDt))
+                if (!IsHourBlod(baseDt))
                 {
                     baseDt = baseDt.AddHours(1);
                     continue;
                 }
-                if (searchInThisHour(baseDt, ref nextDt))
+                if (SearchInThisHour(baseDt, ref nextDt))
                     return true;
                 baseDt = baseDt.AddHours(1);
             }
             return false;
         }
-        protected bool searchInNextDay(DateTime dt, ref DateTime nextDt)
+
+        protected bool SearchInNextDay(DateTime dt, ref DateTime nextDt)
         {
             nextDt = dt;
-            DateTime baseDt = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
+            var baseDt = new DateTime(dt.Year, dt.Month, dt.Day, 0, 0, 0);
 
-            for (int i = dt.Day; i < 31; i++)
+            for (var i = dt.Day; i < 31; i++)
             {
                 if (baseDt.Month != dt.Month)
                     break;
-                if (!isDayBlod(baseDt))
+                if (!IsDayBlod(baseDt))
                 {
                     baseDt = baseDt.AddDays(1);
                     continue;
                 }
-                if (searchInNextHour(baseDt, ref nextDt))
+                if (SearchInNextHour(baseDt, ref nextDt))
                     return true;
                 baseDt = baseDt.AddDays(1);
             }
             return false;
         }
-        protected bool searchInNextMonth(DateTime dt, ref DateTime nextDt)
+
+        protected bool SearchInNextMonth(DateTime dt, ref DateTime nextDt)
         {
             nextDt = dt;
-            DateTime baseDt = new DateTime(dt.Year, dt.Month, 1, 0, 0, 0);
+            var baseDt = new DateTime(dt.Year, dt.Month, 1, 0, 0, 0);
 
-            for (int i = dt.Month; i < 13; i++)
+            for (var i = dt.Month; i < 13; i++)
             {
-                if (searchInNextDay(baseDt, ref nextDt))
+                if (SearchInNextDay(baseDt, ref nextDt))
                     return true;
                 baseDt = baseDt.AddMonths(1);
             }
             return false;
         }
-        protected bool searchInNextYear(DateTime dt, ref DateTime nextDt)
+
+        protected bool SearchInNextYear(DateTime dt, ref DateTime nextDt)
         {
             nextDt = dt;
-            DateTime baseDt = new DateTime(dt.Year, 1, 1, 0, 0, 0);
-            if (searchInNextMonth(baseDt, ref nextDt))
+            var baseDt = new DateTime(dt.Year, 1, 1, 0, 0, 0);
+            if (SearchInNextMonth(baseDt, ref nextDt))
                 return true;
             return false;
         }

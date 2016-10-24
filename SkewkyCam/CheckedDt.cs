@@ -1,33 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Skewky.Cam
 {
-    class CheckedDt
+    internal class CheckedDt
     {
-        DateTime dt;
-        bool bExist;
+        // ReSharper disable once InconsistentNaming
+
         public CheckedDt()
         {
-            dt = new DateTime();
-            bExist = false;
+            Dt = new DateTime();
+            Exist = false;
         }
-        public System.DateTime Dt
-        {
-            get { return dt; }
-            set { dt = value; }
-        }
-        public bool Exist
-        {
-            get { return bExist; }
-            set { bExist = value; }
-        }
+
+        public DateTime Dt { get; set; }
+
+        public bool Exist { get; set; }
+
         //这个方法会被调用
         public bool Equals(CheckedDt that)
         {
-            if (this.dt == that.dt&&
-                this.bExist == that.bExist)
+            if (Dt == that.Dt &&
+                Exist == that.Exist)
             {
                 return true;
             }

@@ -1,134 +1,125 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
 using System.IO;
-using Com.Skewky.Vlc;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Com.Skewky.Cam
 {
     public partial class FileMgrForm : Form
     {
-        enum CurOprType
-        {
-            None = 0,
-            CopyFile,
-            MoveFile,
-            DelFile,
-            OprFinished
-        }
-        public FileMgr fileMgr;
-        bool bLove = true;
-        bool bDel = true;
-        bool bPriv = true;
-        bool bNote = true;
-        bool bNormal = true;
-        DateTime dtS = new DateTime(2014,11,01);
-        DateTime dtE = DateTime.Now;
-         CurOprType iCurOprType = CurOprType.None;
-        string keyWord = "";
-        string destFolder = "";
-        List<string> oprFiles = new List<string>();
-        bool bFirstTimeUpdateList = false;
+        private bool _bDel = true;
+        private bool _bFirstTimeUpdateList;
+        private bool _bLove = true;
+        private bool _bNormal = true;
+        private bool _bNote = true;
+        private bool _bPriv = true;
+        private string _destFolder = "";
+        private DateTime _dtE = DateTime.Now;
+        private DateTime _dtS = new DateTime(2014, 11, 01);
+        private CurOprType _iCurOprType = CurOprType.None;
+        private string _keyWord = "";
+        private List<string> _oprFiles = new List<string>();
 
         //private VlcPlayer vlc_player_;
-        Thread trdFileInit = null;
-        Thread trdFileOpr = null;
+        private Thread _trdFileInit;
+        private Thread _trdFileOpr;
+        public FileOpr FileOperator;
 
 
         public FileMgrForm(ConfigSettings cf)
         {
-            this.KeyPreview = true;
+            KeyPreview = true;
 
             InitializeComponent();
 
-            miLove.Checked = bLove;
-            miDel.Checked = bDel;
-            miPriv.Checked = bPriv;
-            miAll.Checked = bNormal;
-            miNote.Checked = bNote;
-            dtStart.Value = dtS;
-            dtEnd.Value = dtE;
+            miLove.Checked = _bLove;
+            miDel.Checked = _bDel;
+            miPriv.Checked = _bPriv;
+            miAll.Checked = _bNormal;
+            miNote.Checked = _bNote;
+            dtStart.Value = _dtS;
+            dtEnd.Value = _dtE;
             //vlc_player_ = newVlcPlayer();
-            fileMgr = new FileMgr(cf);
-            initList();
-            threadInitAllFiles();
-            dtStart.Value = dtS;
-            tsslFilter.Text = getFileterString(bLove, bDel, bPriv, bNote, bNormal, dtS, dtE, keyWord);
-            lbCurOpr.Text = ""; 
-        
-      
-        }
-        private void playFile(string path)
-        {
-            vlcCtrl.PlayFile(path);
-     
-        }
-        private void initList()
-        {
-            ColumnHeader cFile = new ColumnHeader();//创建一个列
-            cFile.Text = "文件";//列名
-            cFile.Width = 120;
-            ColumnHeader cStatu = new ColumnHeader();
-            cStatu.Text = "状态";
-            cStatu.Width = 50;
-            ColumnHeader cDiscr = new ColumnHeader();
-            cDiscr.Text = "备注";
-            cDiscr.Width = 180;
-            ColumnHeader cPath = new ColumnHeader();
-            cPath.Text = "路径";
-            cPath.Width = 280;
-            listFiles.Columns.AddRange(new ColumnHeader[] { cFile, cStatu, cDiscr, cPath });//将列加入listView1
-            listFiles.View = View.Details;//列的显示模式
-        }
-        private void initAllFile()
-        {
-            fileMgr.fileArr.Clear();
-            fileMgr.initAllFiles();
+            FileOperator = new FileOpr(cf);
+            InitList();
+            ThreadInitAllFiles();
+            dtStart.Value = _dtS;
+            tsslFilter.Text = getFileterString(_bLove, _bDel, _bPriv, _bNote, _bNormal, _dtS, _dtE, _keyWord);
+            lbCurOpr.Text = "";
         }
 
-        private void threadInitAllFiles()
+        private void PlayFile(string path)
+        {
+            vlcCtrl.PlayFile(path);
+        }
+
+        private void InitList()
+        {
+            var cFile = new ColumnHeader(); //创建一个列
+            cFile.Text = "文件"; //列名
+            cFile.Width = 120;
+            var cStatu = new ColumnHeader();
+            cStatu.Text = "状态";
+            cStatu.Width = 50;
+            var cDiscr = new ColumnHeader();
+            cDiscr.Text = "备注";
+            cDiscr.Width = 180;
+            var cPath = new ColumnHeader();
+            cPath.Text = "路径";
+            cPath.Width = 280;
+            listFiles.Columns.AddRange(new[] {cFile, cStatu, cDiscr, cPath}); //将列加入listView1
+            listFiles.View = View.Details; //列的显示模式
+        }
+
+        private void InitAllFile()
+        {
+            FileOperator.FileArr.Clear();
+            FileOperator.InitAllFiles();
+        }
+
+        private void ThreadInitAllFiles()
         {
             timerInitFiles.Interval = 10;
             timerInitFiles.Start();
-            bFirstTimeUpdateList = true;
-            trdFileInit  = new Thread(this.initAllFile);
-            trdFileInit.Start();
+            _bFirstTimeUpdateList = true;
+            _trdFileInit = new Thread(InitAllFile);
+            _trdFileInit.Start();
         }
-        private void threadCopyFiles()
+
+        private void ThreadCopyFiles()
         {
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
-            iCurOprType = CurOprType.CopyFile;
+            _iCurOprType = CurOprType.CopyFile;
             lbCurOpr.Text = "后台导出:";
-            trdFileOpr = new Thread(this.copyFiles);
-            trdFileOpr.Start();
+            _trdFileOpr = new Thread(CopyFiles);
+            _trdFileOpr.Start();
         }
-        private void threadMoveFiles()
+
+        private void ThreadMoveFiles()
         {
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
-            iCurOprType = CurOprType.MoveFile;
+            _iCurOprType = CurOprType.MoveFile;
             lbCurOpr.Text = "后台移动:";
-            trdFileOpr  = new Thread(this.moveFiles);
-            trdFileOpr.Start();
+            _trdFileOpr = new Thread(MoveFiles);
+            _trdFileOpr.Start();
         }
-        private void threadDelFiles()
+
+        private void ThreadDelFiles()
         {
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
-             iCurOprType = CurOprType.DelFile;
-             lbCurOpr.Text = "后台删除:";
-             trdFileOpr = new Thread(this.delFiles);
-             trdFileOpr.Start();
-         }
+            _iCurOprType = CurOprType.DelFile;
+            lbCurOpr.Text = "后台删除:";
+            _trdFileOpr = new Thread(DelFiles);
+            _trdFileOpr.Start();
+        }
+
         private void dtStart_ValueChanged(object sender, EventArgs e)
         {
-            DateTime dtMin = new DateTime(2014, 11, 1);
+            var dtMin = new DateTime(2014, 11, 1);
             if (dtStart.Value < dtMin)
                 dtStart.Value = dtMin;
             if (dtStart.Value > dtEnd.Value)
@@ -137,12 +128,12 @@ namespace Com.Skewky.Cam
                 dtStart.Value = dtEnd.Value;
                 dtEnd.Value = dtMin;
             }
-            previewSearchFilter();
+            PreviewSearchFilter();
         }
 
         private void dtEnd_ValueChanged(object sender, EventArgs e)
         {
-            DateTime dtMax = DateTime.Now;
+            var dtMax = DateTime.Now;
             if (dtEnd.Value > dtMax)
                 dtEnd.Value = dtMax;
             if (dtStart.Value > dtEnd.Value)
@@ -151,15 +142,16 @@ namespace Com.Skewky.Cam
                 dtStart.Value = dtEnd.Value;
                 dtEnd.Value = dtMax;
             }
-            previewSearchFilter();
+            PreviewSearchFilter();
         }
 
-        private string getFileterString(bool bbLove, bool bbDel, bool bbPriv, bool bbNote, bool bbNormal, DateTime ddS, DateTime ddE, string keyWord)
+        private string getFileterString(bool bbLove, bool bbDel, bool bbPriv, bool bbNote, bool bbNormal, DateTime ddS,
+            DateTime ddE, string keyWord)
         {
-            bool bHidden = false;
-            bool bShow = false;
-            String strHidden = "隐藏：";
-            String strShow = "显示：";
+            var bHidden = false;
+            var bShow = false;
+            var strHidden = "隐藏：";
+            var strShow = "显示：";
             if (bbLove)
             {
                 bShow = true;
@@ -210,7 +202,7 @@ namespace Com.Skewky.Cam
                 bHidden = true;
                 strHidden += "无标注 ";
             }
-            string strRes = "";
+            var strRes = "";
             if (bShow && !bHidden)
                 strRes = "[显示全部]";
             else if (!bShow && bHidden)
@@ -234,32 +226,33 @@ namespace Com.Skewky.Cam
 
         private void timerInitFiles_Tick(object sender, EventArgs e)
         {
-            if (fileMgr.bInitFilesInprocess)
+            if (FileOperator.BInitFilesInprocess)
             {
-                tssLabel.Text = string.Format("正在扫描文件：已发现{0}个文件", fileMgr.fileArr.Count);
-                if (bFirstTimeUpdateList && fileMgr.fileArr.Count > 300)
+                tssLabel.Text = string.Format("正在扫描文件：已发现{0}个文件", FileOperator.FileArr.Count);
+                if (_bFirstTimeUpdateList && FileOperator.FileArr.Count > 300)
                 {
-                    List<string> fileArr = new List<string>();
-                    fileArr.AddRange(fileMgr.fileArr);
-                    updateFilesList(fileArr);
-                    bFirstTimeUpdateList = false;
+                    var fileArr = new List<string>();
+                    fileArr.AddRange(FileOperator.FileArr);
+                    UpdateFilesList_ByArr(fileArr);
+                    _bFirstTimeUpdateList = false;
                 }
             }
             else
             {
-                tssLabel.Text = string.Format("扫描完成：共发现{0}个文件", fileMgr.fileArr.Count);
-                updateFilesList();
+                tssLabel.Text = string.Format("扫描完成：共发现{0}个文件", FileOperator.FileArr.Count);
+                UpdateFilesList();
                 timerInitFiles.Stop();
             }
         }
-        private void updateFilesList(List<string> fileArr)
+
+        private void UpdateFilesList_ByArr(List<string> fileArr)
         {
             listFiles.Items.Clear();
             listFiles.Groups.Clear();
             listFiles.ShowGroups = true;
-            int maxShow = 1000;
-            int iIndexed = 0;
-            for (int i = 0; i < fileArr.Count; i++)
+            var maxShow = 1000;
+            var iIndexed = 0;
+            for (var i = 0; i < fileArr.Count; i++)
             {
                 if (!File.Exists(fileArr[i]))
                 {
@@ -268,65 +261,67 @@ namespace Com.Skewky.Cam
                     i = Math.Max(i, 0);
                     continue;
                 }
-                DateTime dt = fileMgr.fileTool.getDtMinByPath(fileArr[i]);
-                MarkData mk = new MarkData();
-                fileMgr.fileTool.GetMarkData(dt, ref mk);
-                bool bCheckShow = checkShow(dt, mk);
+                var dt = FileOperator.FileTool.GetDtMinByPath(fileArr[i]);
+                var mk = new MarkData();
+                FileOperator.FileTool.GetMarkData(dt, ref mk);
+                var bCheckShow = CheckShow(dt, mk);
                 if (!bCheckShow)
                     continue;
 
                 if (iIndexed < maxShow)
                 {
                     iIndexed++;
-                    string gpName = string.Format("{0:4D}-{1:2D}-{2:2D}", dt.Year, dt.Month, dt.Day);
+                    var gpName = string.Format("{0:4D}-{1:2D}-{2:2D}", dt.Year, dt.Month, dt.Day);
                     gpName = dt.ToString("yyyy-MM-dd");
-                    string fileName = dt.ToString("yyyy-MM-dd HH:mm");
+                    var fileName = dt.ToString("yyyy-MM-dd HH:mm");
 
-                    ListViewItem lvi = new ListViewItem();
+                    var lvi = new ListViewItem();
                     lvi.Text = fileName;
-                    lvi.SubItems.Add(mk.MDStr);
+                    lvi.SubItems.Add(mk.MarkDataStr);
                     lvi.SubItems.Add(mk.Description);
                     lvi.SubItems.Add(fileArr[i]);
-                    ListViewGroup gp = getGroup(gpName);
+                    var gp = GetGroup(gpName);
                     gp.Items.Add(lvi);
                     listFiles.Items.Add(lvi);
                 }
                 else
                     break;
             }
-            string msg = string.Format("显示文件:{0}/{1} ", Math.Min(maxShow, iIndexed), fileArr.Count);
+            var msg = string.Format("显示文件:{0}/{1} ", Math.Min(maxShow, iIndexed), fileArr.Count);
             if (iIndexed > maxShow)
                 msg += string.Format("符合条件的文件数过多({0}>{1}),列表仅显示了前{1}条,请缩小搜索范围!", iIndexed, maxShow, maxShow);
             tssLabel.Text = msg;
         }
-        private void updateFilesList()
-        {
-            updateFilesList(fileMgr.fileArr);
 
-        }
-        private bool checkShow(DateTime dt, MarkData mk)
+        private void UpdateFilesList()
         {
-            if (dt < dtS)
+            UpdateFilesList_ByArr(FileOperator.FileArr);
+        }
+
+        private bool CheckShow(DateTime dt, MarkData mk)
+        {
+            if (dt < _dtS)
                 return false;
-            if (dt > dtE)
+            if (dt > _dtE)
                 return false;
-            if (!bLove && mk.Favourite)
+            if (!_bLove && mk.Favourite)
                 return false;
-            if (!bDel && mk.ToDelete)
+            if (!_bDel && mk.ToDelete)
                 return false;
-            if (!bPriv && mk.Private)
+            if (!_bPriv && mk.Private)
                 return false;
-            if (!bNote && mk.Describ)
+            if (!_bNote && mk.Describ)
                 return false;
-            if (!bNormal && !(mk.Favourite || mk.ToDelete || mk.Private || mk.Describ))
+            if (!_bNormal && !(mk.Favourite || mk.ToDelete || mk.Private || mk.Describ))
                 return false;
-            if (string.IsNullOrEmpty(keyWord))
+            if (string.IsNullOrEmpty(_keyWord))
                 return true;
-            else if (!mk.Describ || !mk.Description.Contains(keyWord))
+            if (!mk.Describ || !mk.Description.Contains(_keyWord))
                 return false;
             return true;
         }
-        private ListViewGroup getGroup(string gpName)
+
+        private ListViewGroup GetGroup(string gpName)
         {
             foreach (ListViewGroup gp in listFiles.Groups)
             {
@@ -335,7 +330,7 @@ namespace Com.Skewky.Cam
                     return gp;
                 }
             }
-            ListViewGroup lg = new ListViewGroup();
+            var lg = new ListViewGroup();
             lg.Header = gpName;
             lg.HeaderAlignment = HorizontalAlignment.Left;
             listFiles.Groups.Add(lg);
@@ -344,13 +339,16 @@ namespace Com.Skewky.Cam
 
         private void tbKeyword_TextChanged(object sender, EventArgs e)
         {
-            previewSearchFilter();
+            PreviewSearchFilter();
         }
-        private void previewSearchFilter()
+
+        private void PreviewSearchFilter()
         {
-            lbSearchPrview.Text = getFileterString(miLove.Checked, miDel.Checked, miPriv.Checked, miNote.Checked, miAll.Checked,
-                                                dtStart.Value, dtEnd.Value, tbKeyword.Text);
+            lbSearchPrview.Text = getFileterString(miLove.Checked, miDel.Checked, miPriv.Checked, miNote.Checked,
+                miAll.Checked,
+                dtStart.Value, dtEnd.Value, tbKeyword.Text);
         }
+
         private void btSelAll_Click(object sender, EventArgs e)
         {
             foreach (ListViewItem lv in listFiles.Items)
@@ -366,173 +364,173 @@ namespace Com.Skewky.Cam
                 lv.Checked = !lv.Checked;
             }
         }
-        private void getSelectedPath(ref List<string> listSels)
+
+        private void GetSelectedPath(ref List<string> listSels)
         {
             listSels.Clear();
             foreach (ListViewItem lvi in listFiles.CheckedItems)
             {
-                    listSels.Add(lvi.SubItems[3].Text);
+                listSels.Add(lvi.SubItems[3].Text);
             }
         }
+
         private void btExport_Click(object sender, EventArgs e)
         {
             if (listFiles.CheckedItems.Count == 0)
                 return;
-            destFolder = "";
-            if (selectAfolder(true, "请选择要导出到哪个目录", ref destFolder))
+            _destFolder = "";
+            if (SelectAfolder(true, "请选择要导出到哪个目录", ref _destFolder))
             {
-                getSelectedPath(ref oprFiles);
-                threadCopyFiles();
+                GetSelectedPath(ref _oprFiles);
+                ThreadCopyFiles();
             }
         }
 
         private void btMove_Click(object sender, EventArgs e)
         {
             if (listFiles.CheckedItems.Count == 0)
-                return ;
-            destFolder = "";
-            if (selectAfolder(true, "请选择要移动到哪个目录", ref destFolder))
+                return;
+            _destFolder = "";
+            if (SelectAfolder(true, "请选择要移动到哪个目录", ref _destFolder))
             {
-                getSelectedPath(ref oprFiles);
-                threadMoveFiles();
+                GetSelectedPath(ref _oprFiles);
+                ThreadMoveFiles();
             }
         }
-        private void moveFiles() //move
+
+        private void MoveFiles() //move
         {
-            fileMgr.moveFiles(oprFiles, destFolder);
+            FileOperator.MoveFiles(_oprFiles, _destFolder);
         }
-        private void copyFiles() //export
+
+        private void CopyFiles() //export
         {
-            fileMgr.copyFiles(oprFiles, destFolder);
-        
+            FileOperator.CopyFiles(_oprFiles, _destFolder);
         }
-        private void delFiles()
+
+        private void DelFiles()
         {
-            fileMgr.delFiles(oprFiles);
+            FileOperator.DelFiles(_oprFiles);
         }
+
         private void btDelete_Click(object sender, EventArgs e)
         {
             if (listFiles.CheckedItems.Count == 0)
                 return;
-            DialogResult res = MessageBox.Show("确认删除所选文件?此操作不可逆!", "确定删除操作", MessageBoxButtons.OKCancel,
-                                                MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-                if(res == DialogResult.OK)
-                {
-                   getSelectedPath(ref oprFiles);
-                   threadDelFiles();
-                }
+            var res = MessageBox.Show("确认删除所选文件?此操作不可逆!", "确定删除操作", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            if (res == DialogResult.OK)
+            {
+                GetSelectedPath(ref _oprFiles);
+                ThreadDelFiles();
+            }
         }
-        private bool selectAfolder(bool bForExort, string Description, ref string rootDir)
+
+        private bool SelectAfolder(bool bForExort, string Description, ref string rootDir)
         {
-            string path = "";
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            var path = "";
+            var folderBrowserDialog = new FolderBrowserDialog();
             folderBrowserDialog.ShowNewFolderButton = true;
             folderBrowserDialog.Description = Description;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 path = folderBrowserDialog.SelectedPath;
-                if (fileMgr.newFolderValid(path))
+                if (FileOperator.NewFolderValid(path))
                 {
                     rootDir = path;
                     return true;
                 }
-                else
-                {
-                    string desMsg = "所选目录不能是已有目录的子目录或父目录,请重新选择";
-                    return selectAfolder(bForExort, desMsg, ref rootDir);
-                }
+                var desMsg = "所选目录不能是已有目录的子目录或父目录,请重新选择";
+                return SelectAfolder(bForExort, desMsg, ref rootDir);
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
+
         private void btSearch_Click(object sender, EventArgs e)
         {
-            bLove = miLove.Checked;
-            bDel = miDel.Checked;
-            bPriv = miPriv.Checked;
-            bNote = miNote.Checked;
-            bNormal = miAll.Checked;
-            dtS = dtStart.Value;
-            dtE = dtEnd.Value;
-            keyWord = tbKeyword.Text;
-            tsslFilter.Text = getFileterString(bLove, bDel, bPriv, bNote, bNormal, dtS, dtE, keyWord);
-            updateFilesList();
+            _bLove = miLove.Checked;
+            _bDel = miDel.Checked;
+            _bPriv = miPriv.Checked;
+            _bNote = miNote.Checked;
+            _bNormal = miAll.Checked;
+            _dtS = dtStart.Value;
+            _dtE = dtEnd.Value;
+            _keyWord = tbKeyword.Text;
+            tsslFilter.Text = getFileterString(_bLove, _bDel, _bPriv, _bNote, _bNormal, _dtS, _dtE, _keyWord);
+            UpdateFilesList();
         }
 
         private void miLove_CheckedChanged(object sender, EventArgs e)
         {
-            previewSearchFilter();
+            PreviewSearchFilter();
         }
 
         private void miReloadFiles_Click(object sender, EventArgs e)
         {
-            threadInitAllFiles();
+            ThreadInitAllFiles();
         }
-                
+
         private void timerOprFiles_Tick(object sender, EventArgs e)
         {
-            updateCurOprStatus();
+            UpdateCurOprStatus();
         }
-       
-        private void updateCurOprStatus()
+
+        private void UpdateCurOprStatus()
         {
-            if (iCurOprType == CurOprType.None)
+            if (_iCurOprType == CurOprType.None)
             {
                 lbCurOpr.Visible = false;
                 tssProcess.Visible = false;
             }
-            else if(iCurOprType == CurOprType.OprFinished)
+            else if (_iCurOprType == CurOprType.OprFinished)
             {
                 timerOprFiles.Interval = 5000;
-                iCurOprType = CurOprType.None;
+                _iCurOprType = CurOprType.None;
             }
-            else   //3kinds of file opr
+            else //3kinds of file opr
             {
                 lbCurOpr.Visible = true;
                 tssProcess.Visible = true;
-                tssProcess.Value = fileMgr.iCurIndex;
-                tssProcess.Maximum = fileMgr.iTotal;
-                if(!fileMgr.bOprFilesInprocess)
+                tssProcess.Value = FileOperator.CurIndex;
+                tssProcess.Maximum = FileOperator.TotalCount;
+                if (!FileOperator.BOprFilesInprocess)
                 {
-                    string msgStr = "";
-                    if (iCurOprType == CurOprType.CopyFile)
+                    var msgStr = "";
+                    if (_iCurOprType == CurOprType.CopyFile)
                     {
                         msgStr = "导出完成 ";
                     }
-                    else if (iCurOprType == CurOprType.MoveFile)
+                    else if (_iCurOprType == CurOprType.MoveFile)
                     {
                         msgStr = "移动完成 ";
                     }
-                    else if (iCurOprType == CurOprType.DelFile)
+                    else if (_iCurOprType == CurOprType.DelFile)
                     {
                         msgStr = "删除完成 ";
                     }
-                    if (fileMgr.iFaild != 0)
-                        msgStr += string.Format("成功{0}失败{1}个", fileMgr.iCurIndex, fileMgr.iFaild);
+                    if (FileOperator.FaildCount != 0)
+                        msgStr += string.Format("成功{0}失败{1}个", FileOperator.CurIndex, FileOperator.FaildCount);
                     lbCurOpr.Text = msgStr;
                     tssProcess.Visible = false;
-                    iCurOprType = CurOprType.OprFinished;
-                    updateFilesList();
+                    _iCurOprType = CurOprType.OprFinished;
+                    UpdateFilesList();
                 }
             }
-
         }
 
         private void listFiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listFiles.SelectedItems.Count>0)
+            if (listFiles.SelectedItems.Count > 0)
             {
-                string filePath = listFiles.SelectedItems[0].SubItems[3].Text;
-                playFile(filePath);
+                var filePath = listFiles.SelectedItems[0].SubItems[3].Text;
+                PlayFile(filePath);
             }
         }
-           
+
 
         private void timerPlay_Tick(object sender, EventArgs e)
         {
-            //bool bIsPlayEnded = vlc_player_.isPlayEnded();
+            //bool bIsPlayEnded = vlc_player_.IsPlayEnded();
             //double curPlayTime = vlc_player_.GetPlayTime() * 1000;
             //if (bIsPlayEnded || curPlayTime<0)
             //{
@@ -551,20 +549,18 @@ namespace Com.Skewky.Cam
             //}
         }
 
-    private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerPlay.Stop();
             //vlc_player_.Stop();
-            if (trdFileInit != null)
+            if (_trdFileInit != null)
             {
-               
-                trdFileInit.Abort();
+                _trdFileInit.Abort();
             }
-            if (trdFileOpr != null)
+            if (_trdFileOpr != null)
             {
-                trdFileOpr.Abort();
+                _trdFileOpr.Abort();
             }
-
         }
 
         private void FileMgrForm_Leave(object sender, EventArgs e)
@@ -574,8 +570,15 @@ namespace Com.Skewky.Cam
         private void FileMgrForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //vlc_player_.Stop();
-       
         }
 
-   }
+        private enum CurOprType
+        {
+            None = 0,
+            CopyFile,
+            MoveFile,
+            DelFile,
+            OprFinished
+        }
+    }
 }

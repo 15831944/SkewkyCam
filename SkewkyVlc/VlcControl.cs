@@ -12,65 +12,65 @@ namespace Com.Skewky.Vlc
     public partial class VlcControl : UserControl
     {
 
-        public bool bFullScreen = false;
-        VlcPlayerUI playUI = new VlcPlayerUI();
+        public bool BFullScreen = false;
+        readonly VlcPlayerUi _playUi = new VlcPlayerUi();
         //FullScreenForm fsp = null;//定义成全局量的话第二次显示异常
-        private bool bDbClick = false;
+        private bool _bDbClick = false;
         public VlcControl()
         {
             InitializeComponent();
-            playUI.setComponents(panelPlay, timer1, tbProcess, lbVideoTime, lbSound, lbSpeed);
+            _playUi.SetComponents(panelPlay, timer1, tbProcess, lbVideoTime, lbSound, lbSpeed);
         }
         public void release()
         {
-            playUI.release();
+            _playUi.Release();
         }
         public void PlayFile(string path)
         {
-            playUI.PlayFile(path);
+            _playUi.PlayFile(path);
         }
         private void picEnv_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            bDbClick = true;
-            fullScreenPlay();
+            _bDbClick = true;
+            FullScreenPlay();
         }
-        private void fullScreenPlay()
+        private void FullScreenPlay()
         {
             FullScreenForm fsp = null; 
-            if (fsp == null)
+            //if (fsp == null)
                 fsp = new FullScreenForm();
           
-                bFullScreen = true;
-                fsp.setVlcPlayInfo(playUI.getPlayInfo());
-                playUI.Pause();
+                BFullScreen = true;
+                fsp.SetVlcPlayInfo(_playUi.GetPlayInfo());
+                _playUi.Pause();
                 int iActulaWidth = Screen.PrimaryScreen.Bounds.Width;
                 int iActulaHeight = Screen.PrimaryScreen.Bounds.Height;
                 fsp.SetBounds(0, 0, iActulaWidth, iActulaHeight);
                 if (fsp.ShowDialog() == DialogResult.OK)
                 {
-                    playUI.setPlayInfo(fsp.fullPlayInfo);
-                    bFullScreen = false;
+                    _playUi.SetPlayInfo(fsp.FullPlayInfo);
+                    BFullScreen = false;
                 }
         }
         private void picEnv_MouseClick(object sender, EventArgs e)
         {
-            bDbClick = false;
-            Thread th = new Thread(new ThreadStart(signClicked));
+            _bDbClick = false;
+            Thread th = new Thread(new ThreadStart(SignClicked));
             th.Start();
         }
-        private void signClicked()
+        private void SignClicked()
         {
-            Thread.Sleep(ConstVars.iDbClickIntervel);
-            if (!bDbClick)
+            Thread.Sleep(ConstVars.DbClickIntervel);
+            if (!_bDbClick)
             {
-                playUI.TogglePlay();
+                _playUi.TogglePlay();
             }
         }
 
         #region Key Envents
         private void VlcControl_KeyUp(object sender, KeyEventArgs e)
         {
-            playUI.Env_KeyUp(sender, e);
+            _playUi.Env_KeyUp(sender, e);
         }
         #endregion
 
@@ -90,7 +90,7 @@ namespace Com.Skewky.Vlc
         }
         private void picEnv_MouseWheel(object sender, MouseEventArgs e)
         {
-            playUI.updateVolume(e.Delta > 0);
+            _playUi.ChangeVolume(e.Delta > 0);
 
         }
         

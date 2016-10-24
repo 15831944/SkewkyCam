@@ -1,48 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Skewky.Cam
 {
     [Serializable]
     public class MarkData
     {
-        string description;
+        private bool _bFavourite;
+
+        private bool _bPrivate;
+
+        private bool _bToDelete;
+        private string _description;
+
         public string Description
         {
-            get { return description; }
-            set { description = value; }
+            get { return _description; }
+            set { _description = value; }
         }
-        bool bFavourite;
+
         public bool Favourite
         {
-            get { return bFavourite; }
-            set { bFavourite = value; }
+            get { return _bFavourite; }
+            set { _bFavourite = value; }
         }
-        bool bToDelete;
+
         public bool ToDelete
         {
-            get { return bToDelete; }
-            set { bToDelete = value; }
+            get { return _bToDelete; }
+            set { _bToDelete = value; }
         }
-        bool bPrivate;
+
         public bool Private
         {
-            get { return bPrivate; }
-            set { bPrivate = value; }
+            get { return _bPrivate; }
+            set { _bPrivate = value; }
         }
+
         public bool Describ
         {
-            get { return !string.IsNullOrEmpty(description); }
+            get { return !string.IsNullOrEmpty(_description); }
         }
-        public string MDStr
+
+        public string MarkDataStr
         {
-            get 
-            { 
-                string res = "";
-                res += bFavourite ? "L" : " ";
-                res += bToDelete ? "D" : " ";
-                res += bPrivate ? "P" : " ";
+            get
+            {
+                var res = "";
+                res += _bFavourite ? "L" : " ";
+                res += _bToDelete ? "D" : " ";
+                res += _bPrivate ? "P" : " ";
                 res += Describ ? "N" : " ";
                 return res;
             }

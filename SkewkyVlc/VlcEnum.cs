@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Com.Skewky.Vlc
 {
-    public enum vlc_Sta
+    public enum VlcSta
     {
-        libvlc_NothingSpecial=0,
-        libvlc_Opening,
-        libvlc_Buffering,
-        libvlc_Playing,
-        libvlc_Paused,
-        libvlc_Stopped,
-        libvlc_Ended,
-        libvlc_Error
+        LibvlcNothingSpecial=0,
+        LibvlcOpening,
+        LibvlcBuffering,
+        LibvlcPlaying,
+        LibvlcPaused,
+        LibvlcStopped,
+        LibvlcEnded,
+        LibvlcError
     };
 }

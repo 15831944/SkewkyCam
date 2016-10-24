@@ -9,22 +9,20 @@ namespace Com.Skewky.Vlc
 {
     public class VlcPlayer
     {
-        private IntPtr libvlc_instance_;
-        private IntPtr libvlc_media_player_;
-        private double duration_;
-        private string playPath;
-        private bool bIsPlaying = false;
-        public bool IsPlaying
-        {
-            get { return bIsPlaying; }
-        }
+        private IntPtr _libvlcInstance;
+        private IntPtr _libvlcMediaPlayer;
+        private double _duration;
+        private string _playPath;
+        public bool IsPlaying { get; private set; }
+
         public VlcPlayer(string pluginPath)
         {
-            string plugin_arg = "--plugin-path=" + pluginPath;
-            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp", plugin_arg };
-            libvlc_instance_ = LibVlcAPI.libvlc_new(arguments);
+            IsPlaying = false;
+            string pluginArg = "--plugin-path=" + pluginPath;
+            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--rtsp-tcp", pluginArg };
+            _libvlcInstance = LibVlcApi.libvlc_new(arguments);
 
-            libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);
+            _libvlcMediaPlayer = LibVlcApi.libvlc_media_player_new(_libvlcInstance);
         }
         ~VlcPlayer()
         {
@@ -32,191 +30,191 @@ namespace Com.Skewky.Vlc
         }
         public void Copy(VlcPlayer vlcPlayer)
         {
-            libvlc_instance_ = vlcPlayer.libvlc_instance_;
-            libvlc_media_player_ = vlcPlayer.libvlc_media_player_;
-            duration_ = vlcPlayer.duration_;
+            _libvlcInstance = vlcPlayer._libvlcInstance;
+            _libvlcMediaPlayer = vlcPlayer._libvlcMediaPlayer;
+            _duration = vlcPlayer._duration;
 
         }
-        public void setPlayInfo(PlayInfo pInfo)
+        public void SetPlayInfo(PlayInfo pInfo)
         {
             if (null == pInfo)
                 return;
-            if (playPath != pInfo.filePath)
-                PlayFile(pInfo.filePath);
-            SetPlayTime(pInfo.curTime);
-            SetRate(pInfo.dPlayingSpeed);
-            SetVolume(pInfo.dValume);
-            if(pInfo.playStatus == vlc_Sta.libvlc_Playing)
+            if (_playPath != pInfo.FilePath)
+                PlayFile(pInfo.FilePath);
+            SetPlayTime(pInfo.CurTime);
+            SetRate(pInfo.DPlayingSpeed);
+            SetVolume(pInfo.DValume);
+            if(pInfo.PlayStatus == VlcSta.LibvlcPlaying)
             {
                 Play();
-                SetPlayTime(pInfo.curTime);
+                SetPlayTime(pInfo.CurTime);
             }
-            else if (pInfo.playStatus == vlc_Sta.libvlc_Paused)
+            else if (pInfo.PlayStatus == VlcSta.LibvlcPaused)
             {
                 Pause();
             }
-            else if (pInfo.playStatus == vlc_Sta.libvlc_Stopped)
+            else if (pInfo.PlayStatus == VlcSta.LibvlcStopped)
             {
                 Stop();
             }
         }
-        public PlayInfo getPlayInfo()
+        public PlayInfo GetPlayInfo()
         {
             PlayInfo pInfo = new PlayInfo();
-            pInfo.filePath = playPath;
-            pInfo.curTime = GetPlayTime();
-            pInfo.playStatus = getPlayerStatus();
-            pInfo.dPlayingSpeed = GetRate();
-            pInfo.dValume = GetVolume();
+            pInfo.FilePath = _playPath;
+            pInfo.CurTime = GetPlayTime();
+            pInfo.PlayStatus = GetPlayerStatus();
+            pInfo.DPlayingSpeed = GetRate();
+            pInfo.DValume = GetVolume();
             return pInfo;
         }
         public void SetRenderWindow(int wndHandle)
         {
-            if (libvlc_instance_ != IntPtr.Zero && wndHandle != 0)
+            if (_libvlcInstance != IntPtr.Zero && wndHandle != 0)
             {
-                LibVlcAPI.libvlc_media_player_set_hwnd(libvlc_media_player_, wndHandle);
+                LibVlcApi.libvlc_media_player_set_hwnd(_libvlcMediaPlayer, wndHandle);
             }
         }
 
         public void PlayFile(string filePath)
         {
-            IntPtr libvlc_media = LibVlcAPI.libvlc_media_new_path(libvlc_instance_, filePath);
-            if (libvlc_media != IntPtr.Zero)
+            IntPtr libvlcMedia = LibVlcApi.libvlc_media_new_path(_libvlcInstance, filePath);
+            if (libvlcMedia != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_parse(libvlc_media);
-                duration_ = LibVlcAPI.libvlc_media_get_duration(libvlc_media);
+                LibVlcApi.libvlc_media_parse(libvlcMedia);
+                _duration = LibVlcApi.libvlc_media_get_duration(libvlcMedia);
 
-                LibVlcAPI.libvlc_media_player_set_media(libvlc_media_player_, libvlc_media);
-                LibVlcAPI.libvlc_media_release(libvlc_media);
+                LibVlcApi.libvlc_media_player_set_media(_libvlcMediaPlayer, libvlcMedia);
+                LibVlcApi.libvlc_media_release(libvlcMedia);
 
-                LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
-                playPath = filePath;
-                bIsPlaying = true;
+                LibVlcApi.libvlc_media_player_play(_libvlcMediaPlayer);
+                _playPath = filePath;
+                IsPlaying = true;
             }
         }
         public void PrepareFile(string filePath)
         {
-            IntPtr libvlc_media = LibVlcAPI.libvlc_media_new_path(libvlc_instance_, filePath);
-            if (libvlc_media != IntPtr.Zero)
+            IntPtr libvlcMedia = LibVlcApi.libvlc_media_new_path(_libvlcInstance, filePath);
+            if (libvlcMedia != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_parse(libvlc_media);
-                duration_ = LibVlcAPI.libvlc_media_get_duration(libvlc_media);
+                LibVlcApi.libvlc_media_parse(libvlcMedia);
+                _duration = LibVlcApi.libvlc_media_get_duration(libvlcMedia);
 
-                LibVlcAPI.libvlc_media_player_set_media(libvlc_media_player_, libvlc_media);
-                LibVlcAPI.libvlc_media_release(libvlc_media);
-                playPath = filePath;
-                //LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
+                LibVlcApi.libvlc_media_player_set_media(_libvlcMediaPlayer, libvlcMedia);
+                LibVlcApi.libvlc_media_release(libvlcMedia);
+                _playPath = filePath;
+                //LibVlcApi.libvlc_media_player_play(_libvlcMediaPlayer);
             }
         }
         public void Pause()
         {
-            if (libvlc_media_player_ != IntPtr.Zero)
+            if (_libvlcMediaPlayer != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_player_pause(libvlc_media_player_);
-                bIsPlaying = false;
+                LibVlcApi.libvlc_media_player_pause(_libvlcMediaPlayer);
+                IsPlaying = false;
             }
         }
         public void TooglePlay()
         {
-            if (bIsPlaying)
+            if (IsPlaying)
                 Pause();
             else
                 Play();
         }
         public void Play()
         {
-            if (libvlc_media_player_ != IntPtr.Zero)
+            if (_libvlcMediaPlayer != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_player_play(libvlc_media_player_);
-                bIsPlaying = true;
+                LibVlcApi.libvlc_media_player_play(_libvlcMediaPlayer);
+                IsPlaying = true;
             }
         }
         public void Stop()
         {
-            if (libvlc_media_player_ != IntPtr.Zero)
+            if (_libvlcMediaPlayer != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_player_stop(libvlc_media_player_);
-                bIsPlaying = true;
+                LibVlcApi.libvlc_media_player_stop(_libvlcMediaPlayer);
+                IsPlaying = true;
             }
         }
 
         public double GetPlayTime()
         {
-            return LibVlcAPI.libvlc_media_player_get_time(libvlc_media_player_) / 1000.0;
+            return LibVlcApi.libvlc_media_player_get_time(_libvlcMediaPlayer) / 1000.0;
         }
 
         public void SetPlayTime(double seekTime)
         {
-            LibVlcAPI.libvlc_media_player_set_time(libvlc_media_player_, (Int64)(seekTime * 1000));
+            LibVlcApi.libvlc_media_player_set_time(_libvlcMediaPlayer, (Int64)(seekTime * 1000));
         }
 
         public int GetVolume()
         {
-            return LibVlcAPI.libvlc_audio_get_volume(libvlc_media_player_);
+            return LibVlcApi.libvlc_audio_get_volume(_libvlcMediaPlayer);
         }
 
         public void SetVolume(int volume)
         {
-            LibVlcAPI.libvlc_audio_set_volume(libvlc_media_player_, volume);
+            LibVlcApi.libvlc_audio_set_volume(_libvlcMediaPlayer, volume);
         }
 
         public void SetFullScreen(bool istrue)
         {
-            LibVlcAPI.libvlc_set_fullscreen(libvlc_media_player_, istrue ? 1 : 0);
+            LibVlcApi.libvlc_set_fullscreen(_libvlcMediaPlayer, istrue ? 1 : 0);
         }
         public void SetRate(double rate)
         {
-            if (libvlc_media_player_ != IntPtr.Zero)
+            if (_libvlcMediaPlayer != IntPtr.Zero)
             {
-                LibVlcAPI.libvlc_media_player_set_rate(libvlc_media_player_, (float)rate);
+                LibVlcApi.libvlc_media_player_set_rate(_libvlcMediaPlayer, (float)rate);
             }
         }
         public double GetRate()
         {
             double rate = 1;
-            if (libvlc_media_player_ != IntPtr.Zero)
+            if (_libvlcMediaPlayer != IntPtr.Zero)
             {
-                rate = (float)LibVlcAPI.libvlc_media_player_get_rate(libvlc_media_player_);
+                rate = (float)LibVlcApi.libvlc_media_player_get_rate(_libvlcMediaPlayer);
             }
             return rate;
         }
         public double Duration()
         {
-            return duration_;
+            return _duration;
         }
 
         public string Version()
         {
-            return LibVlcAPI.libvlc_get_version();
+            return LibVlcApi.libvlc_get_version();
         }
-        public bool isPlayEnded()
+        public bool IsPlayEnded()
         {
-            vlc_Sta sta = (vlc_Sta)LibVlcAPI.libvlc_media_player_get_state(libvlc_media_player_);
-            return vlc_Sta.libvlc_Ended == sta;
+            VlcSta sta = (VlcSta)LibVlcApi.libvlc_media_player_get_state(_libvlcMediaPlayer);
+            return VlcSta.LibvlcEnded == sta;
         }
-        public vlc_Sta getPlayerStatus()
+        public VlcSta GetPlayerStatus()
         {
-            vlc_Sta sta = (vlc_Sta)LibVlcAPI.libvlc_media_player_get_state(libvlc_media_player_);
+            VlcSta sta = (VlcSta)LibVlcApi.libvlc_media_player_get_state(_libvlcMediaPlayer);
             return sta;
         }
     }
 
-    internal static class LibVlcAPI
+    internal static class LibVlcApi
     {
         internal struct PointerToArrayOfPointerHelper
         {
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
-            public IntPtr[] pointers;
+            public IntPtr[] Pointers;
         }
 
         public static IntPtr libvlc_new(string[] arguments)
         {
             PointerToArrayOfPointerHelper argv = new PointerToArrayOfPointerHelper();
-            argv.pointers = new IntPtr[11];
+            argv.Pointers = new IntPtr[11];
 
             for (int i = 0; i < arguments.Length; i++)
             {
-                argv.pointers[i] = Marshal.StringToHGlobalAnsi(arguments[i]);
+                argv.Pointers[i] = Marshal.StringToHGlobalAnsi(arguments[i]);
             }
 
             IntPtr argvPtr = IntPtr.Zero;
@@ -232,9 +230,9 @@ namespace Com.Skewky.Vlc
             {
                 for (int i = 0; i < arguments.Length + 1; i++)
                 {
-                    if (argv.pointers[i] != IntPtr.Zero)
+                    if (argv.Pointers[i] != IntPtr.Zero)
                     {
-                        Marshal.FreeHGlobal(argv.pointers[i]);
+                        Marshal.FreeHGlobal(argv.Pointers[i]);
                     }
                 }
                 if (argvPtr != IntPtr.Zero)
@@ -244,7 +242,7 @@ namespace Com.Skewky.Vlc
             }
         }
 
-        public static IntPtr libvlc_media_new_path(IntPtr libvlc_instance, string path)
+        public static IntPtr libvlc_media_new_path(IntPtr libvlcInstance, string path)
         {
             IntPtr pMrl = IntPtr.Zero;
             try
@@ -253,7 +251,7 @@ namespace Com.Skewky.Vlc
                 pMrl = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, pMrl, bytes.Length);
                 Marshal.WriteByte(pMrl, bytes.Length, 0);
-                return libvlc_media_new_path(libvlc_instance, pMrl);
+                return libvlc_media_new_path(libvlcInstance, pMrl);
             }
             finally
             {
@@ -264,7 +262,7 @@ namespace Com.Skewky.Vlc
             }
         }
 
-        public static IntPtr libvlc_media_new_location(IntPtr libvlc_instance, string path)
+        public static IntPtr libvlc_media_new_location(IntPtr libvlcInstance, string path)
         {
             IntPtr pMrl = IntPtr.Zero;
             try
@@ -273,7 +271,7 @@ namespace Com.Skewky.Vlc
                 pMrl = Marshal.AllocHGlobal(bytes.Length + 1);
                 Marshal.Copy(bytes, 0, pMrl, bytes.Length);
                 Marshal.WriteByte(pMrl, bytes.Length, 0);
-                return libvlc_media_new_path(libvlc_instance, pMrl);
+                return libvlc_media_new_path(libvlcInstance, pMrl);
             }
             finally
             {
@@ -295,7 +293,7 @@ namespace Com.Skewky.Vlc
         // 释放libvlc实例
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_release(IntPtr libvlc_instance);
+        public static extern void libvlc_release(IntPtr libvlcInstance);
 
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
@@ -304,99 +302,99 @@ namespace Com.Skewky.Vlc
         // 从视频来源(例如Url)构建一个libvlc_meida
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern IntPtr libvlc_media_new_location(IntPtr libvlc_instance, IntPtr path);
+        private static extern IntPtr libvlc_media_new_location(IntPtr libvlcInstance, IntPtr path);
 
         // 从本地文件路径构建一个libvlc_media
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern IntPtr libvlc_media_new_path(IntPtr libvlc_instance, IntPtr path);
+        private static extern IntPtr libvlc_media_new_path(IntPtr libvlcInstance, IntPtr path);
 
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_release(IntPtr libvlc_media_inst);
+        public static extern void libvlc_media_release(IntPtr libvlcMediaInst);
 
         // 创建libvlc_media_player(播放核心)
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern IntPtr libvlc_media_player_new(IntPtr libvlc_instance);
+        public static extern IntPtr libvlc_media_player_new(IntPtr libvlcInstance);
 
-        // 将视频(libvlc_media)绑定到播放器上
+        // 将视频(libvlcMedia)绑定到播放器上
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_set_media(IntPtr libvlc_media_player, IntPtr libvlc_media);
+        public static extern void libvlc_media_player_set_media(IntPtr libvlcMediaPlayer, IntPtr libvlcMedia);
 
         // 设置图像输出的窗口
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_set_hwnd(IntPtr libvlc_mediaplayer, Int32 drawable);
+        public static extern void libvlc_media_player_set_hwnd(IntPtr libvlcMediaplayer, Int32 drawable);
 
         // 设置播放
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_play(IntPtr libvlc_mediaplayer);
+        public static extern void libvlc_media_player_play(IntPtr libvlcMediaplayer);
 
         // 设置暂停
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_pause(IntPtr libvlc_mediaplayer);
+        public static extern void libvlc_media_player_pause(IntPtr libvlcMediaplayer);
 
         // 设置停止
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_stop(IntPtr libvlc_mediaplayer);
+        public static extern void libvlc_media_player_stop(IntPtr libvlcMediaplayer);
 
         // 解析视频资源的媒体信息(如时长等)
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_parse(IntPtr libvlc_media);
+        public static extern void libvlc_media_parse(IntPtr libvlcMedia);
 
         // 返回视频的时长(必须先调用libvlc_media_parse之后，该函数才会生效)
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern Int64 libvlc_media_get_duration(IntPtr libvlc_media);
+        public static extern Int64 libvlc_media_get_duration(IntPtr libvlcMedia);
 
         // 当前播放的时间
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern Int64 libvlc_media_player_get_time(IntPtr libvlc_mediaplayer);
+        public static extern Int64 libvlc_media_player_get_time(IntPtr libvlcMediaplayer);
 
         // 设置播放位置(拖动)
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_set_time(IntPtr libvlc_mediaplayer, Int64 time);
+        public static extern void libvlc_media_player_set_time(IntPtr libvlcMediaplayer, Int64 time);
 
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_release(IntPtr libvlc_mediaplayer);
+        public static extern void libvlc_media_player_release(IntPtr libvlcMediaplayer);
 
         // 获取和设置音量
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern int libvlc_audio_get_volume(IntPtr libvlc_media_player);
+        public static extern int libvlc_audio_get_volume(IntPtr libvlcMediaPlayer);
 
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_audio_set_volume(IntPtr libvlc_media_player, int volume);
+        public static extern void libvlc_audio_set_volume(IntPtr libvlcMediaPlayer, int volume);
 
         // 设置全屏
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_set_fullscreen(IntPtr libvlc_media_player, int isFullScreen);
+        public static extern void libvlc_set_fullscreen(IntPtr libvlcMediaPlayer, int isFullScreen);
 
         // 设置播放速度
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern void libvlc_media_player_set_rate(IntPtr libvlc_media_player, float rate);
+        public static extern void libvlc_media_player_set_rate(IntPtr libvlcMediaPlayer, float rate);
 
         // 获取播放速度
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern float libvlc_media_player_get_rate(IntPtr libvlc_media_player);
+        public static extern float libvlc_media_player_get_rate(IntPtr libvlcMediaPlayer);
 
         //获取播放状态
         [DllImport("libvlc", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [SuppressUnmanagedCodeSecurity]
-        public static extern int libvlc_media_player_get_state(IntPtr libvlc_media_player);
+        public static extern int libvlc_media_player_get_state(IntPtr libvlcMediaPlayer);
     
     }
 }

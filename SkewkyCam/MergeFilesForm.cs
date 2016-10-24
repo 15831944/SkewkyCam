@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Com.Skewky.Cam
 {
@@ -14,9 +8,10 @@ namespace Com.Skewky.Cam
         {
             InitializeComponent();
         }
-        public void playTestFile()
+
+        public void PlayTestFile()
         {
-            string path = @"d:\Users\bin\Desktop\新建文件夹 (2)\2016年01月03日\21时\52分00秒.mp4";
+            var path = @"d:\Users\bin\Desktop\新建文件夹 (2)\2016年01月03日\21时\52分00秒.mp4";
             vlcCtrl.PlayFile(path);
         }
 

@@ -6,10 +6,10 @@ namespace Com.Skewky.Vlc
 {
     public class PlayInfo
     {
-        public string filePath;
-        public double curTime;
-        public vlc_Sta playStatus = vlc_Sta.libvlc_Stopped;
-        public double dPlayingSpeed = 1;
-        public int dValume = 80;
+        public string FilePath;
+        public double CurTime;
+        public VlcSta PlayStatus = VlcSta.LibvlcStopped;
+        public double DPlayingSpeed = 1;
+        public int DValume = 80;
     }
 }

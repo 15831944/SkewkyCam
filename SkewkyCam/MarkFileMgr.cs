@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -8,18 +7,90 @@ namespace Com.Skewky.Cam
 {
     public class MarkFileMgr
     {
-        protected List<MarkFile> markFiles = new List<MarkFile>();
-        const string skewkyMark = "SkewkyMark\\";
-        #region init&load&save
-        public bool initMarkFiles(List<string> rootDirs)
+        private const string SkewkyMark = "SkewkyMark\\";
+        protected List<MarkFile> MarkFiles = new List<MarkFile>();
+
+        public bool BFindMarkFile(DateTime dt, ref MarkFile mkfile)
+        {
+            var dtMonth = new DateTime(dt.Year, dt.Month, 1);
+            foreach (var mkf in MarkFiles)
+            {
+                if (mkf.DtMonth == dtMonth)
+                {
+                    mkfile = mkf;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool GetMarkData(DateTime dt, ref MarkData mkDa)
+        {
+            var dtMonth = new DateTime(dt.Year, dt.Month, 1);
+
+            var mkf = new MarkFile(dtMonth);
+            if (BFindMarkFile(dt, ref mkf))
+            {
+                if (mkf.GetMarkData(dt, ref mkDa))
+                    return true;
+            }
+
+
+            return false;
+        }
+
+        public bool SetMarkData(DateTime dt, MarkData mkDa)
         {
             try
             {
-                markFiles.Clear();
-                foreach (string rootDir in rootDirs)
+                var dtMonth = new DateTime(dt.Year, dt.Month, 1);
+                var mkf = new MarkFile(dtMonth);
+                if (BFindMarkFile(dtMonth, ref mkf)) //need add to mkf list
                 {
-                    string markFileFolder = Path.Combine(rootDir, skewkyMark);
-                    loadMarkFileDir(markFileFolder);
+                    mkf.SetMarkData(dt, mkDa);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            return false;
+        }
+
+        public bool AddMarkData(DateTime dt, MarkData mkDa, string mkFileRootDir)
+        {
+            try
+            {
+                var dtMonth = new DateTime(dt.Year, dt.Month, 1);
+                var mkf = new MarkFile(dtMonth);
+                if (!BFindMarkFile(dtMonth, ref mkf)) //need add to mkf list
+                {
+                    var mkFilePath = Path.Combine(mkFileRootDir, SkewkyMark + mkf.GetMarkFileName());
+                    mkf.FilePath = mkFilePath;
+                    mkf.SetMarkData(dt, mkDa);
+                    MarkFiles.Add(mkf);
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            return false;
+        }
+
+        #region init&load&save
+
+        public bool InitMarkFiles(List<string> rootDirs)
+        {
+            try
+            {
+                MarkFiles.Clear();
+                foreach (var rootDir in rootDirs)
+                {
+                    var markFileFolder = Path.Combine(rootDir, SkewkyMark);
+                    LoadMarkFileDir(markFileFolder);
                 }
                 return true;
             }
@@ -28,28 +99,29 @@ namespace Com.Skewky.Cam
             }
             return false;
         }
-        private void loadMarkFileDir(string mkFileRoot)
+
+        private void LoadMarkFileDir(string mkFileRoot)
         {
-            string[] mkFiles = Directory.GetFiles(mkFileRoot, "*.mrk");
-            foreach (string mkFilePath in mkFiles)
+            var mkFiles = Directory.GetFiles(mkFileRoot, "*.mrk");
+            foreach (var mkFilePath in mkFiles)
             {
-                loadMarkFile(mkFilePath);
+                LoadMarkFile(mkFilePath);
             }
         }
-        private bool loadMarkFile(string mkFilePath)
+
+        private bool LoadMarkFile(string mkFilePath)
         {
             try
             {
                 if (File.Exists(mkFilePath))
                 {
-                    MarkFile mkfile = new MarkFile();
                     Stream s = File.Open(mkFilePath, FileMode.Open, FileAccess.Read);
-                    BinaryFormatter c = new BinaryFormatter();
-                    mkfile = (MarkFile)c.Deserialize(s);
-                    mkfile.filePath = mkFilePath;
-                    mkfile.initLoadFaildValues();
+                    var c = new BinaryFormatter();
+                    var mkfile = (MarkFile) c.Deserialize(s);
+                    mkfile.FilePath = mkFilePath;
+                    mkfile.InitLoadFaildValues();
                     s.Close();
-                    markFiles.Add(mkfile);
+                    MarkFiles.Add(mkfile);
                     return true;
                 }
                 return false;
@@ -60,102 +132,40 @@ namespace Com.Skewky.Cam
                 return false;
             }
         }
-        public bool saveMarkFiles()
+
+        public bool SaveMarkFiles()
         {
             try
             {
-                foreach (MarkFile mk in markFiles)
+                foreach (var mk in MarkFiles)
                 {
                     try
                     {
-                        string filePath = mk.filePath;
-                        if (!Directory.Exists( Path.GetDirectoryName(filePath)))
+                        var filePath = mk.FilePath;
+                        if (!Directory.Exists(Path.GetDirectoryName(filePath)))
                         {
-                            DirectoryInfo directoryInfo = new DirectoryInfo( Path.GetDirectoryName(filePath));
+                            var directoryInfo = new DirectoryInfo(Path.GetDirectoryName(filePath));
                             directoryInfo.Create();
                         }
                         Stream s = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite);
-                        BinaryFormatter b = new BinaryFormatter();
+                        var b = new BinaryFormatter();
                         b.Serialize(s, mk);
                         s.Close();
                     }
                     catch (Exception)
                     {
-
+                        // ignored
                     }
-
                 }
                 return true;
             }
             catch (Exception)
             {
+                // ignored
             }
             return false;
         }
+
         #endregion
-        public bool bFindMarkFile(DateTime dt, ref MarkFile mkfile)
-        {
-            DateTime dtMonth = new DateTime(dt.Year, dt.Month, 1);
-            foreach (MarkFile mkf in markFiles)
-            {
-                if (mkf.dtMonth == dtMonth)
-                {
-                    mkfile = mkf;
-                    return true;
-                }
-            }
-            return false;
-        }
-        public bool getMarkData(DateTime dt, ref MarkData mkDa)
-        {
-            DateTime dtMonth = new DateTime(dt.Year, dt.Month, 1);
-
-            MarkFile mkf = new MarkFile(dtMonth);
-            if (bFindMarkFile(dt, ref mkf))
-            {
-                if (mkf.getMarkData(dt, ref mkDa))
-                    return true;
-            }
-
-
-            return false;
-        }
-        public bool setMarkData(DateTime dt, MarkData mkDa)
-        {
-            try
-            {
-                DateTime dtMonth = new DateTime(dt.Year, dt.Month, 1);
-                MarkFile mkf = new MarkFile(dtMonth);
-                if (bFindMarkFile(dtMonth, ref mkf))  //need add to mkf list
-                {
-                    mkf.setMarkData(dt, mkDa);
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            return false;
-        }
-        public bool addMarkData(DateTime dt, MarkData mkDa, string mkFileRootDir)
-        {
-            try
-            {
-                DateTime dtMonth = new DateTime(dt.Year, dt.Month, 1);
-                MarkFile mkf = new MarkFile(dtMonth);
-                if (!bFindMarkFile(dtMonth, ref mkf))  //need add to mkf list
-                {
-                    string mkFilePath = Path.Combine(mkFileRootDir, skewkyMark+mkf.getMarkFileName());
-                    mkf.filePath = mkFilePath;
-                    mkf.setMarkData(dt, mkDa);
-                    markFiles.Add(mkf);
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            return false;
-        }
     }
 }

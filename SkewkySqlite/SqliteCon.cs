@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Com.Skewky.Sqlite
 {
-    public class Class1
+    public class SqliteCon
     {
     }
 }

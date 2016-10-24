@@ -11,28 +11,28 @@ namespace Com.Skewky.Vlc
 {
     public partial class FullScreenForm : Form
     {
-        VlcPlayerUI playUI= new VlcPlayerUI();
-        public PlayInfo fullPlayInfo = new PlayInfo();
-        private bool bDbClick = true;
+        readonly VlcPlayerUi _playUi= new VlcPlayerUi();
+        public PlayInfo FullPlayInfo = new PlayInfo();
+        private bool _bDbClick = true;
         public FullScreenForm()
         {
             InitializeComponent();
-            playUI.setComponents(panelPlay, null, null, lbTimer, lbSound, lbSpeed);
+            _playUi.SetComponents(panelPlay, null, null, lbTimer, lbSound, lbSpeed);
             this.TopMost = true;
         }
        
-        public PlayInfo getVlcPlayInfo()
+        public PlayInfo GetVlcPlayInfo()
         {
-            fullPlayInfo = playUI.getPlayInfo();
-            return fullPlayInfo;
+            FullPlayInfo = _playUi.GetPlayInfo();
+            return FullPlayInfo;
         }
-        public void setVlcPlayInfo(PlayInfo playInfo)
+        public void SetVlcPlayInfo(PlayInfo playInfo)
         {
             if (null == playInfo)
             {
                 return;
             }
-            playUI.setPlayInfo(playInfo);
+            _playUi.SetPlayInfo(playInfo);
         }
         private void FullScreen_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -41,21 +41,21 @@ namespace Com.Skewky.Vlc
         private void FullScreenPlayer_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
-                exitFullScreen();
+                ExitFullScreen();
             else
             {
                 panelCtrl.Visible = true;
                 timer1.Interval = 2000;
                 timer1.Start();
-                playUI.Env_KeyUp(sender, e);
-                playUI.updateTexts();
+                _playUi.Env_KeyUp(sender, e);
+                _playUi.UpdateTexts();
             }
         }
-        private void exitFullScreen()
+        private void ExitFullScreen()
         {
-            fullPlayInfo = playUI.getPlayInfo();
+            FullPlayInfo = _playUi.GetPlayInfo();
             this.DialogResult = DialogResult.OK;
-            playUI.Stop();
+            _playUi.Stop();
             this.Visible = false;
             //this.Close();
         }
@@ -63,7 +63,7 @@ namespace Com.Skewky.Vlc
    
         private void FullScreenPlayer_FormClosed(object sender, FormClosedEventArgs e)
         {
-            playUI.Stop();
+            _playUi.Stop();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -74,23 +74,23 @@ namespace Com.Skewky.Vlc
 
         private void picEnv_MouseClick(object sender, MouseEventArgs e)
         {
-            bDbClick = false;
-            Thread th = new Thread(new ThreadStart(signClicked));
+            _bDbClick = false;
+            Thread th = new Thread(new ThreadStart(SignClicked));
             th.Start();
         }
-        private void signClicked()
+        private void SignClicked()
         {
-            Thread.Sleep(ConstVars.iDbClickIntervel);
-            if (!bDbClick)
+            Thread.Sleep(ConstVars.DbClickIntervel);
+            if (!_bDbClick)
             {
-                playUI.TogglePlay();
+                _playUi.TogglePlay();
             }
         }
 
         private void picEnv_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            bDbClick = true;
-            exitFullScreen();
+            _bDbClick = true;
+            ExitFullScreen();
        
         }
     }

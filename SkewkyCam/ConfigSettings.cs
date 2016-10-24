@@ -1,59 +1,58 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Skewky.Cam
 {
     [Serializable]
     public class ConfigSettings
     {
-        public List<string> rootDirArr;
-        public bool bAutoPalyNext;
-        public int iPlaySpeed;
-        public int iRecType;
-        public int iValume;
-        public double[] dPlaySpeeds;
-        public ThemeColors myColors = new ThemeColors();
+        public bool BAutoPalyNext;
+        public double[] DPlaySpeeds;
+        public ThemeColors MyColors = new ThemeColors();
+        public int PlaySpeed;
+        public int RecType;
+        public List<string> RootDirArr;
+        public int Valume;
+
         public ConfigSettings()
         {
-
-            rootDirArr = new List<string>();
-            //rootDirArr.Add(@"E:\Meida\XM");
-            bAutoPalyNext = true;
-            dPlaySpeeds = new double[7]{ 0.1,0.5, 1, 2, 4, 8, 16 };
-            iPlaySpeed = 2;
-            iRecType = 0;
-            iValume = 80;
+            RootDirArr = new List<string>();
+            //RootDirArr.Add(@"E:\Meida\XM");
+            BAutoPalyNext = true;
+            DPlaySpeeds = new double[7] {0.1, 0.5, 1, 2, 4, 8, 16};
+            PlaySpeed = 2;
+            RecType = 0;
+            Valume = 80;
         }
-        public double getDoubleSpeed()
+
+        public double GetDoubleSpeed()
         {
-
-            iPlaySpeed = Math.Max(iPlaySpeed, 0);
-            iPlaySpeed = Math.Min(iPlaySpeed, 6);
-            return dPlaySpeeds[iPlaySpeed];
+            PlaySpeed = Math.Max(PlaySpeed, 0);
+            PlaySpeed = Math.Min(PlaySpeed, 6);
+            return DPlaySpeeds[PlaySpeed];
         }
-        public bool initLoadFaildValues()
+
+        public bool InitLoadFaildValues()
         {
             try
             {
-                if (rootDirArr == null)
-                    rootDirArr = new List<string>();
-                //if (rootDirArr.Count == 0)
-                //    rootDirArr.Add(@"E:\Meida\XM");
-                if (dPlaySpeeds == null)
-                    dPlaySpeeds = new double[7] { 0.1, 0.5, 1, 2, 4, 8, 16 };
-                iPlaySpeed = Math.Max(iPlaySpeed, 0);
-                iPlaySpeed = Math.Min(iPlaySpeed, 6);
+                if (RootDirArr == null)
+                    RootDirArr = new List<string>();
+                //if (RootDirArr.Count == 0)
+                //    RootDirArr.Add(@"E:\Meida\XM");
+                if (DPlaySpeeds == null)
+                    DPlaySpeeds = new double[7] {0.1, 0.5, 1, 2, 4, 8, 16};
+                PlaySpeed = Math.Max(PlaySpeed, 0);
+                PlaySpeed = Math.Min(PlaySpeed, 6);
 
-                if (myColors == null)
-                    myColors = new ThemeColors();
-               return true;
-       }
+                if (MyColors == null)
+                    MyColors = new ThemeColors();
+                return true;
+            }
             catch (Exception)
             {
-            	return false;
+                return false;
             }
-           }
+        }
     }
 }

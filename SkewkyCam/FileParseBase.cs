@@ -1,147 +1,131 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Skewky.Cam
 {
     public abstract class FileParseBase
     {
-        protected List<string> rootDirs = new List<string>();
-        protected CheckedBuffer checkedDays = new CheckedBuffer();
-        protected CheckedBuffer checkedHours = new CheckedBuffer();
-        protected CheckedBuffer checkedMinute = new CheckedBuffer();
-        protected MarkFileMgr mkFileMgr = new MarkFileMgr();
+        protected CheckedBuffer CheckedDays = new CheckedBuffer();
+        protected CheckedBuffer CheckedHours = new CheckedBuffer();
+        protected CheckedBuffer CheckedMinute = new CheckedBuffer();
+        protected MarkFileMgr MkFileMgr = new MarkFileMgr();
+        protected List<string> RootDirs = new List<string>();
+
+
+        protected abstract bool InitMarkFiles();
+
+        protected abstract string GetDayPath(DateTime dt);
+        protected abstract string GetHourPath(DateTime dt);
+        protected abstract string GetMinutePath(DateTime dt);
+
+        protected abstract bool IsDayBlod(DateTime dt);
+        protected abstract bool IsHourBlod(DateTime dt);
+        protected abstract bool IsMinuteBlod(DateTime dt);
+
+        internal abstract string GetRootDirByPath(string path);
+        internal abstract DateTime GetDtMinByPath(string path);
 
         #region public methonds
-        public FileParseBase()
+
+        public void SetRootDir(List<string> RootDirs)
         {
+            this.RootDirs.Clear();
+            this.RootDirs.AddRange(RootDirs);
+            CheckedDays.Clear();
+            CheckedHours.Clear();
+            CheckedMinute.Clear();
+            InitMarkFiles();
         }
-        public void setRootDir(List<string> RootDirs)
-        {
-            rootDirs.Clear();
-            rootDirs.AddRange(RootDirs);
-            checkedDays.clear();
-            checkedHours.clear();
-            checkedMinute.clear();
-            initMarkFiles();
-         }
+
         public string DayPath(DateTime dt)
         {
-            if (checkedDays.isDateChecked(dt))
+            if (CheckedDays.IsDateChecked(dt))
             {
-                return checkedDays.getCheckedPath(dt);
+                return CheckedDays.GetCheckedPath(dt);
             }
-            else
-            {
-                string dayPath = getDayPath(dt);
-                bool bExist = isDayBlod(dt);
-                checkedDays.addCheckedDt(dt, bExist, dayPath);
-                return dayPath;
-            }
+            var dayPath = GetDayPath(dt);
+            var bExist = IsDayBlod(dt);
+            CheckedDays.AddCheckedDt(dt, bExist, dayPath);
+            return dayPath;
         }
+
         public string HourPath(DateTime dt)
         {
-            if (checkedHours.isDateChecked(dt))
+            if (CheckedHours.IsDateChecked(dt))
             {
-                return checkedHours.getCheckedPath(dt);
+                return CheckedHours.GetCheckedPath(dt);
             }
-            else
-            {
-                string hourPath = getHourPath(dt);
-                bool bExist = isHourBlod(dt);
-                checkedHours.addCheckedDt(dt, bExist, hourPath);
-                return hourPath;
-            }
+            var hourPath = GetHourPath(dt);
+            var bExist = IsHourBlod(dt);
+            CheckedHours.AddCheckedDt(dt, bExist, hourPath);
+            return hourPath;
         }
+
         public string MinutePath(DateTime dt)
         {
-            if (checkedMinute.isDateChecked(dt))
+            if (CheckedMinute.IsDateChecked(dt))
             {
-                return checkedMinute.getCheckedPath(dt);
+                return CheckedMinute.GetCheckedPath(dt);
             }
-            else
-            {
-                string minutePath = getMinutePath(dt);
-                bool bExist = isMinuteBlod(dt);
-                checkedMinute.addCheckedDt(dt, bExist, minutePath);
-                return minutePath;
-            }
+            var minutePath = GetMinutePath(dt);
+            var bExist = IsMinuteBlod(dt);
+            CheckedMinute.AddCheckedDt(dt, bExist, minutePath);
+            return minutePath;
         }
 
         public bool DayBlod(DateTime dt)
         {
-            if (checkedDays.isDateChecked(dt))
+            if (CheckedDays.IsDateChecked(dt))
             {
-                return checkedDays.getCheckedStatus(dt);
+                return CheckedDays.GetCheckedStatus(dt);
             }
-            else
-            {
-                string dayPath = getDayPath(dt);
-                bool bExist = isDayBlod(dt);
-                checkedDays.addCheckedDt(dt, bExist, dayPath);
-                return bExist;
-            }
+            var dayPath = GetDayPath(dt);
+            var bExist = IsDayBlod(dt);
+            CheckedDays.AddCheckedDt(dt, bExist, dayPath);
+            return bExist;
         }
+
         public bool HourBlod(DateTime dt)
         {
-            if (checkedHours.isDateChecked(dt))
+            if (CheckedHours.IsDateChecked(dt))
             {
-                return checkedHours.getCheckedStatus(dt);
+                return CheckedHours.GetCheckedStatus(dt);
             }
-            else
-            {
-                string hourPath = getHourPath(dt);
-                bool bExist = isHourBlod(dt);
-                checkedHours.addCheckedDt(dt, bExist, hourPath);
-                return bExist;
-            }
+            var hourPath = GetHourPath(dt);
+            var bExist = IsHourBlod(dt);
+            CheckedHours.AddCheckedDt(dt, bExist, hourPath);
+            return bExist;
         }
+
         public bool MinuteBlod(DateTime dt)
         {
-            if (checkedMinute.isDateChecked(dt))
+            if (CheckedMinute.IsDateChecked(dt))
             {
-                return checkedMinute.getCheckedStatus(dt);
+                return CheckedMinute.GetCheckedStatus(dt);
             }
-            else
-            {
-                string minutePath = getMinutePath(dt);
-                bool bExist = isMinuteBlod(dt);
-                checkedMinute.addCheckedDt(dt, bExist, minutePath);
-                return bExist;
-            }
+            var minutePath = GetMinutePath(dt);
+            var bExist = IsMinuteBlod(dt);
+            CheckedMinute.AddCheckedDt(dt, bExist, minutePath);
+            return bExist;
         }
-        public abstract bool findNextDt(DateTime dt, ref DateTime nextDt);
 
-        public abstract bool saveMarkFiles();
+        public abstract bool FindNextDt(DateTime dt, ref DateTime nextDt);
 
-        public bool GetMarkData(DateTime dt,ref MarkData mk)
+        public abstract bool SaveMarkFiles();
+
+        public bool GetMarkData(DateTime dt, ref MarkData mk)
         {
-            return mkFileMgr.getMarkData(dt,ref mk);
+            return MkFileMgr.GetMarkData(dt, ref mk);
         }
-        public bool SetMarkData(DateTime dt,MarkData mk)
+
+        public bool SetMarkData(DateTime dt, MarkData mk)
         {
-            if (mkFileMgr.setMarkData(dt, mk))
+            if (MkFileMgr.SetMarkData(dt, mk))
                 return true;
-            else
-            {
-                string rootDir = getRootDirByPath(getMinutePath(dt));
-                return mkFileMgr.addMarkData(dt, mk, rootDir);
-            }
+            var rootDir = GetRootDirByPath(GetMinutePath(dt));
+            return MkFileMgr.AddMarkData(dt, mk, rootDir);
         }
+
         #endregion
-
-
-        protected abstract bool initMarkFiles();
-    
-        protected abstract string getDayPath(DateTime dt);
-        protected abstract string getHourPath(DateTime dt);
-        protected abstract string getMinutePath(DateTime dt);
-
-        protected abstract bool isDayBlod(DateTime dt);
-        protected abstract bool isHourBlod(DateTime dt);
-        protected abstract bool isMinuteBlod(DateTime dt);
-
-        internal abstract string getRootDirByPath(string path);
-        internal abstract DateTime getDtMinByPath(string path);
     }
 }
