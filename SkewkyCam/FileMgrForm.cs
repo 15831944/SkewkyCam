@@ -56,15 +56,22 @@ namespace Com.Skewky.Cam
 
         private void InitList()
         {
-            var cFile = new ColumnHeader(); //创建一个列
-            cFile.Text = "文件"; //列名
-            cFile.Width = 120;
-            var cStatu = new ColumnHeader();
-            cStatu.Text = "状态";
-            cStatu.Width = 50;
-            var cDiscr = new ColumnHeader();
-            cDiscr.Text = "备注";
-            cDiscr.Width = 180;
+            var cFile = new ColumnHeader
+            {
+                Text = "文件",
+                Width = 120
+            }; //创建一个列
+            //列名
+            var cStatu = new ColumnHeader
+            {
+                Text = "状态",
+                Width = 50
+            };
+            var cDiscr = new ColumnHeader
+            {
+                Text = "备注",
+                Width = 180
+            };
             var cPath = new ColumnHeader();
             cPath.Text = "路径";
             cPath.Width = 280;
@@ -92,7 +99,7 @@ namespace Com.Skewky.Cam
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
             _iCurOprType = CurOprType.CopyFile;
-            lbCurOpr.Text = "后台导出:";
+            lbCurOpr.Text = @"后台导出:";
             _trdFileOpr = new Thread(CopyFiles);
             _trdFileOpr.Start();
         }
@@ -102,7 +109,7 @@ namespace Com.Skewky.Cam
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
             _iCurOprType = CurOprType.MoveFile;
-            lbCurOpr.Text = "后台移动:";
+            lbCurOpr.Text = @"后台移动:";
             _trdFileOpr = new Thread(MoveFiles);
             _trdFileOpr.Start();
         }
@@ -112,7 +119,7 @@ namespace Com.Skewky.Cam
             timerOprFiles.Interval = 10;
             timerOprFiles.Start();
             _iCurOprType = CurOprType.DelFile;
-            lbCurOpr.Text = "后台删除:";
+            lbCurOpr.Text = @"后台删除:";
             _trdFileOpr = new Thread(DelFiles);
             _trdFileOpr.Start();
         }
@@ -527,32 +534,8 @@ namespace Com.Skewky.Cam
             }
         }
 
-
-        private void timerPlay_Tick(object sender, EventArgs e)
-        {
-            //bool bIsPlayEnded = vlc_player_.IsPlayEnded();
-            //double curPlayTime = vlc_player_.GetPlayTime() * 1000;
-            //if (bIsPlayEnded || curPlayTime<0)
-            //{
-            //      vlc_player_.Stop();
-            //      timerPlay.Stop();
-            //      trackBar1.Value = trackBar1.Maximum;
-            //}
-            //else
-            //{
-            //    curPlayTime = Math.Max(trackBar1.Minimum, curPlayTime);
-            //    curPlayTime = Math.Min(trackBar1.Maximum, curPlayTime);
-            //    trackBar1.Value = (int)curPlayTime;
-            //    tbVideoTime.Text = string.Format("{0}/{1}",
-            //        GetTimeString(trackBar1.Value / 1000),
-            //        GetTimeString(trackBar1.Maximum / 1000));
-            //}
-        }
-
         private void FileMgrForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            timerPlay.Stop();
-            //vlc_player_.Stop();
             if (_trdFileInit != null)
             {
                 _trdFileInit.Abort();
@@ -569,7 +552,7 @@ namespace Com.Skewky.Cam
 
         private void FileMgrForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //vlc_player_.Stop();
+            vlcCtrl.Release();
         }
 
         private enum CurOprType
@@ -579,6 +562,11 @@ namespace Com.Skewky.Cam
             MoveFile,
             DelFile,
             OprFinished
+        }
+
+        private void vlcCtrl_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

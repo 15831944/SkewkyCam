@@ -21,13 +21,23 @@ namespace Com.Skewky.Vlc
             InitializeComponent();
             _playUi.SetComponents(panelPlay, timer1, tbProcess, lbVideoTime, lbSound, lbSpeed);
         }
-        public void release()
+        public void Release()
         {
             _playUi.Release();
         }
         public void PlayFile(string path)
         {
             _playUi.PlayFile(path);
+        }
+
+        public void SetAutoPlayNext(bool bAutoPlayNext)
+        {
+            _playUi.BAutoPlayNext = bAutoPlayNext;
+        }
+
+        public void SetNextPlayFile(string nextFilePath)
+        {
+            _playUi.InitNextFile(nextFilePath);
         }
         private void picEnv_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -93,7 +103,30 @@ namespace Com.Skewky.Vlc
             _playUi.ChangeVolume(e.Delta > 0);
 
         }
-        
+
+        public void SetValume(int iValume)
+        {
+            _playUi.Valume = iValume;
+            _playUi.UpdateVolume();
+        }
+
+        public int GetValume()
+        {
+            return _playUi.Valume;
+        }
+
+        public void InitNextPlayFile(string path)
+        {
+            _playUi.InitNextFile(path);
+        }
+        public int SetPlaySpeed(int iPlaySpeed)
+        {
+            return _playUi.PlaySpeed = iPlaySpeed;
+        }
+        public int GetPlaySpeed()
+        {
+            return _playUi.PlaySpeed;
+        }
     }
 }
 

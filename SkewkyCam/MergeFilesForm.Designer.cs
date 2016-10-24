@@ -45,9 +45,9 @@
             this.vlcCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.vlcCtrl.Location = new System.Drawing.Point(111, 0);
+            this.vlcCtrl.Location = new System.Drawing.Point(195, -1);
             this.vlcCtrl.Name = "vlcCtrl";
-            this.vlcCtrl.Size = new System.Drawing.Size(524, 392);
+            this.vlcCtrl.Size = new System.Drawing.Size(524, 414);
             this.vlcCtrl.TabIndex = 0;
             // 
             // MergeFilesForm

@@ -17,7 +17,7 @@ namespace Com.Skewky.Cam
 
         private void MergeFilesForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            vlcCtrl.release();
+            vlcCtrl.Release();
         }
     }
 }

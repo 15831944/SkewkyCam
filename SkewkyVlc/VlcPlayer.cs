@@ -33,6 +33,7 @@ namespace Com.Skewky.Vlc
             _libvlcInstance = vlcPlayer._libvlcInstance;
             _libvlcMediaPlayer = vlcPlayer._libvlcMediaPlayer;
             _duration = vlcPlayer._duration;
+            _playPath = vlcPlayer._playPath;
 
         }
         public void SetPlayInfo(PlayInfo pInfo)

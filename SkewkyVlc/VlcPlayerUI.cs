@@ -11,11 +11,24 @@ namespace Com.Skewky.Vlc
         #region fileds
         public int PlaySpeed = 2;
         public int Valume = 80;
-
-        private VlcPlayer _mVlc = null;
-        private VlcPlayer _mVlcNext = null;
         private bool _bFindNext = false;
-        private readonly bool bAutoPlayNext = true;
+        private string _nextFilePath = "";
+        public bool BFindNext
+        {
+            get { return _bFindNext; }
+            set { _bFindNext = value; }
+        }
+
+        public bool BAutoPlayNext
+        {
+            get { return _bAutoPlayNext; }
+            set { _bAutoPlayNext = value; }
+        }
+
+        private bool _bAutoPlayNext = true;
+        
+        private VlcPlayer _mVlc = null;
+        //private VlcPlayer _mVlcNext = null;
         private Panel _panelPlay = null;
         private Timer _playTimer = null;
         private TrackBar _tbProcess = null;
@@ -27,7 +40,7 @@ namespace Com.Skewky.Vlc
             if (null == _mVlc)
             {
                 _mVlc = NewVlcPlayer();
-                _mVlcNext = NewVlcPlayer();
+                //_mVlcNext = NewVlcPlayer();
             }
             return true;
         }
@@ -39,30 +52,29 @@ namespace Com.Skewky.Vlc
             vlcPlayer.SetRenderWindow((int)renderWnd);
             return vlcPlayer;
         }
-        #endregion
-
-        #region private methonds
-        private void InitNextFile(string path)
+      public void InitNextFile(string path)
         {
 
             InitVlcPlayer();
             if (!System.IO.File.Exists(path))
                 return;
-            if (!bAutoPlayNext)
+            if (!_bAutoPlayNext)
                 return;
+            _nextFilePath = path;
             _bFindNext = true;
-            _mVlc.PlayFile(path);
-            UpdateTexts();
+          //  UpdateTexts();
 
         }
-        private void PlayNext()
+        #endregion
+
+        #region private methonds
+          private void PlayNext()
         {
 
             InitVlcPlayer();
-            if (!bAutoPlayNext || !_bFindNext)
+            if (!_bAutoPlayNext || !_bFindNext)
                 return;
-            _mVlc.Copy(_mVlcNext);
-            _mVlc.Pause();
+            _mVlc.PlayFile(_nextFilePath);
             _bFindNext = false;
             updatePlayStatus_Start();
             UpdateTexts();
@@ -125,8 +137,8 @@ namespace Com.Skewky.Vlc
         {
             if (_mVlc != null)
                 _mVlc.Stop();
-            if (_mVlcNext != null)
-                _mVlcNext.Stop();
+            //if (_mVlcNext != null)
+            //    _mVlcNext.Stop();
         }
         public void PlayFile(string path)
         {
@@ -220,6 +232,12 @@ namespace Com.Skewky.Vlc
             UpdateSpeed();
             UpdateVedioTime();
         }
+
+        public void SetValume(int iValume)
+        {
+            Valume = iValume;
+            UpdateVolume();
+        }
         public void ChangeVolume(bool bLouder)
         {
             //设置声音
@@ -230,14 +248,15 @@ namespace Com.Skewky.Vlc
                 Valume += 5;
             else
                 Valume -= 5;
-
             if (Valume < 0)
                 Valume = 0;
-            _mVlc.SetVolume(Valume);
-            UpdateVolume();
+              UpdateVolume();
         }
         public void UpdateVolume()
         {
+
+            InitVlcPlayer();
+            _mVlc.SetVolume(Valume);
 
             if (null == _lbSound)
                 return;

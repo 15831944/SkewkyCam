@@ -54,8 +54,6 @@
             this.timerInitFiles = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitter1 = new System.Windows.Forms.Splitter();
-            this.panelPlay = new System.Windows.Forms.Panel();
-            this.vlcCtrl = new Com.Skewky.Vlc.VlcControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.miLove = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,12 +67,11 @@
             this.btSearch = new System.Windows.Forms.Button();
             this.lbSearchPrview = new System.Windows.Forms.Label();
             this.timerOprFiles = new System.Windows.Forms.Timer(this.components);
-            this.timerPlay = new System.Windows.Forms.Timer(this.components);
+            this.vlcCtrl = new Com.Skewky.Vlc.VlcControl();
             this.statusStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.panelPlay.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -267,8 +264,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel2.Controls.Add(this.vlcCtrl);
             this.splitContainer1.Panel2.Controls.Add(this.splitter1);
-            this.splitContainer1.Panel2.Controls.Add(this.panelPlay);
             this.splitContainer1.Panel2MinSize = 0;
             this.splitContainer1.Size = new System.Drawing.Size(984, 468);
             this.splitContainer1.SplitterDistance = 321;
@@ -283,26 +280,6 @@
             this.splitter1.Size = new System.Drawing.Size(5, 468);
             this.splitter1.TabIndex = 4;
             this.splitter1.TabStop = false;
-            // 
-            // panelPlay
-            // 
-            this.panelPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelPlay.BackColor = System.Drawing.SystemColors.Control;
-            this.panelPlay.Controls.Add(this.vlcCtrl);
-            this.panelPlay.Location = new System.Drawing.Point(10, 7);
-            this.panelPlay.Name = "panelPlay";
-            this.panelPlay.Size = new System.Drawing.Size(637, 452);
-            this.panelPlay.TabIndex = 11;
-            // 
-            // vlcCtrl
-            // 
-            this.vlcCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vlcCtrl.Location = new System.Drawing.Point(0, 0);
-            this.vlcCtrl.Name = "vlcCtrl";
-            this.vlcCtrl.Size = new System.Drawing.Size(637, 452);
-            this.vlcCtrl.TabIndex = 10;
             // 
             // menuStrip1
             // 
@@ -427,10 +404,16 @@
             // 
             this.timerOprFiles.Tick += new System.EventHandler(this.timerOprFiles_Tick);
             // 
-            // timerPlay
+            // vlcCtrl
             // 
-            this.timerPlay.Interval = 1000;
-            this.timerPlay.Tick += new System.EventHandler(this.timerPlay_Tick);
+            this.vlcCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.vlcCtrl.Location = new System.Drawing.Point(0, 3);
+            this.vlcCtrl.Name = "vlcCtrl";
+            this.vlcCtrl.Size = new System.Drawing.Size(656, 465);
+            this.vlcCtrl.TabIndex = 10;
+            this.vlcCtrl.Load += new System.EventHandler(this.vlcCtrl_Load);
             // 
             // FileMgrForm
             // 
@@ -460,7 +443,6 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.panelPlay.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -502,8 +484,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripStatusLabel lbCurOpr;
         private System.Windows.Forms.Timer timerOprFiles;
-        private System.Windows.Forms.Timer timerPlay;
-        private System.Windows.Forms.Panel panelPlay;
         public Vlc.VlcControl vlcCtrl;
     }
 }
