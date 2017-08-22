@@ -51,7 +51,7 @@
             this.panelPlay.Controls.Add(this.picEnv);
             this.panelPlay.Location = new System.Drawing.Point(0, 0);
             this.panelPlay.Name = "panelPlay";
-            this.panelPlay.Size = new System.Drawing.Size(580, 366);
+            this.panelPlay.Size = new System.Drawing.Size(580, 338);
             this.panelPlay.TabIndex = 0;
             // 
             // picEnv
@@ -62,7 +62,7 @@
             this.picEnv.BackColor = System.Drawing.Color.Black;
             this.picEnv.Location = new System.Drawing.Point(0, 0);
             this.picEnv.Name = "picEnv";
-            this.picEnv.Size = new System.Drawing.Size(580, 366);
+            this.picEnv.Size = new System.Drawing.Size(580, 338);
             this.picEnv.TabIndex = 0;
             this.picEnv.TabStop = false;
             this.picEnv.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picEnv_MouseClick);
@@ -80,9 +80,9 @@
             this.panelCtrl.Controls.Add(this.lbSpeed);
             this.panelCtrl.Controls.Add(this.lbSound);
             this.panelCtrl.Controls.Add(this.tbProcess);
-            this.panelCtrl.Location = new System.Drawing.Point(0, 373);
+            this.panelCtrl.Location = new System.Drawing.Point(0, 344);
             this.panelCtrl.Name = "panelCtrl";
-            this.panelCtrl.Size = new System.Drawing.Size(580, 21);
+            this.panelCtrl.Size = new System.Drawing.Size(580, 19);
             this.panelCtrl.TabIndex = 1;
             // 
             // lbVideoTime
@@ -92,7 +92,7 @@
             this.lbVideoTime.AutoSize = true;
             this.lbVideoTime.Location = new System.Drawing.Point(433, 3);
             this.lbVideoTime.Name = "lbVideoTime";
-            this.lbVideoTime.Size = new System.Drawing.Size(96, 13);
+            this.lbVideoTime.Size = new System.Drawing.Size(107, 12);
             this.lbVideoTime.TabIndex = 10;
             this.lbVideoTime.Text = "00:00:00/00:00:00";
             // 
@@ -101,7 +101,7 @@
             this.lbSpeed.AutoSize = true;
             this.lbSpeed.Location = new System.Drawing.Point(1, 2);
             this.lbSpeed.Name = "lbSpeed";
-            this.lbSpeed.Size = new System.Drawing.Size(27, 13);
+            this.lbSpeed.Size = new System.Drawing.Size(29, 12);
             this.lbSpeed.TabIndex = 9;
             this.lbSpeed.Text = "0.5x";
             this.lbSpeed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -112,7 +112,7 @@
             this.lbSound.AutoSize = true;
             this.lbSound.Location = new System.Drawing.Point(549, 3);
             this.lbSound.Name = "lbSound";
-            this.lbSound.Size = new System.Drawing.Size(25, 13);
+            this.lbSound.Size = new System.Drawing.Size(23, 12);
             this.lbSound.TabIndex = 9;
             this.lbSound.Text = "100";
             this.lbSound.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -124,20 +124,22 @@
             this.tbProcess.Location = new System.Drawing.Point(36, 1);
             this.tbProcess.Maximum = 100;
             this.tbProcess.Name = "tbProcess";
-            this.tbProcess.Size = new System.Drawing.Size(390, 20);
+            this.tbProcess.Size = new System.Drawing.Size(390, 18);
             this.tbProcess.TabIndex = 0;
             this.tbProcess.TabStop = false;
             this.tbProcess.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // VlcControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panelCtrl);
             this.Controls.Add(this.panelPlay);
             this.Name = "VlcControl";
-            this.Size = new System.Drawing.Size(580, 393);
+            this.Size = new System.Drawing.Size(580, 363);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.VlcControl_KeyUp);
+            this.MouseEnter += new System.EventHandler(this.VlcControl_MouseEnter);
+            this.MouseHover += new System.EventHandler(this.VlcControl_MouseHover);
             this.panelPlay.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picEnv)).EndInit();
             this.panelCtrl.ResumeLayout(false);

@@ -15,4 +15,10 @@ namespace Com.Skewky.Vlc
         LibvlcEnded,
         LibvlcError
     };
+    public enum NextFileSta
+    {
+        NfNotFind = 0,  //tried to find next file, but not found the any files
+        NfNeedFind,     //Need to find a next file to play
+        NfFound         //Already find next file
+    };
 }

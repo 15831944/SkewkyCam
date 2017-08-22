@@ -39,7 +39,7 @@ namespace Com.Skewky.Cam
 
             //_vlcPlayer = NewVlcPlayer();
             //_vlcPlayerNext = NewVlcPlayer();
-         
+           
             ResetTimerInterval();
             pBmin.BackColor = _cfsettings.MyColors.ClrBg;
             pBhour.BackColor = _cfsettings.MyColors.ClrBg;
@@ -129,26 +129,15 @@ namespace Com.Skewky.Cam
         private void PlayRecord(string path, bool autoPlayNext = false)
         {
             _curDt = _fileParseTool.GetDtMinByPath(path);
-            //autoPlayNext = false;
-            if (_bFindNext && autoPlayNext)
-            {
-               // _vlcPlayer.Copy(_vlcPlayerNext);
-               // _vlcPlayer.Pause();
-                vlcCtrl.PlayFile(path);
-                updatePlayStatus_Start();
-                UpdateHourAndMinView();
-                //UpdateSpeed();
-                ThreadFindNextFile();
-            }
-            if (File.Exists(path))
-            {
-                //_vlcPlayer.PlayFile(path);
-                vlcCtrl.PlayFile(path);
-                updatePlayStatus_Start();
-                UpdateHourAndMinView();
-                //UpdateSpeed();
-                ThreadFindNextFile();
-            }
+            UpdateHourAndMinView();
+            UpdateMarkData();
+            vlcCtrl.PlayFile(path);
+            lbNowPlaying.Text = path;
+            vlcCtrl.InitNextPlayFile(string.Empty);
+            ThreadFindNextFile();
+            timer1.Interval = 500;
+            timer1.Start();
+       
         }
 
         private void PlayRecord(DateTime dt, bool autoPlayNext = false)
@@ -161,17 +150,18 @@ namespace Com.Skewky.Cam
         {
             _bFindNext = false;
             var nextDt = _curDt;
-            if (_fileParseTool.FindNextDt(_curDt, ref nextDt))
-            {
-                var nextfilePath = _fileParseTool.MinutePath(nextDt);
-                vlcCtrl.InitNextPlayFile(nextfilePath);
-                _bFindNext = true;
-            }
+            if (!_fileParseTool.FindNextDt(_curDt, ref nextDt))
+                return;
+            var nextfilePath = _fileParseTool.MinutePath(nextDt);
+            vlcCtrl.InitNextPlayFile(nextfilePath);
+            _bFindNext = true;
         }
 
         private void ThreadFindNextFile()
         {
-            //_vlcPlayerNext = NewVlcPlayer();
+            if (!vlcCtrl.NeedFindNextFile())
+                return;
+                //_vlcPlayerNext = NewVlcPlayer();
             TrdFindNextFile = new Thread(PrepearNextFile);
             TrdFindNextFile.Start();
         }
@@ -194,7 +184,22 @@ namespace Com.Skewky.Cam
 
         private void timer1_Tick(object sender, EventArgs e)
         {
- /*           if (_isPlaying)
+            if (!vlcCtrl.NeedFindNextFile())
+                return;
+            ThreadFindNextFile();
+            if (string.IsNullOrEmpty(vlcCtrl.GetPlayPath()))
+                return;
+
+            DateTime curDt = _fileParseTool.GetDtMinByPath(vlcCtrl.GetPlayPath());
+            if (curDt != _curDt)
+            {
+                SaveMarkData();
+                _curDt = curDt;
+                lbNowPlaying.Text = vlcCtrl.GetPlayPath();
+                UpdateHourAndMinView();
+                UpdateMarkData();
+            }
+            /*           if (_isPlaying)
             {
               //  var playTime = _vlcPlayer.GetPlayTime();
               //  var duraTime = _vlcPlayer.Duration();
@@ -381,10 +386,6 @@ namespace Com.Skewky.Cam
             UpdateCalender();
         }
 
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
-        {
-        }
-
         private void monthCalendar2_DateChanged(object sender, DateRangeEventArgs e)
         {
             UpdateCalender();
@@ -430,7 +431,6 @@ namespace Com.Skewky.Cam
 
         private void pBmin_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var height = pBmin.Height;
             var width = pBmin.Width;
             var drawWidth = width/60;
             var clkPt = new Point(e.Location.X, e.Location.Y);
@@ -438,11 +438,11 @@ namespace Com.Skewky.Cam
             clkMinute = Math.Min(clkMinute, 59);
             if (_curDt.Minute != clkMinute)
             {
-                if (_isPlaying)
-                    updatePlayStatus_Stop();
+                SaveMarkData();
                 _curDt = new DateTime(_curDt.Year, _curDt.Month, _curDt.Day,
                     _curDt.Hour, clkMinute, _curDt.Second);
                 UpdateMinute();
+                UpdateMarkData();
                 PlayCurrentDt();
             }
         }
@@ -516,7 +516,7 @@ namespace Com.Skewky.Cam
             var pt = ck_ContinuMark.Location;
             pt.X -= 220;
             pt.Y += 20;
-            toolTip1.Show(msg, ck_ContinuMark, pt, 3000);
+            mainTip.Show(msg, ck_ContinuMark, pt, 3000);
         }
 
 
@@ -1174,5 +1174,15 @@ namespace Com.Skewky.Cam
         }
 
         #endregion
+
+        private void vlcCtrl_MouseEnter(object sender, EventArgs e)
+        {
+            vlcCtrl.Focus();
+        }
+
+        private void vlcCtrl_MouseHover(object sender, EventArgs e)
+        {
+            vlcCtrl.Focus();
+        }
     }
 }
