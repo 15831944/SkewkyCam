@@ -102,11 +102,20 @@ namespace Com.Skewky.Cam
 
         private void LoadMarkFileDir(string mkFileRoot)
         {
-            var mkFiles = Directory.GetFiles(mkFileRoot, "*.mrk");
-            foreach (var mkFilePath in mkFiles)
+            try
             {
-                LoadMarkFile(mkFilePath);
+                var mkFiles = Directory.GetFiles(mkFileRoot, "*.mrk");
+                foreach (var mkFilePath in mkFiles)
+                {
+                    LoadMarkFile(mkFilePath);
+                }
             }
+            catch (Exception )
+            {
+
+            }
+
+
         }
 
         private bool LoadMarkFile(string mkFilePath)
