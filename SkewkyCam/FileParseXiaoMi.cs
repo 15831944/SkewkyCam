@@ -51,10 +51,6 @@ namespace Com.Skewky.Cam
 
         internal override DateTime GetDtMinByPath(string path)
         {
-            var dt = DateTime.Now;
-            if (string.IsNullOrEmpty(path)||path.Length < 27)
-                return dt;
-
             //path = "Z:\\小蚁智能摄像机_B0D59D482E5A\\2016年08月10日\\00时\\01分00秒.mp4"
             var iPos = path.Length - 26;
             var iSubLen = 22;
@@ -70,6 +66,7 @@ namespace Com.Skewky.Cam
             dtString = dtString.Replace("时", ":");
             dtString = dtString.Replace("分", ":");
             dtString = dtString.Replace("秒", " ");
+            var dt = DateTime.Now;
             DateTime.TryParse(dtString, out dt);
             return dt;
         }

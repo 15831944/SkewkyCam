@@ -44,7 +44,7 @@
             this.tssPlaySpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssPause = new System.Windows.Forms.ToolStripStatusLabel();
             this.tssNote = new System.Windows.Forms.ToolStripStatusLabel();
-            this.mainTip = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.monthCalendar2 = new System.Windows.Forms.MonthCalendar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.File_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -218,9 +218,9 @@
             this.tssNote.Name = "tssNote";
             this.tssNote.Size = new System.Drawing.Size(0, 17);
             // 
-            // mainTip
+            // toolTip1
             // 
-            this.mainTip.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
             // monthCalendar2
             // 
@@ -228,7 +228,6 @@
             this.monthCalendar2.Location = new System.Drawing.Point(772, 32);
             this.monthCalendar2.Name = "monthCalendar2";
             this.monthCalendar2.TabIndex = 5;
-            this.mainTip.SetToolTip(this.monthCalendar2, "按日期浏览视频");
             this.monthCalendar2.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar2_DateChanged);
             // 
             // menuStrip1
@@ -484,8 +483,6 @@
             this.vlcCtrl.Name = "vlcCtrl";
             this.vlcCtrl.Size = new System.Drawing.Size(755, 468);
             this.vlcCtrl.TabIndex = 10;
-            this.vlcCtrl.MouseEnter += new System.EventHandler(this.vlcCtrl_MouseEnter);
-            this.vlcCtrl.MouseHover += new System.EventHandler(this.vlcCtrl_MouseHover);
             // 
             // MainForm
             // 
@@ -542,7 +539,7 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolTip mainTip;
+        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.MonthCalendar monthCalendar2;
         private System.Windows.Forms.PictureBox pBmin;
         private System.Windows.Forms.PictureBox pBhour;

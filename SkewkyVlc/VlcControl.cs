@@ -127,26 +127,6 @@ namespace Com.Skewky.Vlc
         {
             return _playUi.PlaySpeed;
         }
-
-        public bool NeedFindNextFile()
-        {
-            return _playUi.NfSta == NextFileSta.NfNeedFind;
-        }
-
-        public string GetPlayPath()
-        {
-            return _playUi.GetPlayPath();
-        }
-
-        private void VlcControl_MouseEnter(object sender, EventArgs e)
-        {
-            this.Focus();
-        }
-
-        private void VlcControl_MouseHover(object sender, EventArgs e)
-        {
-            this.Focus();
-        }
     }
 }
 

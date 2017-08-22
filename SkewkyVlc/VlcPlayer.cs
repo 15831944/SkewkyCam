@@ -69,12 +69,6 @@ namespace Com.Skewky.Vlc
             pInfo.DValume = GetVolume();
             return pInfo;
         }
-
-        public string GetPlayPath()
-        {
-            return _playPath;
-        }
-
         public void SetRenderWindow(int wndHandle)
         {
             if (_libvlcInstance != IntPtr.Zero && wndHandle != 0)

@@ -11,8 +11,13 @@ namespace Com.Skewky.Vlc
         #region fileds
         public int PlaySpeed = 2;
         public int Valume = 80;
-        public NextFileSta NfSta = NextFileSta.NfNeedFind;
+        private bool _bFindNext = false;
         private string _nextFilePath = "";
+        public bool BFindNext
+        {
+            get { return _bFindNext; }
+            set { _bFindNext = value; }
+        }
 
         public bool BAutoPlayNext
         {
@@ -21,7 +26,7 @@ namespace Com.Skewky.Vlc
         }
 
         private bool _bAutoPlayNext = true;
-
+        
         private VlcPlayer _mVlc = null;
         //private VlcPlayer _mVlcNext = null;
         private Panel _panelPlay = null;
@@ -47,39 +52,30 @@ namespace Com.Skewky.Vlc
             vlcPlayer.SetRenderWindow((int)renderWnd);
             return vlcPlayer;
         }
-        public void InitNextFile(string path)
+      public void InitNextFile(string path)
         {
 
             InitVlcPlayer();
-            if (string.IsNullOrEmpty(path))   //clear
-            {
-                NfSta = NextFileSta.NfNeedFind;
-                _nextFilePath = path;
-                return;
-            }
             if (!System.IO.File.Exists(path))
-            {
-                NfSta = NextFileSta.NfNotFind;
                 return;
-            }
             if (!_bAutoPlayNext)
                 return;
             _nextFilePath = path;
-            NfSta = NextFileSta.NfFound;
-            //  UpdateTexts();
+            _bFindNext = true;
+          //  UpdateTexts();
 
         }
         #endregion
 
         #region private methonds
-        private void PlayNext()
+          private void PlayNext()
         {
 
             InitVlcPlayer();
-            if (!_bAutoPlayNext || NfSta != NextFileSta.NfFound)
+            if (!_bAutoPlayNext || !_bFindNext)
                 return;
             _mVlc.PlayFile(_nextFilePath);
-            NfSta = NextFileSta.NfNeedFind;
+            _bFindNext = false;
             updatePlayStatus_Start();
             UpdateTexts();
         }
@@ -149,12 +145,6 @@ namespace Com.Skewky.Vlc
             InitVlcPlayer();
             _mVlc.PlayFile(path);
             updatePlayStatus_Start();
-        }
-
-        public string GetPlayPath()
-        {
-            InitVlcPlayer();
-            return _mVlc.GetPlayPath();
         }
         public void SetPlayInfo(PlayInfo pInfo)
         {
@@ -260,7 +250,7 @@ namespace Com.Skewky.Vlc
                 Valume -= 5;
             if (Valume < 0)
                 Valume = 0;
-            UpdateVolume();
+              UpdateVolume();
         }
         public void UpdateVolume()
         {
